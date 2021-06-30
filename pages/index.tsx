@@ -1,21 +1,46 @@
 import Head from "next/head"
 import Image from "next/image"
+import { useEffect, useState } from "react"
 import styles from "../styles/Home.module.css"
+import Link from "next/link"
 
 export default function Home() {
-  return <div>hooo</div>
-}
+  let [query, setQuery] = useState("")
+  let [subs, setSubs] = useState([])
 
-export async function getServerSideProps() {
-  // const res = await fetch(`https://reddit.com/r/memes.json?limit=25&after=`)
-  // const data = await res.json()
-  // console.log(data)
-  // if (!data) {
-  //   return {
-  //     notFound: true,
-  //   }
-  // }
-  // return {
-  //   props: { data },
-  // }
+  useEffect(() => {
+    async function getSubs() {
+      const res = await fetch(
+        `https://www.reddit.com/api/subreddit_autocomplete_v2.json?query=${query}`
+      )
+      const data = await res.json()
+      setSubs(data.data.children)
+      console.log(subs)
+    }
+    getSubs()
+  }, [query])
+
+  return (
+    <div>
+      <input
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value)
+        }}
+        type="text"
+      />
+      <ul>
+        {subs?.map((s: any) => (
+          <li>
+            <a href={`/${s.data.display_name}`}> {s.data.display_name}</a>
+            <p>{s.data.title}</p>
+            <img src={s.data.icon_img} alt="" />
+            <b>{s.data.subscribers}</b> members
+            <br />
+            <br />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
