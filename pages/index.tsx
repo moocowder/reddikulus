@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import styles from "../styles/Home.module.css"
 import Link from "next/link"
+import useLoadMore from "../hooks/useLoadMore"
 
 export default function Home() {
   let [query, setQuery] = useState("")

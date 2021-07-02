@@ -6,17 +6,19 @@ import "react-lazy-load-image-component/src/effects/blur.css"
 let n
 
 function Masonry({ posts }) {
-  let [rows, setRows] = useState([])
+  console.log("the posts sir", posts)
+  // let [rows, setRows] = useState([])
+  let rows = [0, 0, 0, 0]
   const iw = 300
 
-  useEffect(() => {
-    n = Math.floor(window.innerWidth / iw)
-    setRows(Array(n).fill(0))
-  }, [])
+  // useEffect(() => {
+  //   n = Math.floor(window.innerWidth / iw)
+  //   setRows(Array(n).fill(0))
+  // }, [posts])
 
-  useEffect(() => {
-    setRows(Array(n).fill(0))
-  }, [posts])
+  // useEffect(() => {
+  //   setRows(Array(n).fill(0))
+  // }, [posts])
 
   function getPos(p) {
     let minI = rows.indexOf(Math.min.apply(null, rows))

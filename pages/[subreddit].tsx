@@ -5,6 +5,7 @@ import Viewer from "../components/viewer"
 import Load from "../components/load"
 import { useRouter } from "next/router"
 import Masonry from "../components/masonry"
+import useLoadMore from "../hooks/useLoadMore"
 
 type Data = {
   children: any[]
@@ -12,46 +13,38 @@ type Data = {
 }
 
 function Subreddit({ sub }: any) {
-  let [posts, setPosts] = useState([])
+  // let [posts, setPosts] = useState([])
   let [after, setAfter] = useState("")
-  let [loading, setLoading] = useState(false)
+  // let [loading, setLoading] = useState(false)
   let [view, setView] = useState(false)
   // let pics = initData?.children?.map((c: any) => c.data.url)
 
-  useEffect(() => {
-    loadMore(sub)
-  }, [])
-
   // useEffect(() => {
-  //   document.addEventListener("scroll", handleScroll)
-  // }, [after])
+  //   loadMore(sub, "")
+  // }, [])
 
-  // async function handleScroll(e: any) {
-  //   console.log("scrolling", after)
-  //   let s = e.target.scrollingElement
-  //   if (!loading && s.scrollHeight < s.scrollTop + s.clientHeight + 50) {
-  //     // setLoading(true)
-  //     // let res = await fetch("/api/posts?after=" + after)
-  //     // let data = res.json()
-  //   }
+  let { data, loading, error }: any = useLoadMore(sub, after)
+  // if (error) return <h1>error!!</h1>
+  console.log("fuck", data)
+  // console.log(posts)
+  // setPosts()
+  // async function loadMore(sub: string, after: string) {
+  //   console.log("loading more", sub, after)
+  //   const res = await fetch(`/api/posts?sub=${sub}&&after=${after}`)
+  //   const data = await res.json()
+
+  //   data.children = data.children.filter((c: any) => {
+  //     return c.data.is_reddit_media_domain
+  //   })
+
+  //   data.children = data.children.map((c: any) => {
+  //     let img = c.data.preview.images[0].source
+  //     c.data.ratio = img.width / img.height
+  //     return c
+  //   })
+  //   setAfter(data.after)
+  //   setPosts(posts.concat(data.children))
   // }
-
-  async function loadMore(sub: string, after = "") {
-    const res = await fetch(`/api/posts?sub=${sub}&&after=${after}`)
-    const data = await res.json()
-
-    data.children = data.children.filter((c: any) => {
-      return c.data.is_reddit_media_domain
-    })
-
-    data.children = data.children.map((c: any) => {
-      let img = c.data.preview.images[0].source
-      c.data.ratio = img.width / img.height
-      return c
-    })
-    setAfter(data.after)
-    setPosts(posts.concat(data.children))
-  }
 
   // if (view)
   //   return (
@@ -63,12 +56,18 @@ function Subreddit({ sub }: any) {
       <h1>r/{sub}</h1>
       <button
         onClick={() => {
-          loadMore(sub, after)
+          setAfter(data.after)
         }}
       >
         next
       </button>
-      <Masonry posts={posts} />
+      <Masonry posts={data.posts} />
+      {/* <ul>
+        {data?.posts?.map((p: any) => (
+          <img src={p.data.url} alt="" style={{ width: "200px" }} />
+        ))}
+      </ul> */}
+      {loading && <h3>loading...</h3>}
       {/* {view ? (
         <Viewer
           pics={pics}
