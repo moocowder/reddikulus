@@ -6,7 +6,6 @@ export default function useLoadMore(sub, after) {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    // console.log("here in load more", data)
     setLoading(true)
     setError(false)
     fetch(`/api/posts?sub=${sub}&&after=${after}`)
@@ -21,7 +20,6 @@ export default function useLoadMore(sub, after) {
           c.data.ratio = img.width / img.height
           return c
         })
-        console.log("here is data : ", data)
         let posts = [...data.posts, ...d.children]
         setData({ after: d.after, posts })
       })

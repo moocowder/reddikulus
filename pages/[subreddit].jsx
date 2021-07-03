@@ -1,50 +1,41 @@
 import { GetServerSideProps } from "next"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Viewer from "../components/viewer"
 import Load from "../components/load"
 import { useRouter } from "next/router"
 import Masonry from "../components/masonry"
 import useLoadMore from "../hooks/useLoadMore"
+import { useCallback } from "react"
 
-type Data = {
-  children: any[]
-  after: string
-}
-
-function Subreddit({ sub }: any) {
-  // let [posts, setPosts] = useState([])
+function Subreddit({ sub }) {
   let [after, setAfter] = useState("")
-  // let [loading, setLoading] = useState(false)
-  let [view, setView] = useState(false)
+  // let [view, setView] = useState(false)
   // let pics = initData?.children?.map((c: any) => c.data.url)
 
-  // useEffect(() => {
-  //   loadMore(sub, "")
-  // }, [])
+  // let last = useRef("")
+  let { data, loading, error } = useLoadMore(sub, after)
 
-  let { data, loading, error }: any = useLoadMore(sub, after)
-  // if (error) return <h1>error!!</h1>
-  console.log("fuck", data)
-  // console.log(posts)
-  // setPosts()
-  // async function loadMore(sub: string, after: string) {
-  //   console.log("loading more", sub, after)
-  //   const res = await fetch(`/api/posts?sub=${sub}&&after=${after}`)
-  //   const data = await res.json()
+  useEffect(() => {
+    console.log("i got called from subreddit")
+  }, [])
 
-  //   data.children = data.children.filter((c: any) => {
-  //     return c.data.is_reddit_media_domain
-  //   })
-
-  //   data.children = data.children.map((c: any) => {
-  //     let img = c.data.preview.images[0].source
-  //     c.data.ratio = img.width / img.height
-  //     return c
-  //   })
-  //   setAfter(data.after)
-  //   setPosts(posts.concat(data.children))
-  // }
+  const observer = useRef()
+  const lastElementRef = useCallback(
+    (node) => {
+      if (loading) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && data.after) {
+          console.log("this one", entries)
+          setAfter(data.after)
+        }
+      })
+      console.log(node)
+      if (node) observer.current.observe(node)
+    },
+    [loading]
+  )
 
   // if (view)
   //   return (
@@ -54,20 +45,19 @@ function Subreddit({ sub }: any) {
   return (
     <div>
       <h1>r/{sub}</h1>
-      <button
-        onClick={() => {
-          setAfter(data.after)
-        }}
-      >
-        next
-      </button>
-      <Masonry posts={data.posts} />
+      <Masonry
+        posts={data.posts}
+        loading={loading}
+        lastElementRef={lastElementRef}
+      />
       {/* <ul>
         {data?.posts?.map((p: any) => (
           <img src={p.data.url} alt="" style={{ width: "200px" }} />
         ))}
       </ul> */}
-      {loading && <h3>loading...</h3>}
+
+      {error && <h1>error!</h1>}
+
       {/* {view ? (
         <Viewer
           pics={pics}
@@ -133,8 +123,8 @@ function Subreddit({ sub }: any) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  let sub: any = context.params?.subreddit
+export const getServerSideProps = async (context) => {
+  let sub = context.params?.subreddit
   return { props: { sub } }
 }
 
