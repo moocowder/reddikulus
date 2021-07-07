@@ -20,9 +20,8 @@ export default function useLoadMore(sub, after) {
         })
 
         d.children = d.children.map((c) => {
-          let img = c.data.preview?.images[0].source
-          if (img) c.data.ratio = img.width / img.height
-          else c.data.ratio = 0.5
+          let img = c.data.preview.images[0].source
+          c.data.ratio = img.width / img.height
           return c
         })
         let posts = [...data.posts, ...d.children]

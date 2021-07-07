@@ -20,7 +20,7 @@
     "**/*.tsx",
     "pages/api/posts.js",
     "pages/masonic.jsx",
-    "pages/[subreddit].jsx",
+    "pages/r/[subreddit].jsx",
     "pages/index.jsx"
   ],
   "exclude": ["node_modules"]

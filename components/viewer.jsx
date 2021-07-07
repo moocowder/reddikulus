@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
+// import Cinema from "./Cinema"
 
-const Viewer = ({ pics, index, setIndex, setView }) => {
-  console.log("mr index", index)
+const Viewer = ({ posts, index, setIndex, setView, Cinema }) => {
   let [translate, setTranslate] = useState({ x: 0, y: 0 })
   let [scale, setScale] = useState(1)
   let [start, setStart] = useState({ x: 0, y: 0 })
@@ -10,9 +10,12 @@ const Viewer = ({ pics, index, setIndex, setView }) => {
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
-      e.key === "Escape" ? setView(false) : console.log(e.key)
+      if (e.key !== "Escape") return
+      setView(false)
+      document.body.style.overflow = "auto"
     })
   }, [])
+
   function handleMouseMove(e) {
     e.preventDefault()
 
@@ -47,7 +50,8 @@ const Viewer = ({ pics, index, setIndex, setView }) => {
 
   function next(e) {
     e.preventDefault()
-    if (pics.length - 1 === index) return
+    if (e.target.localName === "a") return
+    if (posts.length - 1 === index) return
 
     setIndex(index + 1)
 
@@ -55,11 +59,17 @@ const Viewer = ({ pics, index, setIndex, setView }) => {
     setTranslate({ x: 0, y: 0 })
   }
 
-  function prev() {
+  function prev(e) {
+    if (e.target.localName === "a") return
     if (index === 0) return
     setIndex(index - 1)
     setScale(1)
     setTranslate({ x: 0, y: 0 })
+  }
+
+  function format(number) {
+    if (number < 999) return number
+    return (Math.round(number / 100) / 10).toFixed(1) + " k"
   }
 
   return (
@@ -68,24 +78,46 @@ const Viewer = ({ pics, index, setIndex, setView }) => {
       onMouseMove={(e) => {
         handleMouseMove(e)
       }}
-      onClick={() => {
-        prev()
+      onClick={(e) => {
+        prev(e)
       }}
       onContextMenu={(e) => {
         next(e)
       }}
     >
-      <b
+      <a
+        href={"https://reddit.com" + posts[index].data.permalink}
+        target="_blank"
         style={{
           color: "white",
-          zIndex: 1,
-          position: "absolute",
-          margin: "5px",
+          zIndex: 2,
+          position: "fixed",
           textShadow: "0 0 8px 1px black",
         }}
       >
-        {"posts[index]?.title"}
+        {posts[index]?.data.title}
+      </a>
+      <b
+        style={{
+          color: "red",
+          zIndex: 2,
+          position: "fixed",
+          top: "30px",
+          textShadow: "0 0 8px 1px black",
+        }}
+      >
+        {format(posts[index].data.ups)}
       </b>
+      <p
+        style={{
+          color: "white",
+          zIndex: 2,
+          position: "fixed",
+          textShadow: "0 0 8px 1px black",
+        }}
+      >
+        {posts[index].data.user}
+      </p>
       <b
         style={{
           color: "white",
@@ -97,23 +129,30 @@ const Viewer = ({ pics, index, setIndex, setView }) => {
           textShadow: "0 0 8px 1px black",
         }}
       >
-        {index + 1}/{pics.length}
+        {index + 1}/{posts.length}
       </b>
-      <img className="background" src={pics[index]} alt="" />
+      <img className="background" src={posts[index].data.url} alt="" />
       <div
         id="zoom"
         style={{
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
         }}
       >
-        <img
+        <Cinema
+          src={posts[index].data.media.reddit_video.fallback_url}
           id="image"
-          src={pics[index]}
+          onWheel={(e) => {
+            handleWheel(e)
+          }}
+        ></Cinema>
+        {/* <img
+          id="image"
+          src={posts[index].data.url}
           alt="zoom"
           onWheel={(e) => {
             handleWheel(e)
           }}
-        />
+        /> */}
       </div>
     </div>
   )
