@@ -3,15 +3,15 @@ import { useState, useRef, useEffect } from "react"
 import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
 import { MdReplay } from "react-icons/md"
 
-function Cinema({ src, style, bonus = () => {} }) {
+function Cinema({ src, style, timestamp = null, onClick = () => {} }) {
   const [paused, setPaused] = useState(true)
   const [started, setStarted] = useState(false)
   const [ended, setEnded] = useState(false)
   const [timer, setTimer] = useState("00:00")
   const [progress, setProgress] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   let media = useRef()
-
   useEffect(() => {
     media.current.addEventListener("ended", () => {
       setEnded(true)
@@ -19,16 +19,26 @@ function Cinema({ src, style, bonus = () => {} }) {
     media.current.addEventListener("timeupdate", () => {
       updateTimer()
     })
+    media.current.addEventListener("playing", () => {
+      setLoading(false)
+    })
+    media.current.addEventListener("waiting", () => {
+      setLoading(true)
+    })
+
+    if (timestamp) {
+      media.current.currentTime = timestamp
+      media.current.play()
+      setStarted(true)
+      setPaused(false)
+    }
   }, [])
 
-  function handleVideoClick() {
-    if (!started) {
-      media.current.play()
-      setPaused(false)
-      setStarted(true)
-    } else {
-      bonus()
-    }
+  function handleMouseEnter() {
+    if (started) return
+    media.current.play()
+    setPaused(false)
+    setStarted(true)
   }
 
   function getIcon() {
@@ -62,6 +72,7 @@ function Cinema({ src, style, bonus = () => {} }) {
   }
 
   function updateTimer() {
+    if (!media.current) return
     let time = format(media.current.currentTime)
     setTimer(time)
     setProgress(media.current.currentTime / media.current.duration)
@@ -84,13 +95,19 @@ function Cinema({ src, style, bonus = () => {} }) {
     <div
       className={styles.player}
       style={style}
+      onMouseEnter={(e) => {
+        handleMouseEnter()
+      }}
       onClick={() => {
-        handleVideoClick()
+        onClick(media.current.currentTime)
       }}
     >
-      <video className={styles.video} ref={media}>
+      {loading ? <p className={styles.loading}>loading...</p> : ""}
+      <video ref={media} key={src} className={styles.video}>
         <source src={src} type="video/mp4" />
       </video>
+      <img src={src} alt="" />
+
       {started ? (
         <div className={styles.controls}>
           <button

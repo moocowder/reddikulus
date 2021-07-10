@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
-// import Cinema from "./Cinema"
+import Cinema from "../components/Cinema"
+import styles from "../styles/viewer.module.css"
+import Link from "next/link"
 
-const Viewer = ({ posts, index, setIndex, setView, Cinema }) => {
+const Viewer = ({ post, move, close, isVideo = false }) => {
   let [translate, setTranslate] = useState({ x: 0, y: 0 })
   let [scale, setScale] = useState(1)
   let [start, setStart] = useState({ x: 0, y: 0 })
@@ -11,7 +13,7 @@ const Viewer = ({ posts, index, setIndex, setView, Cinema }) => {
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return
-      setView(false)
+      close()
       document.body.style.overflow = "auto"
     })
   }, [])
@@ -51,30 +53,26 @@ const Viewer = ({ posts, index, setIndex, setView, Cinema }) => {
   function next(e) {
     e.preventDefault()
     if (e.target.localName === "a") return
-    if (posts.length - 1 === index) return
-
-    setIndex(index + 1)
-
+    move.next()
     setScale(1)
     setTranslate({ x: 0, y: 0 })
   }
 
   function prev(e) {
     if (e.target.localName === "a") return
-    if (index === 0) return
-    setIndex(index - 1)
+    move.prev()
     setScale(1)
     setTranslate({ x: 0, y: 0 })
   }
 
   function format(number) {
-    if (number < 999) return number
+    if (number <= 999) return number
     return (Math.round(number / 100) / 10).toFixed(1) + " k"
   }
 
   return (
     <div
-      className="container"
+      className={styles.container}
       onMouseMove={(e) => {
         handleMouseMove(e)
       }}
@@ -86,73 +84,57 @@ const Viewer = ({ posts, index, setIndex, setView, Cinema }) => {
       }}
     >
       <a
-        href={"https://reddit.com" + posts[index].data.permalink}
+        href={"https://reddit.com" + post.data.permalink}
         target="_blank"
-        style={{
-          color: "white",
-          zIndex: 2,
-          position: "fixed",
-          textShadow: "0 0 8px 1px black",
-        }}
+        className={styles.title}
       >
-        {posts[index]?.data.title}
+        {post?.data.title}
       </a>
-      <b
-        style={{
-          color: "red",
-          zIndex: 2,
-          position: "fixed",
-          top: "30px",
-          textShadow: "0 0 8px 1px black",
-        }}
-      >
-        {format(posts[index].data.ups)}
-      </b>
-      <p
-        style={{
-          color: "white",
-          zIndex: 2,
-          position: "fixed",
-          textShadow: "0 0 8px 1px black",
-        }}
-      >
-        {posts[index].data.user}
-      </p>
-      <b
-        style={{
-          color: "white",
-          zIndex: 1,
-          position: "absolute",
-          bottom: "5px",
-          right: "5px",
-          margin: "5px",
-          textShadow: "0 0 8px 1px black",
-        }}
-      >
-        {index + 1}/{posts.length}
-      </b>
-      <img className="background" src={posts[index].data.url} alt="" />
+      <b className={styles.ups}>{format(post.data.ups)}</b>
+      <Link href={`/u/${post.data.author}`}>
+        <a className={styles.author}> {post.data.author}</a>
+      </Link>
+      {isVideo ? (
+        <img className={styles.background} src={post.data.thumbnail} alt="" />
+      ) : (
+        <img className={styles.background} src={post.data.url} alt="" />
+      )}
       <div
-        id="zoom"
+        className={styles.wrapper}
         style={{
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
         }}
       >
-        <Cinema
-          src={posts[index].data.media.reddit_video.fallback_url}
-          id="image"
-          onWheel={(e) => {
-            handleWheel(e)
-          }}
-        ></Cinema>
-        {/* <img
-          id="image"
-          src={posts[index].data.url}
-          alt="zoom"
-          onWheel={(e) => {
-            handleWheel(e)
-          }}
-        /> */}
+        {isVideo ? (
+          <Cinema
+            src={post.data.media.reddit_video.fallback_url}
+            // src={post.data.thumbnail}
+            id="image"
+            handleWheel={(e) => {
+              handleWheel(e)
+            }}
+            timestamp={post.timestamp}
+            bonus={() => {
+              console.log("hey should i be called")
+            }}
+          ></Cinema>
+        ) : (
+          // <video>
+          //   <source
+          //     src={post.data.media.reddit_video.fallback_url}
+          //     type="video/mp4"
+          //   ></source>
+          //   <p>Your browser doesn't support HTML5 video.</p>
+          // </video>
+          // <img src={post.data.thumbnail} alt="" />
+          <img
+            src={post.data.url}
+            alt="image"
+            onWheel={(e) => {
+              handleWheel(e)
+            }}
+          />
+        )}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import styles from "../styles/masonry.module.css"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
@@ -7,10 +7,27 @@ import Image from "next/image"
 import Cinema from "../components/Cinema"
 let n
 
-function Masonry({ posts, lastElementRef, setView, setHover, setIndex }) {
+function Masonry({ posts, handleBrickClick, loadMore, loading, hasMore }) {
+  console.log("renderring masonry")
   let rows = []
   let gap = 20
   const iw = 300
+
+  const observer = useRef()
+  const lastElementRef = useCallback(
+    (node) => {
+      if (loading) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMore()
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [loading]
+  )
+
   let { width } = useWindow()
   if (!width) return ""
   n = Math.floor(width / (iw + gap))
@@ -33,26 +50,8 @@ function Masonry({ posts, lastElementRef, setView, setHover, setIndex }) {
       return (
         <Cinema
           src={p.data.media.reddit_video.fallback_url}
-          onMouseEnter={() => {
-            setHover(true)
-            setIndex(i)
-          }}
-          onMouseLeave={() => {
-            setHover(false)
-          }}
-          bonus={() => {
-            console.log("yeessss")
-            // e.preventDefault()
-            setView(true)
-            document.body.style.overflow = "hidden"
-            setIndex(i)
-          }}
-          onClick={() => {
-            console.log("yeessss")
-            // e.preventDefault()
-            setView(true)
-            document.body.style.overflow = "hidden"
-            setIndex(i)
+          onClick={(t) => {
+            handleBrickClick(i, t)
           }}
           ref={ref}
           style={{
@@ -65,17 +64,8 @@ function Masonry({ posts, lastElementRef, setView, setHover, setIndex }) {
     else
       return (
         <img
-          onMouseEnter={() => {
-            setHover(true)
-            setIndex(i)
-          }}
-          onMouseLeave={() => {
-            setHover(false)
-          }}
           onClick={() => {
-            setView(true)
-            document.body.style.overflow = "hidden"
-            setIndex(i)
+            handleBrickClick(i)
           }}
           ref={ref}
           width={iw}
@@ -83,6 +73,7 @@ function Masonry({ posts, lastElementRef, setView, setHover, setIndex }) {
           src={p.data.url}
           style={{
             borderRadius: "3px",
+            boxShadow: "0 0 4px 0px #b30083",
             position: "absolute",
             ...getPos(p, i),
           }}

@@ -10,26 +10,28 @@ import axios from "axios"
 
 function Subreddit({ sub, about }) {
   let [after, setAfter] = useState("")
-  let [view, setView] = useState(false)
-  let [hover, setHover] = useState(false)
-  let [index, setIndex] = useState()
+  const [post, setPost] = useState()
 
   let { data, loading, error } = useLoadMore("r/" + sub, after)
 
-  const observer = useRef()
-  const lastElementRef = useCallback(
-    (node) => {
-      if (loading) return
-      if (observer.current) observer.current.disconnect()
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && data.after) {
-          setAfter(data.after)
-        }
-      })
-      if (node) observer.current.observe(node)
+  console.log("renderring subreddit")
+  let move = {
+    next: () => {
+      let i = data.posts.indexOf(post)
+
+      if (i === data.posts.length - 1) {
+        setAfter(data.after)
+        return
+      }
+      setPost(data.posts[i + 1])
     },
-    [loading]
-  )
+    prev: () => {
+      let i = data.posts.indexOf(post)
+
+      if (i === 0) return
+      setPost(data.posts[i - 1])
+    },
+  }
 
   return (
     <div>
@@ -52,80 +54,33 @@ function Subreddit({ sub, about }) {
         <a href={`https://reddit.com/r/${sub}`}>r/{sub}</a>
       </h1>
       <p>{about.public_description}</p>
-      {hover ? (
-        <h2 className={styles.title}>{data.posts[index].data.title}</h2>
-      ) : (
-        ""
-      )}
-      {view ? (
+      {post ? (
         <Viewer
-          posts={data.posts}
-          index={index}
-          setIndex={setIndex}
-          setView={setView}
+          post={post}
+          close={() => {
+            setPost(null)
+          }}
+          isVideo={post.data.is_video}
+          move={move}
         />
       ) : (
         ""
       )}
       <Masonry
         posts={data.posts}
-        lastElementRef={lastElementRef}
-        setIndex={setIndex}
-        setView={setView}
-        setHover={setHover}
+        handleBrickClick={(i, t) => {
+          document.body.style.overflow = "hidden"
+          data.posts[i].timestamp = t
+          setPost(data.posts[i])
+        }}
+        loadMore={() => {
+          setAfter(data.after)
+        }}
+        loading={loading}
+        hasMore={data.after}
       />
       {loading && <h1>loading...</h1>}
       {error && <h1>error!</h1>}
-      {/* <ul
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "2rem",
-          alignItems: "center",
-        }}
-      >
-        {posts?.map((p: any, index: any) => {
-          // if (c.kind !== "t3") return
-          return (
-            <div key={Math.random()}>
-              <a href={"https://reddit.com" + p.data.permalink}>go</a>
-              <div
-                onClick={() => {
-                  setIndex(index)
-                  setView(true)
-                }}
-              >
-                {p.data.is_video ? (
-                  <video
-                    style={{
-                      width: "300px",
-                      border: "2px solid green",
-                      borderRadius: "5px",
-                    }}
-                    controls
-                  >
-                    <source
-                      src={p.data.media.reddit_video.fallback_url}
-                    ></source>
-                    Your browser does not support HTML video.
-                  </video>
-                ) : (
-                  <img
-                    style={{
-                      width: "300px",
-                      border: "2px solid green",
-                      borderRadius: "5px",
-                    }}
-                    src={p.data.url}
-                    alt=""
-                  />
-                )}
-              </div>
-              <br />
-            </div>
-          )
-        })}
-      </ul> */}
     </div>
   )
 }

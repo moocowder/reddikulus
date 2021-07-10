@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import axios from "axios"
 import styles from "../styles/Home.module.css"
-import Cinema from "../components/Cinema"
+
 export default function Home() {
   let [query, setQuery] = useState("")
   let [subs, setSubs] = useState([])
@@ -30,12 +30,7 @@ export default function Home() {
       <Head>
         <title>Gazer | Search for communities</title>
       </Head>
-      <Cinema
-        onClick={() => {
-          console.log("hello")
-        }}
-        src="https://v.redd.it/knhggi437h971/DASH_720.mp4?source=fallback"
-      />
+
       <input
         value={query}
         onChange={(e) => {
