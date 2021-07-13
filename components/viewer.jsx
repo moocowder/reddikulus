@@ -12,9 +12,15 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
-      if (e.key !== "Escape") return
-      close()
-      document.body.style.overflow = "auto"
+      switch (e.key) {
+        case "Escape":
+          close()
+          document.body.style.overflow = "auto"
+          break
+      }
+      // if (e.key !== "Escape") return
+      // close()
+      // document.body.style.overflow = "auto"
     })
   }, [])
 
@@ -59,7 +65,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
   }
 
   function prev(e) {
-    if (e.target.localName === "a") return
+    if (e.target.localName === "svg" || e.target.localName === "path") return
     move.prev()
     setScale(1)
     setTranslate({ x: 0, y: 0 })
@@ -68,6 +74,13 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
   function format(number) {
     if (number <= 999) return number
     return (Math.round(number / 100) / 10).toFixed(1) + " k"
+  }
+
+  function handleMouseDown(e) {
+    if (e.target.localName === "a") return
+    if (e.button !== 1) return
+    close()
+    document.body.style.overflow = "auto"
   }
 
   return (
@@ -82,6 +95,13 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       onContextMenu={(e) => {
         next(e)
       }}
+      onMouseDown={(e) => {
+        handleMouseDown(e)
+      }}
+      // onKeyDown={(e) => {
+      //   handleKeyDown(e)
+      // }}
+      // tabIndex="0"
     >
       <a
         href={"https://reddit.com" + post.data.permalink}
@@ -113,20 +133,12 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
             handleWheel={(e) => {
               handleWheel(e)
             }}
-            timestamp={post.timestamp}
-            bonus={() => {
-              console.log("hey should i be called")
-            }}
+            timestamp={post.timestamp || 0}
+            width="100vw"
+            height="100vh"
+            autoplay={true}
           ></Cinema>
         ) : (
-          // <video>
-          //   <source
-          //     src={post.data.media.reddit_video.fallback_url}
-          //     type="video/mp4"
-          //   ></source>
-          //   <p>Your browser doesn't support HTML5 video.</p>
-          // </video>
-          // <img src={post.data.thumbnail} alt="" />
           <img
             src={post.data.url}
             alt="image"

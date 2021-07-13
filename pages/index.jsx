@@ -14,7 +14,7 @@ export default function Home() {
     axios({
       method: "GET",
       url: `https://www.reddit.com/api/subreddit_autocomplete.json`,
-      params: { query },
+      params: { query, include_over_18: "on" },
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     })
       .then((r) => setSubs(r.data.subreddits))

@@ -15,12 +15,12 @@
   cursor: pointer;
 }
 
-.player:hover .start {
+.player:hover .run {
   opacity: 1;
   transition: 0.3s;
 }
 
-.start {
+.icon {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -28,28 +28,58 @@
   transform: translate(-50%, -50%);
   /* top: 90;
   left: 0; */
-  color: rgba(255, 0, 0);
-  opacity: 0.5;
+  color: #740055;
   transition: 0.3s;
   /* z-index: 5; */
 }
 
-.start:hover {
+.run {
+  opacity: 0.5;
+}
+
+.pause {
+  opacity: 0;
+}
+
+.pause:hover {
+  opacity: 1;
+  transition: 0.3s;
+}
+
+.icon:hover {
   cursor: pointer;
   opacity: 1;
   transition: 0.3s;
 }
 
 .loading {
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  color: red; */
+  /* transform-origin: center; */
+  transform: translate(-50%, -50%);
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.video {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: red;
-}
-
-.video {
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .controls {

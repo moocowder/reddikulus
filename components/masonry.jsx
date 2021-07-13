@@ -8,6 +8,7 @@ import Cinema from "../components/Cinema"
 let n
 
 function Masonry({ posts, handleBrickClick, loadMore, loading, hasMore }) {
+  const [title, setTitle] = useState()
   console.log("renderring masonry")
   let rows = []
   let gap = 20
@@ -54,16 +55,15 @@ function Masonry({ posts, handleBrickClick, loadMore, loading, hasMore }) {
             handleBrickClick(i, t)
           }}
           ref={ref}
-          style={{
-            width: iw,
-            height: iw / p.data.ratio,
-            ...getPos(p, i),
-          }}
+          width={iw}
+          height={iw / p.data.ratio}
+          style={getPos(p, i)}
         ></Cinema>
       )
     else
       return (
         <img
+          className={styles.brick}
           onClick={() => {
             handleBrickClick(i)
           }}
@@ -72,9 +72,6 @@ function Masonry({ posts, handleBrickClick, loadMore, loading, hasMore }) {
           height={iw / p.data.ratio}
           src={p.data.url}
           style={{
-            borderRadius: "3px",
-            boxShadow: "0 0 4px 0px #b30083",
-            position: "absolute",
             ...getPos(p, i),
           }}
           alt=""
@@ -82,8 +79,36 @@ function Masonry({ posts, handleBrickClick, loadMore, loading, hasMore }) {
       )
   }
 
+  function format(number) {
+    if (number <= 999) return number
+    return (Math.round(number / 100) / 10).toFixed(1) + " k"
+  }
+
   return (
-    <div className={styles.masonry}>{posts?.map((p, i) => display(p, i))}</div>
+    <div className={styles.masonry}>
+      {title ? <div className={styles.title}>{title}</div> : ""}
+
+      {posts?.map((p, i) => (
+        <div
+          onMouseEnter={() => {
+            setTitle(
+              <>
+                <h3 style={{ display: "inline", color: "cyan" }}>
+                  {format(p.data.ups)}
+                </h3>
+                &nbsp;&nbsp;&nbsp;
+                <h2 style={{ display: "inline" }}>{p.data.title}</h2>
+              </>
+            )
+          }}
+          onMouseLeave={() => {
+            setTitle("")
+          }}
+        >
+          {display(p, i)}
+        </div>
+      ))}
+    </div>
   )
 }
 export default Masonry

@@ -11,10 +11,10 @@ import axios from "axios"
 function Subreddit({ sub, about }) {
   let [after, setAfter] = useState("")
   const [post, setPost] = useState()
+  const [sort, setSort] = useState("hot")
 
-  let { data, loading, error } = useLoadMore("r/" + sub, after)
+  let { data, loading, error } = useLoadMore("r/" + sub, sort, after)
 
-  console.log("renderring subreddit")
   let move = {
     next: () => {
       let i = data.posts.indexOf(post)
@@ -54,6 +54,27 @@ function Subreddit({ sub, about }) {
         <a href={`https://reddit.com/r/${sub}`}>r/{sub}</a>
       </h1>
       <p>{about.public_description}</p>
+      <button
+        onClick={() => {
+          setSort("hot")
+        }}
+      >
+        hot
+      </button>
+      <button
+        onClick={() => {
+          setSort("new")
+        }}
+      >
+        new
+      </button>
+      <button
+        onClick={() => {
+          setSort("top")
+        }}
+      >
+        top
+      </button>
       {post ? (
         <Viewer
           post={post}

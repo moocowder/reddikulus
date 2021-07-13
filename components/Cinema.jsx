@@ -2,16 +2,31 @@ import styles from "../styles/cinema.module.css"
 import { useState, useRef, useEffect } from "react"
 import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
 import { MdReplay } from "react-icons/md"
+import { VscDebugRestart } from "react-icons/vsc"
+import { ImSpinner9 } from "react-icons/im"
 
-function Cinema({ src, style, timestamp = null, onClick = () => {} }) {
-  const [paused, setPaused] = useState(true)
+function Cinema({
+  src,
+  style,
+  width,
+  height,
+  timestamp = null,
+  autoplay = false,
+  onClick = () => {},
+}) {
+  const [paused, setPaused] = useState(false)
   const [started, setStarted] = useState(false)
   const [ended, setEnded] = useState(false)
   const [timer, setTimer] = useState("00:00")
   const [progress, setProgress] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [moving, setMoving] = useState(false)
+
+  let t
 
   let media = useRef()
+  let audio = useRef()
+
   useEffect(() => {
     media.current.addEventListener("ended", () => {
       setEnded(true)
@@ -25,50 +40,60 @@ function Cinema({ src, style, timestamp = null, onClick = () => {} }) {
     media.current.addEventListener("waiting", () => {
       setLoading(true)
     })
-
-    if (timestamp) {
-      media.current.currentTime = timestamp
-      media.current.play()
-      setStarted(true)
-      setPaused(false)
-    }
   }, [])
 
-  function handleMouseEnter() {
-    if (started) return
-    media.current.play()
+  useEffect(() => {
+    //after adding typescript : 'start' | 'loading' | 'running' | 'paused' | 'ended'
+    setStarted(false)
     setPaused(false)
-    setStarted(true)
-  }
+    setEnded(false)
+    setTimer("00:00")
+    setProgress(0)
+    setLoading(false)
+    setMoving(false)
 
-  function getIcon() {
-    if (ended)
-      return (
-        <MdReplay
-          onClick={() => {
-            media.current.play()
-            setPaused(false)
-            setEnded(false)
-          }}
-        />
-      )
-    if (paused)
-      return (
-        <CgPlayButtonO
-          onClick={() => {
-            media.current.play()
-            setPaused(false)
-          }}
-        />
-      )
-    return (
-      <CgPlayPauseO
-        onClick={() => {
-          media.current.pause()
-          setPaused(true)
-        }}
-      />
-    )
+    media.current.addEventListener("ended", () => {
+      setEnded(true)
+    })
+    media.current.addEventListener("timeupdate", () => {
+      updateTimer()
+    })
+    media.current.addEventListener("playing", () => {
+      setLoading(false)
+    })
+    media.current.addEventListener("waiting", () => {
+      setLoading(true)
+    })
+
+    if (autoplay) {
+      media.current.play()
+      // audio.current.play()
+      setPaused(false)
+      setStarted(true)
+    }
+  }, [src])
+
+  // useEffect(() => {
+  //   if (timestamp !== null) {
+  //     media.current.currentTime = timestamp
+  //     media.current.play()
+  //     setStarted(true)
+  //     setPaused(false)
+  //   }
+  // }, [timestamp])
+  function handleVideoClick(target) {
+    if (!started) {
+      media.current.play()
+      audio.current.play()
+      setPaused(false)
+      setStarted(true)
+    } else if (ended) {
+      media.current.play()
+      setPaused(false)
+      setEnded(false)
+    } else {
+      if (target.localName !== "svg") onClick(media.current.currentTime)
+    }
   }
 
   function updateTimer() {
@@ -91,55 +116,91 @@ function Cinema({ src, style, timestamp = null, onClick = () => {} }) {
     return minutes + ":" + seconds
   }
 
+  function renderIcon() {
+    if (!started)
+      return (
+        <CgPlayButtonO
+          name="icon"
+          onClick={() => {
+            media.current.play()
+            setPaused(false)
+          }}
+          className={`${styles.icon} ${styles.run}`}
+        />
+      )
+    if (ended)
+      return (
+        <VscDebugRestart
+          className={`${styles.icon} ${styles.run}`}
+          onClick={() => {
+            media.current.play()
+            setPaused(false)
+            setEnded(false)
+          }}
+        />
+      )
+    if (paused)
+      return (
+        <CgPlayButtonO
+          onClick={() => {
+            media.current.play()
+            setPaused(false)
+          }}
+          className={`${styles.icon} ${styles.pause}`}
+        />
+      )
+    if (loading)
+      return <ImSpinner9 className={`${styles.icon} ${styles.loading}`} />
+    return (
+      <CgPlayPauseO
+        onClick={() => {
+          media.current.pause()
+          setPaused(true)
+        }}
+        className={`${styles.icon} ${styles.pause}`}
+      />
+    )
+  }
+
+  function renderTimer() {
+    if (!started || ended) return
+    if (!paused && !moving) return
+    return (
+      <div className={styles.controls}>
+        <div className={styles.timer}>
+          <div style={{ width: `${progress * 100}%` }}></div>
+          <span>
+            {timer} / {format(media?.current?.duration)}
+          </span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       className={styles.player}
-      style={style}
-      onMouseEnter={(e) => {
-        handleMouseEnter()
+      style={{ ...style, width, height }}
+      onMouseMove={() => {
+        clearTimeout(t)
+        setMoving(true)
+        t = setTimeout(() => {
+          setMoving(false)
+        }, 2000)
       }}
-      onClick={() => {
-        onClick(media.current.currentTime)
+      onClick={({ target }) => {
+        handleVideoClick(target)
       }}
     >
-      {loading ? <p className={styles.loading}>loading...</p> : ""}
       <video ref={media} key={src} className={styles.video}>
         <source src={src} type="video/mp4" />
       </video>
+      <audio ref={audio}>
+        <source src={src.replace(/DASH_.../, "DASH_audio")} type="video/mp4" />
+      </audio>
       <img src={src} alt="" />
-
-      {started ? (
-        <div className={styles.controls}>
-          <button
-            className={styles.btn}
-            className={styles.play}
-            data-icon="P"
-            aria-label="play pause toggle"
-          >
-            {getIcon()}
-          </button>
-          <div className={styles.timer}>
-            <div style={{ width: `${progress * 100}%` }}></div>
-            <span aria-label="timer">
-              {timer} / {format(media.current.duration)}
-            </span>
-          </div>
-          <button
-            className={styles.btn}
-            className={styles.rwd}
-            data-icon="B"
-            aria-label="rewind"
-          ></button>
-          <button
-            className={styles.btn}
-            className={styles.fwd}
-            data-icon="F"
-            aria-label="fast forward"
-          ></button>
-        </div>
-      ) : (
-        <CgPlayButtonO className={styles.start} />
-      )}
+      {renderIcon()}
+      {renderTimer()}
     </div>
   )
 }

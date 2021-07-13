@@ -3,3 +3,25 @@
   width: 100vw;
   box-sizing: border-box;
 }
+
+.brick {
+  position: absolute;
+  border-radius: 3px;
+  box-shadow: 0 0 4px 0px #b30083;
+}
+
+.title {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  text-align: center;
+  height: 80px;
+  width: 100%;
+  background: rgb(255, 0, 72);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 0, 72, 0.6) 0%,
+    rgba(255, 0, 119, 0) 100%
+  );
+}
