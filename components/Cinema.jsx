@@ -12,14 +12,11 @@ function Cinema({
   height,
   timestamp = null,
   autoplay = false,
-  onClick = () => {},
+  onClick = (t) => {},
 }) {
-  const [paused, setPaused] = useState(false)
-  const [started, setStarted] = useState(false)
-  const [ended, setEnded] = useState(false)
+  const [state, setState] = useState("init")
   const [timer, setTimer] = useState("00:00")
   const [progress, setProgress] = useState(0)
-  const [loading, setLoading] = useState(false)
   const [moving, setMoving] = useState(false)
 
   let t
@@ -28,71 +25,53 @@ function Cinema({
   let audio = useRef()
 
   useEffect(() => {
-    media.current.addEventListener("ended", () => {
-      setEnded(true)
-    })
-    media.current.addEventListener("timeupdate", () => {
-      updateTimer()
-    })
-    media.current.addEventListener("playing", () => {
-      setLoading(false)
-    })
-    media.current.addEventListener("waiting", () => {
-      setLoading(true)
-    })
-  }, [])
-
-  useEffect(() => {
-    //after adding typescript : 'start' | 'loading' | 'running' | 'paused' | 'ended'
-    setStarted(false)
-    setPaused(false)
-    setEnded(false)
+    //'init' | 'loading' | 'running' | 'paused' | 'ended'
+    setState("init")
     setTimer("00:00")
     setProgress(0)
-    setLoading(false)
     setMoving(false)
 
     media.current.addEventListener("ended", () => {
-      setEnded(true)
+      setState("ended")
     })
     media.current.addEventListener("timeupdate", () => {
       updateTimer()
     })
     media.current.addEventListener("playing", () => {
-      setLoading(false)
+      //play audio
+      audio.current.play()
+      setState("running")
     })
     media.current.addEventListener("waiting", () => {
-      setLoading(true)
+      //pause audio
+      audio.current.pause()
+      setState("loading")
     })
-
+    media.current.addEventListener("pause", () => {
+      //if waiting
+      setState("paused")
+    })
+    if (timestamp !== null) {
+      media.current.currentTime = timestamp
+      audio.current.currentTime = timestamp
+    }
     if (autoplay) {
       media.current.play()
-      // audio.current.play()
-      setPaused(false)
-      setStarted(true)
+      audio.current.play()
     }
   }, [src])
 
-  // useEffect(() => {
-  //   if (timestamp !== null) {
-  //     media.current.currentTime = timestamp
-  //     media.current.play()
-  //     setStarted(true)
-  //     setPaused(false)
-  //   }
-  // }, [timestamp])
   function handleVideoClick(target) {
-    if (!started) {
+    if (state === "init") {
       media.current.play()
       audio.current.play()
-      setPaused(false)
-      setStarted(true)
-    } else if (ended) {
+    } else if (state === "ended") {
       media.current.play()
-      setPaused(false)
-      setEnded(false)
     } else {
-      if (target.localName !== "svg") onClick(media.current.currentTime)
+      if (target.localName !== "svg") {
+        audio.current.muted = true
+        onClick(media.current.currentTime)
+      }
     }
   }
 
@@ -117,54 +96,54 @@ function Cinema({
   }
 
   function renderIcon() {
-    if (!started)
-      return (
-        <CgPlayButtonO
-          name="icon"
-          onClick={() => {
-            media.current.play()
-            setPaused(false)
-          }}
-          className={`${styles.icon} ${styles.run}`}
-        />
-      )
-    if (ended)
-      return (
-        <VscDebugRestart
-          className={`${styles.icon} ${styles.run}`}
-          onClick={() => {
-            media.current.play()
-            setPaused(false)
-            setEnded(false)
-          }}
-        />
-      )
-    if (paused)
-      return (
-        <CgPlayButtonO
-          onClick={() => {
-            media.current.play()
-            setPaused(false)
-          }}
-          className={`${styles.icon} ${styles.pause}`}
-        />
-      )
-    if (loading)
-      return <ImSpinner9 className={`${styles.icon} ${styles.loading}`} />
-    return (
-      <CgPlayPauseO
-        onClick={() => {
-          media.current.pause()
-          setPaused(true)
-        }}
-        className={`${styles.icon} ${styles.pause}`}
-      />
-    )
+    switch (state) {
+      case "init":
+        return (
+          <CgPlayButtonO
+            onClick={() => {
+              media.current.play()
+              audio.current.play()
+            }}
+            className={`${styles.icon} ${styles.run}`}
+          />
+        )
+      case "ended":
+        return (
+          <VscDebugRestart
+            className={`${styles.icon} ${styles.run}`}
+            onClick={() => {
+              media.current.play()
+            }}
+          />
+        )
+      case "paused":
+        return (
+          <CgPlayButtonO
+            onClick={() => {
+              media.current.play()
+              audio.current.play()
+            }}
+            className={`${styles.icon} ${styles.pause}`}
+          />
+        )
+      case "loading":
+        return <ImSpinner9 className={`${styles.icon} ${styles.loading}`} />
+      case "running":
+        return (
+          <CgPlayPauseO
+            onClick={() => {
+              media.current.pause()
+              audio.current.pause()
+            }}
+            className={`${styles.icon} ${styles.pause}`}
+          />
+        )
+    }
   }
 
   function renderTimer() {
-    if (!started || ended) return
-    if (!paused && !moving) return
+    if (state === "init" || state === "ended") return
+    if (state === "running" && !moving) return
     return (
       <div className={styles.controls}>
         <div className={styles.timer}>
@@ -195,8 +174,8 @@ function Cinema({
       <video ref={media} key={src} className={styles.video}>
         <source src={src} type="video/mp4" />
       </video>
-      <audio ref={audio}>
-        <source src={src.replace(/DASH_.../, "DASH_audio")} type="video/mp4" />
+      <audio ref={audio} key={src}>
+        <source src={src.replace(/DASH_\d+/, "DASH_audio")} type="audio/mp4" />
       </audio>
       <img src={src} alt="" />
       {renderIcon()}

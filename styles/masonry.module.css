@@ -4,12 +4,6 @@
   box-sizing: border-box;
 }
 
-.brick {
-  position: absolute;
-  border-radius: 3px;
-  box-shadow: 0 0 4px 0px #b30083;
-}
-
 .title {
   position: fixed;
   top: 0;

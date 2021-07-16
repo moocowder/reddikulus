@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
-export default function useWindow(sub, after) {
-  const [width, setWidth] = useState()
+export default function useWindow() {
+  const [width, setWidth] = useState<number>()
 
   //   const [loading, setLoading] = useState(false)
 

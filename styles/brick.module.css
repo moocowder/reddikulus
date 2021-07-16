@@ -1,0 +1,11 @@
+.brick {
+  position: absolute;
+  border-radius: 3px;
+  box-shadow: 0 0 8px 1px #b30083;
+}
+
+.media {
+  width: inherit;
+  height: inherit;
+  border-radius: 3px;
+}

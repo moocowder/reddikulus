@@ -4,19 +4,36 @@ import Head from "next/head"
 import Link from "next/link"
 import Viewer from "../../components/viewer"
 import Masonry from "../../components/masonry"
-import useLoadMore from "../../hooks/useLoadMore"
+import useLoadData from "../../hooks/useLoadData"
 import styles from "../../styles/subreddit.module.css"
-import axios from "axios"
+import Post from "../../schema/post"
 
-function Subreddit({ sub, about }) {
+type About = {
+  submission_type: string
+  banner_img: string
+  banner_background_image: string
+  mobile_banner_image: string
+  header_img: string
+  icon_img: string
+  community_icon: string
+  public_description: string
+}
+
+type Props = {
+  sub: string
+  about: About
+}
+
+function Subreddit({ sub, about }: Props) {
   let [after, setAfter] = useState("")
-  const [post, setPost] = useState()
+  const [post, setPost] = useState<Post | null>()
   const [sort, setSort] = useState("hot")
 
-  let { data, loading, error } = useLoadMore("r/" + sub, sort, after)
+  let { data, loading, error } = useLoadData("r/" + sub, sort, after)
 
   let move = {
     next: () => {
+      if (!post) return
       let i = data.posts.indexOf(post)
 
       if (i === data.posts.length - 1) {
@@ -26,12 +43,22 @@ function Subreddit({ sub, about }) {
       setPost(data.posts[i + 1])
     },
     prev: () => {
+      if (!post) return
       let i = data.posts.indexOf(post)
 
       if (i === 0) return
       setPost(data.posts[i - 1])
     },
   }
+
+  function handleBrickClick(i: number, t?: string) {
+    document.body.style.overflow = "hidden"
+    data.posts[i].timestamp = t
+    setPost(data.posts[i])
+  }
+
+  if (about.submission_type === "self")
+    return <h1>This sub doesn't contain any images or videos</h1>
 
   return (
     <div>
@@ -54,49 +81,21 @@ function Subreddit({ sub, about }) {
         <a href={`https://reddit.com/r/${sub}`}>r/{sub}</a>
       </h1>
       <p>{about.public_description}</p>
-      <button
-        onClick={() => {
-          setSort("hot")
-        }}
-      >
-        hot
-      </button>
-      <button
-        onClick={() => {
-          setSort("new")
-        }}
-      >
-        new
-      </button>
-      <button
-        onClick={() => {
-          setSort("top")
-        }}
-      >
-        top
-      </button>
+      <button onClick={() => setSort("hot")}>hot</button>
+      <button onClick={() => setSort("new")}>new</button>
+      <button onClick={() => setSort("top")}>top</button>
       {post ? (
         <Viewer
           post={post}
-          close={() => {
-            setPost(null)
-          }}
-          isVideo={post.data.is_video}
+          close={() => setPost(null)}
+          isVideo={post.is_video}
           move={move}
         />
-      ) : (
-        ""
-      )}
+      ) : null}
       <Masonry
         posts={data.posts}
-        handleBrickClick={(i, t) => {
-          document.body.style.overflow = "hidden"
-          data.posts[i].timestamp = t
-          setPost(data.posts[i])
-        }}
-        loadMore={() => {
-          setAfter(data.after)
-        }}
+        onBrickClick={handleBrickClick}
+        loadMore={() => setAfter(data.after)}
         loading={loading}
         hasMore={data.after}
       />
@@ -106,10 +105,11 @@ function Subreddit({ sub, about }) {
   )
 }
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   let sub = context.params?.subreddit
   let res = await fetch(`https://reddit.com/r/${sub}/about.json`)
   let data = await res.json()
+
   return { props: { sub, about: data.data } }
 }
 

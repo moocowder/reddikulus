@@ -104,20 +104,20 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       // tabIndex="0"
     >
       <a
-        href={"https://reddit.com" + post.data.permalink}
+        href={"https://reddit.com" + post.permalink}
         target="_blank"
         className={styles.title}
       >
-        {post?.data.title}
+        {post?.title}
       </a>
-      <b className={styles.ups}>{format(post.data.ups)}</b>
-      <Link href={`/u/${post.data.author}`}>
-        <a className={styles.author}> {post.data.author}</a>
+      <b className={styles.ups}>{format(post.ups)}</b>
+      <Link href={`/u/${post.author}`}>
+        <a className={styles.author}> {post.author}</a>
       </Link>
       {isVideo ? (
-        <img className={styles.background} src={post.data.thumbnail} alt="" />
+        <img className={styles.background} src={post.thumbnail} alt="" />
       ) : (
-        <img className={styles.background} src={post.data.url} alt="" />
+        <img className={styles.background} src={post.url} alt="" />
       )}
       <div
         className={styles.wrapper}
@@ -127,8 +127,8 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       >
         {isVideo ? (
           <Cinema
-            src={post.data.media.reddit_video.fallback_url}
-            // src={post.data.thumbnail}
+            src={post.url}
+            // src={post.thumbnail}
             id="image"
             handleWheel={(e) => {
               handleWheel(e)
@@ -140,7 +140,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
           ></Cinema>
         ) : (
           <img
-            src={post.data.url}
+            src={post.url}
             alt="image"
             onWheel={(e) => {
               handleWheel(e)
