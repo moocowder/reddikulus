@@ -5,11 +5,15 @@ type Post = {
   permalink: string
   domain: string
   ups: number
-  url: string
   thumbnail: string
-  ratio: number
-  is_video: boolean
-  timestamp?: string
+  media: Media
 }
 
+type Media = {
+  type: "image" | "video" | "gallery"
+  url: string
+  urls?: string[]
+  ratio: number
+  timestamp?: string
+}
 export default Post

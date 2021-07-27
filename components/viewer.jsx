@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import Cinema from "../components/Cinema"
 import styles from "../styles/viewer.module.css"
 import Link from "next/link"
-
+import Media from "../components/media"
 const Viewer = ({ post, move, close, isVideo = false }) => {
   let [translate, setTranslate] = useState({ x: 0, y: 0 })
   let [scale, setScale] = useState(1)
@@ -117,7 +117,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       {isVideo ? (
         <img className={styles.background} src={post.thumbnail} alt="" />
       ) : (
-        <img className={styles.background} src={post.url} alt="" />
+        <img className={styles.background} src={post.media.url} alt="" />
       )}
       <div
         className={styles.wrapper}
@@ -125,28 +125,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
         }}
       >
-        {isVideo ? (
-          <Cinema
-            src={post.url}
-            // src={post.thumbnail}
-            id="image"
-            handleWheel={(e) => {
-              handleWheel(e)
-            }}
-            timestamp={post.timestamp || 0}
-            width="100vw"
-            height="100vh"
-            autoplay={true}
-          ></Cinema>
-        ) : (
-          <img
-            src={post.url}
-            alt="image"
-            onWheel={(e) => {
-              handleWheel(e)
-            }}
-          />
-        )}
+        <Media media={post.media} />
       </div>
     </div>
   )

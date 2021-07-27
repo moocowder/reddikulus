@@ -52,7 +52,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   function getPos(p: Post) {
     let minI = rows.indexOf(Math.min.apply(null, rows))
     let h = rows[minI]
-    rows[minI] += iw / p.ratio + gap
+    rows[minI] += iw / p.media.ratio + gap
     return {
       left: minI * iw + gap * minI,
       top: h,
@@ -65,14 +65,19 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   }
 
   return (
-    <div className={styles.masonry}>
+    <div
+      className={styles.masonry}
+      style={{
+        marginLeft: (width - (iw + gap) * n + gap) / 2,
+      }}
+    >
       {title ? <div className={styles.title}>{title}</div> : null}
 
       {posts?.map((p, i) => (
         <Brick
           post={p}
           width={iw}
-          height={iw / p.ratio}
+          height={iw / p.media.ratio}
           position={getPos(p)}
           lastElementRef={i === posts.length - 1 ? lastElementRef : null}
           onMouseEnter={() => setTitle(p.title)}

@@ -1,5 +1,6 @@
 import styles from "../styles/brick.module.css"
 import Cinema from "../components/Cinema"
+import Gallery from "../components/gallery"
 
 function Brick({
   post,
@@ -22,19 +23,28 @@ function Brick({
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      ref={lastElementRef}
+      // ref={lastElementRef}
     >
-      {post.is_video ? (
+      {post.media.type === "image" ? (
+        <img className={styles.media} src={post.media.url} onClick={onClick} />
+      ) : post.media.type === "video" ? (
         <div>
           <Cinema
-            src={post.url}
-            // onClick={(t: string) => {
-            //   onBrickClick(i, t)
-            // }}
+            src={post.media.url}
+            // onClick={(t: string) => onBrickClick(i, t)}
           ></Cinema>
         </div>
       ) : (
-        <img className={styles.media} src={post.url} onClick={onClick} />
+        <Gallery
+          style={{
+            width: "inherit",
+            height: "inherit",
+            borderRadius: "3px",
+            border: "2px solid yellow",
+          }}
+          onClick={onClick}
+          urls={post.media.urls}
+        />
       )}
     </div>
   )

@@ -20,24 +20,25 @@ type About = {
 }
 
 type Props = {
-  sub: string
+  user: string
   about: About
 }
 
-function Subreddit({ sub, about }: Props) {
+function User({ user, about }: Props) {
   let [after, setAfter] = useState("")
   const [post, setPost] = useState<Post | null>()
-  const [sort, setSort] = useState("hot")
+  const [sort, setSort] = useState("new")
 
-  let { data, loading, error } = useLoadData("r/" + sub, sort, after)
+  let { data, loading, error } = useLoadData("u/" + user, sort, after)
 
   let move = {
     next: () => {
       if (!post) return
       let i = data.posts.indexOf(post)
 
-      if (i === data.posts.length - 2) {
+      if (i === data.posts.length - 1) {
         setAfter(data.after)
+        return
       }
       setPost(data.posts[i + 1])
     },
@@ -52,7 +53,7 @@ function Subreddit({ sub, about }: Props) {
 
   function handleBrickClick(i: number, t?: string) {
     document.body.style.overflow = "hidden"
-    data.posts[i].media.timestamp = t
+    data.posts[i].timestamp = t
     setPost(data.posts[i])
   }
 
@@ -62,30 +63,9 @@ function Subreddit({ sub, about }: Props) {
   return (
     <div>
       <Head>
-        <title>{sub}</title>
+        <title>{user}</title>
       </Head>
-      <div className={styles.wrapper}>
-        <img
-          className={styles.banner}
-          src={
-            about.banner_background_image.replace(/\?.*/, "") ||
-            about.banner_img ||
-            about.mobile_banner_image
-          }
-          alt=""
-        />
-      </div>
-      <img
-        className={styles.icon}
-        src={about.community_icon.replace(/\?.*/, "") || about.icon_img}
-        alt=""
-      />
-      <br />
-      <br />
-      <h1>
-        <a href={`https://reddit.com/r/${sub}`}>r/{sub}</a>
-      </h1>
-      <p>{about.public_description}</p>
+
       <button onClick={() => setSort("hot")}>hot</button>
       <button onClick={() => setSort("new")}>new</button>
       <button onClick={() => setSort("top")}>top</button>
@@ -93,7 +73,7 @@ function Subreddit({ sub, about }: Props) {
         <Viewer
           post={post}
           close={() => setPost(null)}
-          isVideo={post.media.type === "video"}
+          isVideo={post.type === "video"}
           move={move}
         />
       ) : null}
@@ -111,11 +91,11 @@ function Subreddit({ sub, about }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let sub = context.params?.subreddit
-  let res = await fetch(`https://reddit.com/r/${sub}/about.json`)
+  let user = context.params?.user
+  let res = await fetch(`https://reddit.com/u/${user}/about.json`)
   let data = await res.json()
 
-  return { props: { sub, about: data.data } }
+  return { props: { user, about: data.data } }
 }
 
-export default Subreddit
+export default User

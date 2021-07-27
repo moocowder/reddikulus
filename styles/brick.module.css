@@ -1,11 +1,18 @@
 .brick {
   position: absolute;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: 0 0 8px 1px #b30083;
+  transition: 0.2s;
+  overflow: hidden;
+}
+
+.brick:hover {
+  cursor: pointer;
+  box-shadow: 0 0 12px 2px #b30083;
+  transition: 0.2s;
 }
 
 .media {
   width: inherit;
   height: inherit;
-  border-radius: 3px;
 }
