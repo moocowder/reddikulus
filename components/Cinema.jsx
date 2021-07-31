@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react"
 import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
 import { MdReplay } from "react-icons/md"
 import { VscDebugRestart } from "react-icons/vsc"
+import { FaUndoAlt, FaVolumeUp, FaVolumeMute } from "react-icons/fa"
 import { ImSpinner9 } from "react-icons/im"
 
 function Cinema({
@@ -18,6 +19,7 @@ function Cinema({
   const [timer, setTimer] = useState("00:00")
   const [progress, setProgress] = useState(0)
   const [moving, setMoving] = useState(false)
+  const [sound, setSound] = useState(false)
 
   let t
 
@@ -25,6 +27,12 @@ function Cinema({
   let audio = useRef()
 
   useEffect(() => {
+    // let a = new Audio(src.replace(/DASH_\d+/, "DSH_audio"))
+    // a.play
+    // console.log("0000000000000", a)
+    // fetch(src.replace(/DASH_\d+/, "DASH_audio"))
+    //   .then((r) => console.log("all good"))
+    //   .catch((e) => console.log("something fishy"))
     //'init' | 'loading' | 'running' | 'paused' | 'ended'
     setState("init")
     setTimer("00:00")
@@ -50,6 +58,9 @@ function Cinema({
     media.current.addEventListener("pause", () => {
       //if waiting
       setState("paused")
+    })
+    audio.current.addEventListener("canplay", () => {
+      setSound(true)
     })
     if (timestamp !== null) {
       media.current.currentTime = timestamp
@@ -104,13 +115,13 @@ function Cinema({
               media.current.play()
               audio.current.play()
             }}
-            className={`${styles.icon} ${styles.run}`}
+            className={`${styles.icon} ${styles.run} ${styles.start}`}
           />
         )
       case "ended":
         return (
-          <VscDebugRestart
-            className={`${styles.icon} ${styles.run}`}
+          <FaUndoAlt
+            className={`${styles.icon} ${styles.run} ${styles.start}`}
             onClick={() => {
               media.current.play()
             }}
@@ -123,7 +134,7 @@ function Cinema({
               media.current.play()
               audio.current.play()
             }}
-            className={`${styles.icon} ${styles.pause}`}
+            className={`${styles.icon} ${styles.run} ${styles.paused}`}
           />
         )
       case "loading":
@@ -143,43 +154,50 @@ function Cinema({
 
   function renderTimer() {
     if (state === "init" || state === "ended") return
-    if (state === "running" && !moving) return
+    // if (state === "running" && !moving) return
+
     return (
-      <div className={styles.controls}>
-        <div className={styles.timer}>
-          <div style={{ width: `${progress * 100}%` }}></div>
-          <span>
-            {timer} / {format(media?.current?.duration)}
-          </span>
-        </div>
+      // <div className={styles.controls}>
+      <div className={styles.timer}>
+        <div style={{ width: `${progress * 100}%` }}></div>
+        <span className={styles.info}>
+          {timer} / {format(media?.current?.duration)}
+        </span>
       </div>
+      // </div>
     )
+  }
+
+  function renderSound() {
+    if (!sound || state === "init" || state === "ended") return
+    return <FaVolumeUp className={`${styles.unmute} ${styles.info}`} />
   }
 
   return (
     <div
       className={styles.player}
       style={{ ...style, width, height }}
-      onMouseMove={() => {
-        clearTimeout(t)
-        setMoving(true)
-        t = setTimeout(() => {
-          setMoving(false)
-        }, 2000)
-      }}
+      // onMouseMove={() => {
+      //   clearTimeout(t)
+      //   setMoving(true)
+      //   t = setTimeout(() => {
+      //     setMoving(true)
+      //   }, 4000)
+      // }}
       onClick={({ target }) => {
         handleVideoClick(target)
       }}
     >
-      <video ref={media} key={src} className={styles.video}>
+      <video ref={media} key={"v" + src} className={styles.video}>
         <source src={src} type="video/mp4" />
       </video>
-      <audio ref={audio} key={src}>
+      <audio ref={audio} key={"a" + src}>
         <source src={src.replace(/DASH_\d+/, "DASH_audio")} type="audio/mp4" />
       </audio>
       <img src={src} alt="" />
       {renderIcon()}
       {renderTimer()}
+      {renderSound()}
     </div>
   )
 }

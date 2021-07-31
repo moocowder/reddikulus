@@ -6,7 +6,6 @@ function Gallery({ urls, style, onClick, fullscreen = false }) {
   let [progress, setProgress] = useState(0)
   let [loaded, setLoaded] = useState(false)
   useEffect(() => {
-    console.log("..................")
     let timeout = setTimeout(() => {
       setIndex(index === urls.length - 1 ? 0 : index + 1)
     }, 5000)

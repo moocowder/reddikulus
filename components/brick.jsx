@@ -1,6 +1,7 @@
 import styles from "../styles/brick.module.css"
 import Cinema from "../components/Cinema"
 import Gallery from "../components/gallery"
+import { useState } from "react"
 
 function Brick({
   post,
@@ -12,6 +13,7 @@ function Brick({
   onMouseLeave,
   onClick,
 }) {
+  let [iw, setIw] = useState(width)
   return (
     <div
       className={styles.brick}
@@ -23,16 +25,17 @@ function Brick({
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      // ref={lastElementRef}
+      ref={lastElementRef}
     >
       {post.media.type === "image" ? (
-        <img className={styles.media} src={post.media.url} onClick={onClick} />
+        <img
+          className={styles.media}
+          src={post.media.url}
+          onClick={() => onClick()}
+        />
       ) : post.media.type === "video" ? (
         <div>
-          <Cinema
-            src={post.media.url}
-            // onClick={(t: string) => onBrickClick(i, t)}
-          ></Cinema>
+          <Cinema src={post.media.url} onClick={(t) => onClick(t)}></Cinema>
         </div>
       ) : (
         <Gallery
@@ -42,7 +45,7 @@ function Brick({
             borderRadius: "3px",
             border: "2px solid yellow",
           }}
-          onClick={onClick}
+          onClick={() => onClick()}
           urls={post.media.urls}
         />
       )}

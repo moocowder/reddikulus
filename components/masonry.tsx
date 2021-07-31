@@ -28,7 +28,8 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   console.log("renderring masonry")
   let rows: number[] = []
   const gap = 20
-  const iw = 300
+  let [iw, setIw] = useState(300)
+  // const iw = 350
 
   const observer = useRef<IntersectionObserver>()
   const lastElementRef = (node: Element) => {
@@ -65,26 +66,48 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   }
 
   return (
-    <div
-      className={styles.masonry}
-      style={{
-        marginLeft: (width - (iw + gap) * n + gap) / 2,
-      }}
-    >
-      {title ? <div className={styles.title}>{title}</div> : null}
-
-      {posts?.map((p, i) => (
-        <Brick
-          post={p}
-          width={iw}
-          height={iw / p.media.ratio}
-          position={getPos(p)}
-          lastElementRef={i === posts.length - 1 ? lastElementRef : null}
-          onMouseEnter={() => setTitle(p.title)}
-          onMouseLeave={() => setTitle("")}
-          onClick={() => onBrickClick(i)}
+    // style={{ border: "1px solid red", width: "99vw", height: "5440rem" }}
+    <div>
+      <div className="slidecontainer">
+        <p>Zoom in/out :</p>
+        <input
+          type="range"
+          min="200"
+          max="800"
+          step="50"
+          value={iw}
+          onChange={(e) => {
+            setIw(Number(e.target.value))
+          }}
         />
-      ))}
+      </div>
+      <div
+        className={styles.masonry}
+        style={{
+          marginLeft: (width - (iw + gap) * n + gap) / 2,
+          // width: "99vw",
+          marginTop: "3rem",
+          // border: "1px solid white",
+        }}
+      >
+        {title ? <div className={styles.title}>{title}</div> : null}
+
+        {posts?.map((p, i) => (
+          <Brick
+            key={i}
+            post={p}
+            width={iw}
+            height={iw / p.media.ratio}
+            position={getPos(p)}
+            lastElementRef={i === posts.length - 1 ? lastElementRef : null}
+            onMouseEnter={() => {
+              setTitle(p.title)
+            }}
+            onMouseLeave={() => setTitle("")}
+            onClick={(t?: string) => onBrickClick(i, t)}
+          />
+        ))}
+      </div>
     </div>
   )
 }

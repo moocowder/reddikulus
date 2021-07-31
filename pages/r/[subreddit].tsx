@@ -31,6 +31,12 @@ function Subreddit({ sub, about }: Props) {
 
   let { data, loading, error } = useLoadData("r/" + sub, sort, after)
 
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      console.log("boom")
+    })
+  }, [])
+
   let move = {
     next: () => {
       if (!post) return
@@ -51,6 +57,7 @@ function Subreddit({ sub, about }: Props) {
   }
 
   function handleBrickClick(i: number, t?: string) {
+    console.log("************************", t, "***")
     document.body.style.overflow = "hidden"
     data.posts[i].media.timestamp = t
     setPost(data.posts[i])

@@ -1,7 +1,7 @@
 import Cinema from "../components/Cinema"
 import Gallery from "../components/gallery"
 
-function Media({ media }) {
+function Media({ media, onWheel }) {
   if (media.type === "video")
     return (
       <Cinema
@@ -19,9 +19,9 @@ function Media({ media }) {
       <img
         src={media.url}
         alt="image"
-        // onWheel={(e) => {
-        //   handleWheel(e)
-        // }}
+        onWheel={(e) => {
+          onWheel(e)
+        }}
       />
     )
   else return <Gallery urls={media.urls} fullscreen={true} />

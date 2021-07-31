@@ -66,12 +66,15 @@ export default function useLoadData(sub: string, sort: string, after: string) {
               p.data.media_metadata[k].s.x / p.data.media_metadata[k].s.y
             p.data.ratio = p.data.ratio < newRatio ? p.data.ratio : newRatio
           })
-        }
-
-        if (p.data.preview) {
+        } else if (p.data.preview) {
           img = p.data.preview?.images[0].source
-          if (img) p.data.ratio = img.width / img.height
-          else p.data.ratio = 0.5
+          if (img) {
+            p.data.ratio = img.width / img.height
+          } else {
+            p.data.ratio = 0.5
+          }
+        } else {
+          p.data.ratio = 0.5
         }
 
         if (p.data.crosspost_parent_list) {
@@ -82,7 +85,9 @@ export default function useLoadData(sub: string, sort: string, after: string) {
           } else p.data.url = p.data.crosspost_parent_list[0].url
         }
 
+        // post.author = "fobardoo"
         post = {
+          // ...post,
           kind: p.kind,
           title: p.data.title,
           author: p.data.author,

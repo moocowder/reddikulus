@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Cinema from "../components/Cinema"
 import styles from "../styles/viewer.module.css"
 import Link from "next/link"
 import Media from "../components/media"
+import { ImArrowUp } from "react-icons/im"
+
 const Viewer = ({ post, move, close, isVideo = false }) => {
   let [translate, setTranslate] = useState({ x: 0, y: 0 })
   let [scale, setScale] = useState(1)
   let [start, setStart] = useState({ x: 0, y: 0 })
   let [zoomTranslate, setZoomTranslate] = useState({ x: 0, y: 0 })
+  let [show, setShow] = useState(true)
+  let timeout = useRef()
   const a = 1.3
 
   useEffect(() => {
@@ -24,10 +28,25 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
     })
   }, [])
 
+  useEffect(() => {
+    setShow(true)
+    clearTimeout(timeout.current)
+    timeout.current = setTimeout(() => {
+      setShow(false)
+    }, 1000)
+  }, [post])
+
   function handleMouseMove(e) {
     e.preventDefault()
 
-    if (scale === 1) return
+    if (scale === 1) {
+      setShow(true)
+      clearTimeout(timeout.current)
+      timeout.current = setTimeout(() => {
+        setShow(false)
+      }, 1000)
+      return
+    }
 
     setTranslate({
       x: (-e.clientX + start.x) * scale + zoomTranslate.x,
@@ -37,6 +56,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
 
   function handleWheel(e) {
     e.preventDefault()
+    setShow(false)
     setStart({ x: e.clientX, y: e.clientY })
 
     let delta
@@ -103,17 +123,23 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       // }}
       // tabIndex="0"
     >
-      <a
-        href={"https://reddit.com" + post.permalink}
-        target="_blank"
-        className={styles.title}
-      >
-        {post?.title}
-      </a>
-      <b className={styles.ups}>{format(post.ups)}</b>
-      <Link href={`/u/${post.author}`}>
-        <a className={styles.author}> {post.author}</a>
-      </Link>
+      <div className={`${styles.infos} ${!show ? styles.hide : ""}`}>
+        <div>
+          <ImArrowUp />
+          <b className={styles.ups}>{format(post.ups)}</b>
+          <a
+            href={"https://reddit.com" + post.permalink}
+            target="_blank"
+            className={styles.title}
+          >
+            {post?.title}
+          </a>
+        </div>
+        <Link href={`/u/${post.author}`}>
+          <a className={styles.author}> {post.author}</a>
+        </Link>
+      </div>
+
       {isVideo ? (
         <img className={styles.background} src={post.thumbnail} alt="" />
       ) : (
@@ -125,7 +151,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
         }}
       >
-        <Media media={post.media} />
+        <Media media={post.media} onWheel={(e) => handleWheel(e)} />
       </div>
     </div>
   )

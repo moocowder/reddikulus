@@ -8,6 +8,7 @@ import styles from "../styles/Home.module.css"
 export default function Home() {
   let [query, setQuery] = useState("")
   let [subs, setSubs] = useState([])
+  let [sugs, setSugs] = useState([])
 
   useEffect(() => {
     let cancel
@@ -24,6 +25,19 @@ export default function Home() {
       })
     return () => cancel()
   }, [query])
+
+  useEffect(() => {
+    fetch("https://www.reddit.com/subreddits/popular.json")
+      .then((r) => r.json())
+      .then((d) => {
+        setSugs(
+          d.data.children
+            .map((c) => c.data)
+            .filter((c) => c.submission_type !== "self")
+        )
+      })
+      .catch((e) => console.log(e))
+  }, [])
 
   return (
     <div>
@@ -55,6 +69,29 @@ export default function Home() {
           </li>
         ))}
       </ul>
+
+      <ul>
+        {sugs?.map((s) => (
+          <li>
+            <img
+              style={{ width: "50px" }}
+              src={s.community_icon.replace(/\?.*/, "") || s.icon_img}
+              alt=""
+            />
+            <br />
+            <Link href={`/r/${s.display_name}`}>{s.display_name}</Link>
+            <br />
+            <p style={{ color: "brown" }}>{s.advertiser_category}</p>
+            <br />
+            <b style={{ color: "cyan" }}>{s.subscribers}</b> members
+            <br />
+            <br />
+            <br />
+            <br />
+          </li>
+        ))}
+      </ul>
+      <ul>{sugs?.map((s) => console.log(s))}</ul>
     </div>
   )
 }

@@ -17,9 +17,8 @@
   height: 100%;
 }
 
-.player:hover .run {
-  opacity: 1;
-  transition: 0.3s;
+.player:hover .timer div {
+  height: 5px;
 }
 
 .icon {
@@ -30,13 +29,23 @@
   transform: translate(-50%, -50%);
   /* top: 90;
   left: 0; */
-  color: #740055;
+  /* color: #740055; */
+  color: yellow;
   transition: 0.3s;
   /* z-index: 5; */
 }
 
 .run {
   opacity: 0.5;
+}
+
+.paused:hover {
+  opacity: 1;
+}
+
+.player:hover .start {
+  opacity: 1;
+  transition: 0.3s;
 }
 
 .pause {
@@ -66,6 +75,14 @@
   animation: spin 4s linear infinite;
 }
 
+.unmute {
+  position: absolute;
+  bottom: 35px;
+  right: 5px;
+  z-index: 2;
+  color: yellow;
+}
+
 @keyframes spin {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -85,103 +102,53 @@
   border-radius: 3px;
 }
 
-.controls {
-  /* visibility: hidden; */
-  opacity: 0.5;
-  width: 100%;
-  border-radius: 10px;
+.timer {
   position: absolute;
   bottom: 0;
   left: 0;
-  /* margin-left: -200px; */
-  background-color: black;
-  box-shadow: 3px 3px 5px black;
-  transition: 1s all;
-  display: flex;
-}
-
-.btn,
-.controls {
-  background: linear-gradient(to bottom, rgb(173, 0, 92), rgba(173, 0, 92, 0));
-}
-
-.player:hover .controls,
-player:focus .controls {
-  opacity: 1;
-}
-
-.btn:before {
-  font-family: HeydingsControlsRegular;
-  font-size: 20px;
-  position: relative;
-  content: attr(data-icon);
-  color: blue;
-  text-shadow: 1px 1px 0px black;
-}
-
-.play:before {
-  font-size: 22px;
-  color: aqua;
-}
-
-.btn,
-.timer {
-  height: 38px;
-  line-height: 19px;
-  box-shadow: inset 0 -5px 25px rgba(0, 0, 0, 0.3);
-  border-right: 1px solid #333;
-}
-
-.btn {
-  position: relative;
-  border: 0;
-  flex: 1;
-  outline: none;
+  /* height: 20px; */
+  width: 100%;
+  /* line-height: 19px; */
+  /* box-shadow: inset 0 -5px 25px rgba(0, 0, 0, 0.3); */
+  /* border-right: 1px solid #333; */
 }
 
 .play {
   border-radius: 10px 0 0 10px;
 }
 
-.fwd {
-  border-radius: 0 10px 10px 0;
-}
-
-.timer {
-  line-height: 38px;
-  font-size: 10px;
-  font-family: monospace;
-  text-shadow: 1px 1px 0px black;
-  color: white;
+/* .timer { */
+/* line-height: 38px; */
+/* font-size: 10px; */
+/* font-family: monospace; */
+/* text-shadow: 1px 1px 0px black; */
+/* color: white;
   flex: 5;
-  position: relative;
-}
+  position: relative; */
+/* } */
 
 .timer div {
   position: absolute;
-  background-color: rgba(255, 239, 19, 0.2);
+  background-color: yellow;
   left: 0;
-  top: 0;
+  bottom: 0;
   width: 0;
-  height: 38px;
+  height: 1px;
   z-index: 2;
 }
 
 .timer span {
   position: absolute;
-  z-index: 3;
-  left: 19px;
+  z-index: 2;
+  font-size: 15px;
+  right: 5px;
+  bottom: 5px;
 }
 
-.btn:hover,
-.btn:focus {
-  box-shadow: inset 1px 1px 2px black;
+.info {
+  opacity: 0;
 }
 
-.btn:active {
-  box-shadow: inset 3px 3px 2px black;
-}
-
-.active:before {
-  color: pink;
+.player:hover .info {
+  opacity: 1;
 }
