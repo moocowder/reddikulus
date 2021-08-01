@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import Post from "../schema/post"
 import Data from "../schema/data"
 
-export default function useLoadData(sub: string, sort: string, after: string) {
+export default function useLoadUser(sub: string, sort: string, after: string) {
   const [data, setData] = useState<Data>({ posts: [], after: "" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
-  console.log("rendering useLoadData")
+  console.log("rendering useLoadUser")
 
   useEffect(() => {
     let posts
@@ -110,9 +110,10 @@ export default function useLoadData(sub: string, sort: string, after: string) {
     setError(false)
 
     try {
-      let r = await fetch(`/api/posts?sub=${sub}&&sort=${sort}&&after=${after}`)
+      let r = await fetch(`/api/user?sub=${sub}&&sort=${sort}&&after=${after}`)
       let d = await r.json()
 
+      console.log(">>>>", d)
       d = filter(d)
       return d
     } catch (e) {

@@ -4,19 +4,18 @@ import Head from "next/head"
 import Link from "next/link"
 import Viewer from "../../components/viewer"
 import Masonry from "../../components/masonry"
-import useLoadData from "../../hooks/useLoadData"
+import useLoadUser from "../../hooks/useLoadUser"
 import styles from "../../styles/subreddit.module.css"
 import Post from "../../schema/post"
 
 type About = {
-  submission_type: string
-  banner_img: string
-  banner_background_image: string
-  mobile_banner_image: string
-  header_img: string
-  icon_img: string
-  community_icon: string
+  title: string
+  // name: string
+  description: string
   public_description: string
+  icon_img: string
+  snoovatar_img: string
+  banner_img: string
 }
 
 type Props = {
@@ -29,14 +28,14 @@ function User({ user, about }: Props) {
   const [post, setPost] = useState<Post | null>()
   const [sort, setSort] = useState("new")
 
-  let { data, loading, error } = useLoadData("u/" + user, sort, after)
+  let { data, loading, error } = useLoadUser("u/" + user, sort, after)
 
   let move = {
     next: () => {
       if (!post) return
       let i = data.posts.indexOf(post)
 
-      if (i === data.posts.length - 1) {
+      if (i === data.posts.length - 2) {
         setAfter(data.after)
         return
       }
@@ -53,12 +52,9 @@ function User({ user, about }: Props) {
 
   function handleBrickClick(i: number, t?: string) {
     document.body.style.overflow = "hidden"
-    data.posts[i].timestamp = t
+    data.posts[i].media.timestamp = t
     setPost(data.posts[i])
   }
-
-  if (about.submission_type === "self")
-    return <h1>This sub doesn't contain any images or videos</h1>
 
   return (
     <div>
@@ -66,6 +62,30 @@ function User({ user, about }: Props) {
         <title>{user}</title>
       </Head>
 
+      <div className={styles.wrapper}>
+        <img
+          className={styles.banner}
+          src={about.banner_img?.replace(/\?.*/, "")}
+          alt=""
+        />
+      </div>
+      <img
+        className={styles.icon}
+        src={
+          about.icon_img?.replace(/\?.*/, "") ||
+          about.snoovatar_img?.replace(/\?.*/, "")
+        }
+        alt=""
+      />
+
+      <br />
+      <br />
+      <h1>
+        <a href={`https://reddit.com/u/${user}`}>u/{user}</a>
+      </h1>
+      <h1>{about.title}</h1>
+      <p>{about.description}</p>
+      <p>{about.public_description}</p>
       <button onClick={() => setSort("hot")}>hot</button>
       <button onClick={() => setSort("new")}>new</button>
       <button onClick={() => setSort("top")}>top</button>
@@ -73,7 +93,7 @@ function User({ user, about }: Props) {
         <Viewer
           post={post}
           close={() => setPost(null)}
-          isVideo={post.type === "video"}
+          isVideo={post.media.type === "video"}
           move={move}
         />
       ) : null}
@@ -95,7 +115,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let res = await fetch(`https://reddit.com/u/${user}/about.json`)
   let data = await res.json()
 
-  return { props: { user, about: data.data } }
+  console.log(data.data)
+  let about = {
+    title: data.data.subreddit.title,
+    // name: data.data.name,
+    description: data.data.subreddit.description,
+    public_description: data.data.subreddit.public_description,
+    icon_img: data.data.icon_img,
+    snoovatar_img: data.data.snoovatar_img,
+    banner_img: data.data.subreddit.banner_img,
+  }
+  console.log(about)
+  return { props: { user, about } }
 }
 
 export default User

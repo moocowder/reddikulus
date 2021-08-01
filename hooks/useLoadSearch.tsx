@@ -2,17 +2,21 @@ import { useEffect, useState } from "react"
 import Post from "../schema/post"
 import Data from "../schema/data"
 
-export default function useLoadData(sub: string, sort: string, after: string) {
+export default function useLoadData(
+  query: string,
+  sort: string,
+  after: string
+) {
   const [data, setData] = useState<Data>({ posts: [], after: "" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
-  console.log("rendering useLoadData")
+  console.log("rendering useLoadSearch")
 
   useEffect(() => {
     let posts
     async function getPage() {
-      let d = await loadPage(sub, sort, after)
+      let d = await loadPage(query, sort, after)
       posts = [...data.posts, ...d.children]
       setData({ after: d.after, posts })
     }
@@ -105,12 +109,14 @@ export default function useLoadData(sub: string, sort: string, after: string) {
     return d
   }
 
-  async function loadPage(sub: string, sort: string, after: string) {
+  async function loadPage(query: string, sort: string, after: string) {
     setLoading(true)
     setError(false)
 
     try {
-      let r = await fetch(`/api/posts?sub=${sub}&&sort=${sort}&&after=${after}`)
+      let r = await fetch(
+        `/api/search?q=${query}&&sort=${sort}&&after=${after}`
+      )
       let d = await r.json()
 
       d = filter(d)
