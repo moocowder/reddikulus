@@ -7,7 +7,7 @@ import Masonry from "../../components/masonry"
 import useLoadData from "../../hooks/useLoadData"
 import styles from "../../styles/subreddit.module.css"
 import Post from "../../schema/post"
-
+import Autocomplete from "../../components/autocomplete"
 type About = {
   submission_type: string
   banner_img: string
@@ -17,6 +17,7 @@ type About = {
   icon_img: string
   community_icon: string
   public_description: string
+  primary_color: string
 }
 
 type Props = {
@@ -65,7 +66,13 @@ function Subreddit({ sub, about }: Props) {
       <Head>
         <title>{sub}</title>
       </Head>
-      <div className={styles.wrapper}>
+      <div>
+        <Autocomplete />
+      </div>
+      <div
+        className={styles.wrapper}
+        style={{ background: about.primary_color }}
+      >
         <img
           className={styles.banner}
           src={

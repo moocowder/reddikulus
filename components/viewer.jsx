@@ -33,8 +33,35 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
     clearTimeout(timeout.current)
     timeout.current = setTimeout(() => {
       setShow(false)
-    }, 1000)
+    }, 3000)
   }, [post])
+
+  function relativeTime(d1, d2 = +new Date()) {
+    // d1 = Number(d1 + "000")
+    d2 = Number(d2.toString().substr(0, 10))
+    console.log(d1)
+    console.log(d2)
+    // in miliseconds
+    var units = {
+      year: 24 * 60 * 60 * 365,
+      month: (24 * 60 * 60 * 365) / 12,
+      day: 24 * 60 * 60,
+      hour: 60 * 60,
+      minute: 60,
+      second: 1,
+    }
+
+    var rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" })
+
+    var elapsed = d2 - d1
+    console.log("++++++" + (d1 - d2))
+    // console.log(elapsed)
+    // console.log("one year is : " + 24 * 60 * 60 * 1000 * 365)
+    // "Math.abs" accounts for both "past" & "future" scenarios
+    for (var u in units)
+      if (elapsed > units[u] || u == "second")
+        return rtf.format(Math.round(-elapsed / units[u]), u)
+  }
 
   function handleMouseMove(e) {
     e.preventDefault()
@@ -44,7 +71,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       clearTimeout(timeout.current)
       timeout.current = setTimeout(() => {
         setShow(false)
-      }, 1000)
+      }, 3000)
       return
     }
 
@@ -138,6 +165,8 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
         <Link href={`/u/${post.author}`}>
           <a className={styles.author}> {post.author}</a>
         </Link>
+        <p>{relativeTime(post.date)}</p>
+        <p>r/{post.sub}</p>
       </div>
 
       {isVideo ? (

@@ -115,7 +115,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let res = await fetch(`https://reddit.com/u/${user}/about.json`)
   let data = await res.json()
 
-  console.log(data.data)
   let about = {
     title: data.data.subreddit.title,
     // name: data.data.name,
@@ -125,7 +124,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     snoovatar_img: data.data.snoovatar_img,
     banner_img: data.data.subreddit.banner_img,
   }
-  console.log(about)
   return { props: { user, about } }
 }
 

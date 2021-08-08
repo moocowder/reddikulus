@@ -1,0 +1,49 @@
+.container {
+  width: 50%;
+  margin: auto;
+  position: absolute;
+  z-index: 2;
+}
+
+.container input {
+  width: 80%;
+  padding: 0.5rem;
+  color: white;
+  height: 2rem;
+  background-color: black;
+  border: 1px solid rgb(255, 0, 119);
+  border-radius: 5px;
+}
+
+.container img {
+  width: 50px;
+  border-radius: 5px;
+}
+
+.list {
+  max-height: 80vh;
+  overflow: scroll;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.item {
+  cursor: pointer;
+  border: 1px solid grey;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: 0.2s;
+}
+
+.item:hover {
+  color: hotpink;
+  transition: 0.2s;
+}
+
+.infos {
+  display: flex;
+  flex-direction: column;
+}

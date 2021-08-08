@@ -27,6 +27,7 @@ function Brick({
       onMouseLeave={onMouseLeave}
       ref={lastElementRef}
     >
+      <p className={styles.sub}>{post.sub}</p>
       {post.media.type === "image" ? (
         <img
           className={styles.media}

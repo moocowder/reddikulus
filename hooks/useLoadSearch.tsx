@@ -33,16 +33,38 @@ export default function useLoadData(
   // }, [sort])
 
   function filter(d: any) {
-    let post: Post
+    // let post: Post
+    let post: any
     let img
     let urls: string[] = []
     let ext
 
+    d.children = d.children.map((p: any) => {
+      if (p.data.crosspost_parent_list) {
+        p.data.is_self = p.data.crosspost_parent_list[0].is_self
+        p.data.post_hint = p.data.crosspost_parent_list[0].post_hint
+        if (p.data.crosspost_parent_list[0].is_gallery) {
+          p.data.is_gallery = true
+          p.data.media_metadata = p.data.crosspost_parent_list[0].media_metadata
+        }
+      }
+      return p
+    })
+
     //remove all text posts
     d.children = d.children.filter((p: any) => !p.data.is_self)
+    // d.children = d.children.filter((p: any) => p.data.crosspost_parent_list)
 
     //(for users) remove all comments
     d.children = d.children.filter((p: any) => p.kind === "t3")
+
+    // p.data.post_hint === "image"
+    d.children = d.children.filter(
+      (p: any) =>
+        p.data.is_gallery ||
+        p.data.post_hint === "image" ||
+        p.data.post_hint === "hosted:video"
+    )
 
     d.children = d.children.map((p: any) => {
       // ? keep only links from specific domains
@@ -88,10 +110,12 @@ export default function useLoadData(
         kind: p.kind,
         title: p.data.title,
         author: p.data.author,
+        sub: p.data.subreddit,
         ups: p.data.ups,
         permalink: p.data.permalink,
         domain: p.data.domain,
         thumbnail: p.data.thumbnail,
+        post_hint: p.data.post_hint,
         media: {
           url: p.data.url,
           urls: urls,

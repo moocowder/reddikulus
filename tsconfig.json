@@ -21,7 +21,7 @@
     "pages/api/posts.js",
     "pages/masonic.jsx",
     "pages/r/[subreddit].tsx",
-    "pages/index.jsx"
+    "pages/index.tsx"
   ],
   "exclude": ["node_modules"]
 }

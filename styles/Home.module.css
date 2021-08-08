@@ -1,0 +1,14 @@
+.header {
+  color: green;
+}
+.header {
+  opacity: 0;
+}
+
+.header:hover {
+  opacity: 1;
+}
+
+.header input:focus {
+  border: 3px solid red;
+}

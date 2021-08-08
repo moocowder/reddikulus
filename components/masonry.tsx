@@ -27,7 +27,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   const [title, setTitle] = useState("")
   console.log("renderring masonry")
   let rows: number[] = []
-  const gap = 20
+  const gap = 30
   let [iw, setIw] = useState(300)
   // const iw = 350
 
@@ -101,7 +101,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
             position={getPos(p)}
             lastElementRef={i === posts.length - 1 ? lastElementRef : null}
             onMouseEnter={() => {
-              setTitle(p.title)
+              setTitle(p.ups + " " + p.title)
             }}
             onMouseLeave={() => setTitle("")}
             onClick={(t?: string) => onBrickClick(i, t)}
