@@ -13,6 +13,7 @@ import fs from "fs"
 import Topic from "../schema/topic"
 import Topics from "../components/topics"
 import Header from "../components/header"
+import Content from "../components/content"
 
 type Sub = {
   name: string
@@ -24,38 +25,6 @@ type Sub = {
 }
 
 export default function Home({ allSubs }: { allSubs: Sub[] }) {
-  let [after, setAfter] = useState("")
-  const [sort, setSort] = useState("hot")
-  const [post, setPost] = useState<Post | null>()
-
-  let { data, loading, error } = useLoadData("popular", sort, after)
-
-  let move = {
-    next: () => {
-      if (!post) return
-      let i = data.posts.indexOf(post)
-
-      if (i === data.posts.length - 2) {
-        setAfter(data.after)
-        return
-      }
-      setPost(data.posts[i + 1])
-    },
-    prev: () => {
-      if (!post) return
-      let i = data.posts.indexOf(post)
-
-      if (i === 0) return
-      setPost(data.posts[i - 1])
-    },
-  }
-
-  function handleBrickClick(i: number, t?: string) {
-    document.body.style.overflow = "hidden"
-    data.posts[i].media.timestamp = t
-    setPost(data.posts[i])
-  }
-
   return (
     <div>
       <Head>
@@ -68,23 +37,7 @@ export default function Home({ allSubs }: { allSubs: Sub[] }) {
           </li>
         ))}
       </ul>
-      {post ? (
-        <Viewer
-          post={post}
-          close={() => setPost(null)}
-          isVideo={post.media.type === "video"}
-          move={move}
-        />
-      ) : null}
-      <Masonry
-        posts={data.posts}
-        onBrickClick={handleBrickClick}
-        loadMore={() => setAfter(data.after)}
-        loading={loading}
-        hasMore={data.after}
-      />
-      {loading && <h1>loading...</h1>}
-      {error && <h1>error!</h1>}
+      <Content useLoad={useLoadData} word="popular" />
     </div>
   )
 }

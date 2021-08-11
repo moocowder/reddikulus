@@ -27,7 +27,7 @@ export default function useLoadUser(user: string, sort: string, after: string) {
       setData({ after: d.after, posts: d.children })
     }
     getPage()
-  }, [sort])
+  }, [user, sort])
 
   async function loadPage(user: string, sort: string, after: string) {
     setLoading(true)

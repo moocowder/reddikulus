@@ -7,6 +7,7 @@ import Masonry from "../../components/masonry"
 import useLoadUser from "../../hooks/useLoadUser"
 import styles from "../../styles/subreddit.module.css"
 import Post from "../../schema/post"
+import Content from "../../components/content"
 
 type About = {
   title: string
@@ -24,38 +25,6 @@ type Props = {
 }
 
 function User({ user, about }: Props) {
-  let [after, setAfter] = useState("")
-  const [post, setPost] = useState<Post | null>()
-  const [sort, setSort] = useState("new")
-
-  let { data, loading, error } = useLoadUser(user, sort, after)
-
-  let move = {
-    next: () => {
-      if (!post) return
-      let i = data.posts.indexOf(post)
-
-      if (i === data.posts.length - 2) {
-        setAfter(data.after)
-        return
-      }
-      setPost(data.posts[i + 1])
-    },
-    prev: () => {
-      if (!post) return
-      let i = data.posts.indexOf(post)
-
-      if (i === 0) return
-      setPost(data.posts[i - 1])
-    },
-  }
-
-  function handleBrickClick(i: number, t?: string) {
-    document.body.style.overflow = "hidden"
-    data.posts[i].media.timestamp = t
-    setPost(data.posts[i])
-  }
-
   return (
     <div>
       <Head>
@@ -86,26 +55,7 @@ function User({ user, about }: Props) {
       <h1>{about.title}</h1>
       <p>{about.description}</p>
       <p>{about.public_description}</p>
-      <button onClick={() => setSort("hot")}>hot</button>
-      <button onClick={() => setSort("new")}>new</button>
-      <button onClick={() => setSort("top")}>top</button>
-      {post ? (
-        <Viewer
-          post={post}
-          close={() => setPost(null)}
-          isVideo={post.media.type === "video"}
-          move={move}
-        />
-      ) : null}
-      <Masonry
-        posts={data.posts}
-        onBrickClick={handleBrickClick}
-        loadMore={() => setAfter(data.after)}
-        loading={loading}
-        hasMore={data.after}
-      />
-      {loading && <h1>loading...</h1>}
-      {error && <h1>error!</h1>}
+      <Content useLoad={useLoadUser} word={user} />
     </div>
   )
 }

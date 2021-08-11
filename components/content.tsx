@@ -2,19 +2,21 @@ import { useState } from "react"
 import Post from "../schema/post"
 import Masonry from "./masonry"
 import Viewer from "./viewer"
+import Data from "../schema/data"
 
 function Content({
   useLoad,
+  word,
 }: // word
 {
-  useLoad: () => { data: any; loading: boolean; error: boolean }
+  useLoad: Function
+  word: string
 }) {
   let [after, setAfter] = useState("")
   const [sort, setSort] = useState("hot")
   const [post, setPost] = useState<Post | null>()
 
-  // let { data, loading, error } = useLoad(word,sort, after)
-  let { data, loading, error } = useLoad()
+  let { data, loading, error } = useLoad(word, sort, after)
 
   let move = {
     next: () => {
@@ -44,6 +46,9 @@ function Content({
 
   return (
     <div>
+      <button onClick={() => setSort("hot")}>hot</button>
+      <button onClick={() => setSort("new")}>new</button>
+      <button onClick={() => setSort("top")}>top</button>
       {post ? (
         <Viewer
           post={post}
@@ -59,21 +64,17 @@ function Content({
         loading={loading}
         hasMore={data.after}
       />
+      {!data.after && !loading && (
+        <h1
+          style={{ zIndex: 4, position: "fixed", bottom: "10px", left: "3px" }}
+        >
+          ===========================
+        </h1>
+      )}
       {loading && <h1>loading...</h1>}
       {error && <h1>error!</h1>}
     </div>
   )
 }
 
-function Boom() {
-  return (
-    <div>
-      <Content
-        useLoad={() => {
-          return { data: "dd", loading: false, error: false }
-        }}
-      ></Content>
-    </div>
-  )
-}
 export default Content
