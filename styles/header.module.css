@@ -1,0 +1,9 @@
+.container {
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .container > * {
+  border: 1px solid cyan;
+} */

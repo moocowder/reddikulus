@@ -9,7 +9,6 @@ type Sub = {
   icon: string
   community_icon: string
   numSubscribers: string
-  //   type: "sub" | "user"
 }
 
 type user = {
@@ -31,10 +30,7 @@ function Autocomplete() {
     })
       .then((r) => {
         r.data.subreddits = r.data.subreddits.map((s: any) => {
-          console.log(s.name.substr(0, 2), "<<<<<<<<<<<,")
-
           if (s.name.substr(0, 2) === "u_") {
-            console.log("***************")
             s.name = s.name.replace(/^u_/, "u/")
           } else {
             s.name = "r/" + s.name
@@ -58,13 +54,15 @@ function Autocomplete() {
           setQuery(e.target.value)
         }}
         onKeyPress={(e) => {
-          if (e.key === "Enter") router.push(`/search?q=${query}`)
+          if (e.key === "Enter") {
+            setQuery("")
+            router.push(`/search?q=${query}`)
+          }
         }}
         type="text"
       />
       <ul className={styles.list}>
         {subs?.map((s: any) => (
-          //   <Link href={`/r/${s.name}`}>
           <li
             className={styles.item}
             onClick={() => {
@@ -78,7 +76,6 @@ function Autocomplete() {
               <b>{s.numSubscribers}</b> members
             </div>
           </li>
-          //   </Link>
         ))}
       </ul>
     </div>

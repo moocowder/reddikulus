@@ -28,7 +28,7 @@ function User({ user, about }: Props) {
   const [post, setPost] = useState<Post | null>()
   const [sort, setSort] = useState("new")
 
-  let { data, loading, error } = useLoadUser("u/" + user, sort, after)
+  let { data, loading, error } = useLoadUser(user, sort, after)
 
   let move = {
     next: () => {

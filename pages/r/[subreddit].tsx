@@ -7,7 +7,7 @@ import Masonry from "../../components/masonry"
 import useLoadData from "../../hooks/useLoadData"
 import styles from "../../styles/subreddit.module.css"
 import Post from "../../schema/post"
-import Autocomplete from "../../components/autocomplete"
+
 type About = {
   submission_type: string
   banner_img: string
@@ -30,7 +30,7 @@ function Subreddit({ sub, about }: Props) {
   const [post, setPost] = useState<Post | null>()
   const [sort, setSort] = useState("hot")
 
-  let { data, loading, error } = useLoadData("r/" + sub, sort, after)
+  let { data, loading, error } = useLoadData(sub, sort, after)
 
   let move = {
     next: () => {
@@ -66,9 +66,6 @@ function Subreddit({ sub, about }: Props) {
       <Head>
         <title>{sub}</title>
       </Head>
-      <div>
-        <Autocomplete />
-      </div>
       <div
         className={styles.wrapper}
         style={{ background: about.primary_color }}

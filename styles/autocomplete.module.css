@@ -1,15 +1,18 @@
 .container {
-  width: 50%;
-  margin: auto;
-  position: absolute;
+  border-radius: 3px solid white;
+  /* width: 50%; */
+  /* margin: auto; */
+  /* position: absolute; */
+  height: 100%;
   z-index: 2;
 }
 
 .container input {
-  width: 80%;
+  /* width: 80%; */
   padding: 0.5rem;
   color: white;
-  height: 2rem;
+  margin: auto;
+  /* height: 2rem; */
   background-color: black;
   border: 1px solid rgb(255, 0, 119);
   border-radius: 5px;

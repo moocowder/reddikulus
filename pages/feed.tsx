@@ -1,34 +1,20 @@
-import { useEffect, useState, useRef } from "react"
-import Head from "next/head"
-import Image from "next/image"
-import Link from "next/link"
-import axios from "axios"
-import styles from "../styles/Home.module.css"
-import useLoadData from "../hooks/useLoadData"
+import { GetServerSideProps } from "next"
+import { useEffect, useState, useContext } from "react"
+import useLoadFeed from "../hooks/useLoadFeed"
 import Masonry from "../components/masonry"
+import useToken from "../hooks/useToken"
 import Viewer from "../components/viewer"
 import Post from "../schema/post"
-import { GetServerSideProps } from "next"
-import fs from "fs"
-import Topic from "../schema/topic"
-import Topics from "../components/topics"
-import Header from "../components/header"
+import Content from "../components/content"
+import Head from "next/head"
+import UserContext from "../contexts/userContext"
 
-type Sub = {
-  name: string
-  subscribers: string
-  title: string
-  isNSFW: boolean
-  icon: string
-  banner?: string
-}
-
-export default function Home({ allSubs }: { allSubs: Sub[] }) {
+function Feed({ token }: { token: string }) {
   let [after, setAfter] = useState("")
-  const [sort, setSort] = useState("hot")
   const [post, setPost] = useState<Post | null>()
+  const [sort, setSort] = useState("hot")
 
-  let { data, loading, error } = useLoadData("popular", sort, after)
+  let { data, loading, error } = useLoadFeed(token, sort, after)
 
   let move = {
     next: () => {
@@ -59,15 +45,11 @@ export default function Home({ allSubs }: { allSubs: Sub[] }) {
   return (
     <div>
       <Head>
-        <title>Reddikulus! | Search for communities</title>
+        <title>Reddikulus!</title>
       </Head>
-      <ul>
-        {allSubs.map((s: Sub) => (
-          <li style={{ color: "pink" }}>
-            <Link href={`/r/${s.name}`}>{s.name}</Link>
-          </li>
-        ))}
-      </ul>
+      <button onClick={() => setSort("hot")}>hot</button>
+      <button onClick={() => setSort("new")}>new</button>
+      <button onClick={() => setSort("top")}>top</button>
       {post ? (
         <Viewer
           post={post}
@@ -89,9 +71,17 @@ export default function Home({ allSubs }: { allSubs: Sub[] }) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  // let topics: Topic[] = JSON.parse(fs.readFileSync("data.json", "utf8"))
-  let allSubs = JSON.parse(fs.readFileSync("all.json", "utf8"))
+function Main() {
+  // let [token, setToken] = useState("")
+  const [user, setUser] = useContext(UserContext)
 
-  return { props: { allSubs } }
+  let token = user
+  // useEffect(() => {
+  //   setToken(localStorage.getItem("access_token") || "")
+  // }, [])
+
+  if (!token) return <h3>go back you scum!</h3>
+  return <Feed token={token} />
 }
+
+export default Main
