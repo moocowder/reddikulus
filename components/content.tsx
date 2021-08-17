@@ -7,13 +7,14 @@ import Data from "../schema/data"
 function Content({
   useLoad,
   word,
-}: // word
-{
+  sortInit,
+}: {
   useLoad: Function
   word: string
+  sortInit: string
 }) {
   let [after, setAfter] = useState("")
-  const [sort, setSort] = useState("hot")
+  const [sort, setSort] = useState(sortInit)
   const [post, setPost] = useState<Post | null>()
 
   let { data, loading, error } = useLoad(word, sort, after)
@@ -71,7 +72,13 @@ function Content({
           ===========================
         </h1>
       )}
-      {loading && <h1>loading...</h1>}
+      {loading && (
+        <h1
+          style={{ zIndex: 4, position: "fixed", bottom: "30px", left: "3px" }}
+        >
+          loading...
+        </h1>
+      )}
       {error && <h1>error!</h1>}
     </div>
   )

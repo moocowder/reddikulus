@@ -64,7 +64,7 @@ function Subreddit({ sub, about }: Props) {
         <a href={`https://reddit.com/r/${sub}`}>r/{sub}</a>
       </h1>
       <p>{about.public_description}</p>
-      <Content useLoad={useLoadData} word={sub} />
+      <Content useLoad={useLoadData} word={sub} sortInit="hot" />
     </div>
   )
 }

@@ -17,7 +17,11 @@ export default function useLoadUser(user: string, sort: string, after: string) {
       posts = [...data.posts, ...d.children]
       setData({ after: d.after, posts })
     }
-    getPage()
+    try {
+      getPage()
+    } catch (error) {
+      console.log("***********", error, "**************")
+    }
   }, [after])
 
   useEffect(() => {
@@ -39,11 +43,10 @@ export default function useLoadUser(user: string, sort: string, after: string) {
       )
       let d = await r.json()
 
-      console.log(">>>>", d)
       d = filter(d)
       return d
     } catch (e) {
-      console.log(e)
+      console.log("error quand charge les donness", e)
       setError(true)
     } finally {
       setLoading(false)

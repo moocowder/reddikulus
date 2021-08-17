@@ -18,6 +18,10 @@
   border-radius: 5px;
 }
 
+.container input:not(:focus) + ul {
+  opacity: 0;
+}
+
 .container img {
   width: 50px;
   border-radius: 5px;

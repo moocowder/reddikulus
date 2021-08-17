@@ -13,6 +13,7 @@ import Image from "next/image"
 import Cinema from "./Cinema"
 import Post from "../schema/post"
 import Brick from "../components/brick"
+import Infos from "./Infos"
 let n
 
 type Props = {
@@ -24,7 +25,6 @@ type Props = {
 }
 
 function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
-  const [title, setTitle] = useState("")
   console.log("renderring masonry")
   let rows: number[] = []
   const gap = 30
@@ -60,11 +60,6 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
     }
   }
 
-  function format(number: number) {
-    if (number <= 999) return number
-    return (Math.round(number / 100) / 10).toFixed(1) + " k"
-  }
-
   return (
     // style={{ border: "1px solid red", width: "99vw", height: "5440rem" }}
     <div>
@@ -90,8 +85,6 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
           // border: "1px solid white",
         }}
       >
-        {title ? <div className={styles.title}>{title}</div> : null}
-
         {posts?.map((p, i) => (
           <Brick
             key={i}
@@ -100,10 +93,6 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
             height={iw / p.media.ratio}
             position={getPos(p)}
             lastElementRef={i === posts.length - 1 ? lastElementRef : null}
-            onMouseEnter={() => {
-              setTitle(p.ups + " " + p.title)
-            }}
-            onMouseLeave={() => setTitle("")}
             onClick={(t?: string) => onBrickClick(i, t)}
           />
         ))}

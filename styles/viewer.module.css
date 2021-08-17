@@ -31,60 +31,6 @@
   overflow: hidden;
 }
 
-.infos {
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(255, 0, 119, 0) 100%
-  );
-  display: flex;
-  flex-direction: column;
-}
-
-.infos:hover {
-  opacity: 1;
-}
-
-.hide {
-  transition: opacity 1s;
-  opacity: 0;
-}
-
-.title {
-  color: white;
-
-  /* z-index: 2; */
-  /* position: fixed; */
-  /* text-shadow: "0 0 8px 1px black"; */
-}
-
-.ups {
-  color: red;
-  /* z-index: 2; */
-  /* position: fixed; */
-  /* top: 30px; */
-  /* text-shadow: "0 0 8px 1px black"; */
-}
-
-.author {
-  color: pink;
-  /* z-index: 2; */
-  /* position: fixed; */
-  /* top: 60px; */
-  /* text-shadow: "0 0 8px 1px black"; */
-}
-
-/* .number {
-  color: white;
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  margin: 5px;
-} */
-
 .background {
   position: fixed;
   top: 0;

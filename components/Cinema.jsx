@@ -8,6 +8,7 @@ import { ImSpinner9 } from "react-icons/im"
 
 function Cinema({
   src,
+  thumbnail,
   style,
   width,
   height,
@@ -20,7 +21,7 @@ function Cinema({
   const [progress, setProgress] = useState(0)
   const [moving, setMoving] = useState(false)
   const [sound, setSound] = useState(false)
-
+  const [poster, setPoster] = useState(thumbnail)
   let t
 
   let media = useRef()
@@ -33,7 +34,6 @@ function Cinema({
     // fetch(src.replace(/DASH_\d+/, "DASH_audio"))
     //   .then((r) => console.log("all good"))
     //   .catch((e) => console.log("something fishy"))
-    //'init' | 'loading' | 'running' | 'paused' | 'ended'
     setState("init")
     setTimer("00:00")
     setProgress(0)
@@ -60,6 +60,8 @@ function Cinema({
       setState("paused")
     })
     audio.current.addEventListener("canplay", () => {
+      // media.current.poster = ""
+      setPoster(null)
       setSound(true)
     })
     if (timestamp !== null) {
@@ -188,7 +190,12 @@ function Cinema({
         handleVideoClick(target)
       }}
     >
-      <video ref={media} key={"v" + src} className={styles.video}>
+      <video
+        ref={media}
+        key={"v" + src}
+        poster={poster}
+        className={styles.video}
+      >
         <source src={src} type="video/mp4" />
       </video>
       <audio ref={audio} key={"a" + src}>

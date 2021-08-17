@@ -1,14 +1,17 @@
 import { GetServerSideProps } from "next"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import useLoadFeed from "../hooks/useLoadFeed"
 import Masonry from "../components/masonry"
 import { useRouter } from "next/router"
+import UserContext from "../contexts/userContext"
 
 function Login({ token }: { token: string }) {
   const router = useRouter()
+  const [user, setUser] = useContext(UserContext)
 
   useEffect(() => {
     localStorage.setItem("access_token", token)
+    setUser(token)
     router.push("/feed")
   }, [])
   return <h3>redirecting...</h3>

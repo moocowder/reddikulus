@@ -55,7 +55,7 @@ function User({ user, about }: Props) {
       <h1>{about.title}</h1>
       <p>{about.description}</p>
       <p>{about.public_description}</p>
-      <Content useLoad={useLoadUser} word={user} />
+      <Content useLoad={useLoadUser} word={user} sortInit="new" />
     </div>
   )
 }

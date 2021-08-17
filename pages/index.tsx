@@ -37,7 +37,7 @@ export default function Home({ allSubs }: { allSubs: Sub[] }) {
           </li>
         ))}
       </ul>
-      <Content useLoad={useLoadData} word="popular" />
+      <Content useLoad={useLoadData} word="popular" sortInit="hot" />
     </div>
   )
 }

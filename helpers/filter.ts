@@ -40,7 +40,7 @@ function filter(d: any) {
       p.data.url = p.data.media.reddit_video.fallback_url
     }
 
-    if (p.data.is_gallery) {
+    if (p.data.is_gallery && p.data.media_metadata) {
       Object.keys(p.data.media_metadata).map((k) => {
         ext = p.data.media_metadata[k].m.replace("image/", ".")
         urls.push("https://i.redd.it/" + p.data.media_metadata[k].id + ext)

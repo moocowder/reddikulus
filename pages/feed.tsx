@@ -15,7 +15,7 @@ function Feed({ token }: { token: string }) {
       <Head>
         <title>Reddikulus!</title>
       </Head>
-      <Content useLoad={useLoadFeed} word={token} />
+      <Content useLoad={useLoadFeed} word={token} sortInit="hot" />
     </div>
   )
 }
