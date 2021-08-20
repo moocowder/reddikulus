@@ -23,7 +23,7 @@ function filter(d: any) {
   // d.children = d.children.filter((p: any) => p.data.crosspost_parent_list)
 
   //(for users) remove all comments
-  d.children = d.children.filter((p: any) => p.kind === "t3")
+  // d.children = d.children.filter((p: any) => p.kind === "t3")
 
   // p.data.post_hint === "image"
   d.children = d.children.filter(
@@ -79,6 +79,7 @@ function filter(d: any) {
       author: p.data.author,
       sub: p.data.subreddit,
       ups: p.data.ups,
+      comments: p.data.num_comments,
       permalink: p.data.permalink,
       domain: p.data.domain,
       thumbnail: p.data.thumbnail,

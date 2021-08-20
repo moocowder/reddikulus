@@ -37,7 +37,10 @@ function Subreddit({ sub, about }: Props) {
       </Head>
       <div
         className={styles.wrapper}
-        style={{ background: about.primary_color || "yellow" }}
+        style={{
+          background: about.primary_color || "yellow",
+          // boxShadow: "inset 0 -30px 22px -22px  red",
+        }}
       >
         <img
           className={styles.banner}

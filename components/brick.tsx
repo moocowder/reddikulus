@@ -1,10 +1,26 @@
 import styles from "../styles/brick.module.css"
-import Cinema from "../components/Cinema"
-import Gallery from "../components/gallery"
+import Cinema from "./Cinema"
+import Gallery from "./gallery"
 import { useState } from "react"
 import Infos from "./Infos"
+import Post from "../schema/post"
 
-function Brick({ post, position, width, height, lastElementRef, onClick }) {
+type Props = {
+  post: Post
+  position: { top: number; left: number }
+  width: number
+  height: number
+  lastElementRef: Function | null
+  onClick: Function
+}
+function Brick({
+  post,
+  position,
+  width,
+  height,
+  lastElementRef,
+  onClick,
+}: Props) {
   let [iw, setIw] = useState(width)
   let [selected, setSelected] = useState(false)
   return (
@@ -16,6 +32,7 @@ function Brick({ post, position, width, height, lastElementRef, onClick }) {
           permalink={post.permalink}
           sub={post.sub}
           author={post.author}
+          comments={post.comments}
           date={post.date}
         />
       )}
@@ -33,9 +50,8 @@ function Brick({ post, position, width, height, lastElementRef, onClick }) {
         onMouseLeave={() => {
           setSelected(false)
         }}
-        ref={lastElementRef}
+        // ref={lastElementRef}
       >
-        <p className={styles.sub}>{post.sub}</p>
         {post.media.type === "image" ? (
           <img
             className={styles.media}

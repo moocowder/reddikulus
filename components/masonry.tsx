@@ -4,6 +4,7 @@ import {
   useRef,
   useCallback,
   HTMLAttributeReferrerPolicy,
+  useLayoutEffect,
 } from "react"
 import styles from "../styles/masonry.module.css"
 // import { LazyLoadImage } from "react-lazy-load-image-component"
@@ -31,6 +32,12 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   let [iw, setIw] = useState(300)
   // const iw = 350
 
+  useEffect(() => {
+    window.addEventListener("resize", (e) => {
+      e.preventDefault()
+      console.log("resize...", e)
+    })
+  }, [])
   const observer = useRef<IntersectionObserver>()
   const lastElementRef = (node: Element) => {
     if (loading) return
@@ -43,6 +50,11 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
     if (node) observer.current.observe(node)
   }
 
+  //uselayouteffect
+  // let width
+  // useLayoutEffect(() => {
+  //   width = window.innerWidth
+  // }, [])
   let { width } = useWindow()
   if (!width) return null
 

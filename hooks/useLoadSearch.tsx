@@ -2,11 +2,16 @@ import { useEffect, useState } from "react"
 import Post from "../schema/post"
 import Data from "../schema/data"
 import filter from "../helpers/filter"
+import { useContext } from "react"
+import UserContext from "../contexts/userContext"
+
+//search nsfw not working because rquest sent before user is return from context
 export default function useLoadData(
   query: string,
   sort: string,
   after: string
 ) {
+  const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState<Data>({ posts: [], after: "" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -37,8 +42,9 @@ export default function useLoadData(
     setError(false)
 
     try {
+      console.log("seriously", user)
       let r = await fetch(
-        `/api/search?q=${query}&&sort=${sort}&&after=${after}`
+        `/api/search?q=${query}&&sort=${sort}&&after=${after}&&nsfw=${user.nsfw}`
       )
       let d = await r.json()
 

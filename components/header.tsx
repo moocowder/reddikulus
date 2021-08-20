@@ -4,34 +4,34 @@ import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 import UserContext from "../contexts/userContext"
 
-type Infos = {
-  name: string
-  icon: string
-}
+// type Infos = {
+//   name: string
+//   icon: string
+// }
 
 function Header() {
   const [user, setUser] = useContext(UserContext)
-  const [infos, setInfos] = useState<Infos>({ name: "", icon: "" })
+  // const [infos, setInfos] = useState<Infos>({ name: "", icon: "" })
 
   function logout() {
-    setUser("")
-    localStorage.removeItem("access_token")
+    setUser({})
+    localStorage.removeItem("user")
   }
 
-  useEffect(() => {
-    if (!user) return
-    fetch("https://oauth.reddit.com/api/me", {
-      headers: { Authorization: "Bearer " + user },
-    })
-      .then((r) => r.json())
-      .then((d) =>
-        setInfos({
-          name: d.data.name,
-          icon: d.data.icon_img.replace(/\?.*/, "") || d.data.snoovatar_img,
-        })
-      )
-      .catch((e) => console.log(e))
-  }, [user])
+  // useEffect(() => {
+  //   if (!user) return
+  //   fetch("https://oauth.reddit.com/api/me", {
+  //     headers: { Authorization: "Bearer " + user },
+  //   })
+  //     .then((r) => r.json())
+  //     .then((d) =>
+  //       setInfos({
+  //         name: d.data.name,
+  //         icon: d.data.icon_img.replace(/\?.*/, "") || d.data.snoovatar_img,
+  //       })
+  //     )
+  //     .catch((e) => console.log(e))
+  // }, [user])
 
   return (
     <div className={styles.container}>
@@ -39,11 +39,11 @@ function Header() {
         <img src="/axolotl.svg" alt="" />
       </Link>
       <Autocomplete />
-      {user ? (
+      {JSON.stringify(user) !== "{}" ? (
         <div style={{ display: "flex " }}>
           <div>
-            <img style={{ height: "100%" }} src={infos.icon} alt="" />
-            <span>{infos.name}</span>
+            <img style={{ height: "100%" }} src={user.icon} alt="" />
+            <span>{user.name}</span>
           </div>
           <span onClick={logout}>Logout</span>
         </div>

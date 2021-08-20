@@ -127,6 +127,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
           permalink={post.permalink}
           sub={post.sub}
           author={post.author}
+          comments={post.comments}
           date={post.date}
         />
       )}
@@ -136,14 +137,19 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       ) : (
         <img className={styles.background} src={post.media.url} alt="" />
       )}
-      <div
+      {/* <div
         className={styles.wrapper}
         style={{
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
+          border: "3px solid cyan",
         }}
-      >
-        <Media media={post.media} onWheel={(e) => handleWheel(e)} />
-      </div>
+      > */}
+      <Media
+        media={post.media}
+        transform={`translate(${translate.x}px, ${translate.y}px) scale(${scale})`}
+        onWheel={(e) => handleWheel(e)}
+      />
+      {/* </div> */}
     </div>
   )
 }

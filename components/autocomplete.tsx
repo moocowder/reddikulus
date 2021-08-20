@@ -1,8 +1,9 @@
 import { useRouter } from "next/router"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import axios from "axios"
 import Link from "next/link"
 import styles from "../styles/autocomplete.module.css"
+import UserContext from "../contexts/userContext"
 
 type Sub = {
   name: string
@@ -11,11 +12,8 @@ type Sub = {
   numSubscribers: string
 }
 
-type user = {
-  icon: string
-}
-
 function Autocomplete() {
+  const [user, setUser] = useContext(UserContext)
   let [query, setQuery] = useState("")
   let [subs, setSubs] = useState<Sub[]>([])
   const router = useRouter()
@@ -25,7 +23,7 @@ function Autocomplete() {
     axios({
       method: "GET",
       url: `https://www.reddit.com/api/subreddit_autocomplete.json`,
-      params: { query, include_over_18: "on" },
+      params: { query, include_over_18: user?.nsfw },
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     })
       .then((r) => {

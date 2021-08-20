@@ -5,8 +5,9 @@ function Gallery({ urls, style, onClick, fullscreen = false }) {
   let [index, setIndex] = useState(0)
   let [progress, setProgress] = useState(0)
   let [loaded, setLoaded] = useState(false)
+  let timeout
   useEffect(() => {
-    let timeout = setTimeout(() => {
+    timeout = setTimeout(() => {
       setIndex(index === urls.length - 1 ? 0 : index + 1)
     }, 5000)
     return () => clearTimeout(timeout)
@@ -30,6 +31,7 @@ function Gallery({ urls, style, onClick, fullscreen = false }) {
       </span>
       <img
         // onLoad={setLoaded(true)}
+        // style={{ transform: transform }}
         className={styles.media}
         onClick={onClick}
         src={urls ? urls[index] : ""}

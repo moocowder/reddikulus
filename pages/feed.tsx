@@ -24,7 +24,7 @@ function Main() {
   // let [token, setToken] = useState("")
   const [user, setUser] = useContext(UserContext)
 
-  let token = user
+  let token = user.token
   // useEffect(() => {
   //   setToken(localStorage.getItem("access_token") || "")
   // }, [])

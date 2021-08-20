@@ -26,6 +26,7 @@ function Content({
 
       if (i === data.posts.length - 2) {
         setAfter(data.after)
+        setPost(data.posts[i + 1])
         return
       }
       setPost(data.posts[i + 1])

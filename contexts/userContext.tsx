@@ -1,10 +1,9 @@
 import { createContext } from "react"
 import { Dispatch, SetStateAction } from "react"
-type User = {
-  token: string
-}
-const UserContext = createContext<[string, Dispatch<SetStateAction<string>>]>([
-  "",
+import User from "../schema/user"
+
+const UserContext = createContext<[User, Dispatch<SetStateAction<User>>]>([
+  {},
   () => {},
 ])
 

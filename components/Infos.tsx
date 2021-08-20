@@ -6,8 +6,9 @@ type props = {
   ups: number
   title: string
   permalink: string
-  sub: string
-  author: string
+  sub?: string
+  author?: string
+  comments: number
   date: number
 }
 
@@ -16,7 +17,7 @@ type Units = {
   //   [key in "year" | "month" | "day" | "hour" | "minute" | "second"]?: number
 }
 
-function Infos({ ups, title, permalink, sub, author, date }: props) {
+function Infos({ ups, title, permalink, sub, author, comments, date }: props) {
   function relativeTime(d1: number, d2 = +new Date()) {
     d2 = Number(d2.toString().substr(0, 10))
 
@@ -62,11 +63,13 @@ function Infos({ ups, title, permalink, sub, author, date }: props) {
       <div>
         <Link href={`/r/${sub}`}>
           <a> r/{sub}</a>
-        </Link>
+        </Link>{" "}
+        |
         <Link href={`/u/${author}`}>
           <a className={styles.author}> u/{author}</a>
         </Link>
-        <span>{relativeTime(date)}</span>
+        <span>{relativeTime(date)}</span> |
+        <span>{format(comments)} comments</span> |
       </div>
     </div>
   )

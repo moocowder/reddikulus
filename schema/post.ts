@@ -6,8 +6,9 @@ type Post = {
   permalink: string
   domain: string
   ups: number
+  comments: number
   thumbnail: string
-  date: string
+  date: number
   media: Media
 }
 

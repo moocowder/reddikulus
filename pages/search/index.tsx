@@ -15,7 +15,7 @@ function Search({ query }: { query: string }) {
       <Head>
         <title>{query}</title>
       </Head>
-      <Content useLoad={useLoadSearch} word={query} />
+      <Content useLoad={useLoadSearch} word={query} sortInit="relevence" />
     </div>
   )
 }
