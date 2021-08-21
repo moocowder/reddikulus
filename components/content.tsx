@@ -3,29 +3,29 @@ import Post from "../schema/post"
 import Masonry from "./masonry"
 import Viewer from "./viewer"
 import Data from "../schema/data"
+import useLoadData from "../hooks/useLoadData"
 
 function Content({
-  useLoad,
-  word,
-  sortInit,
+  api,
+  params,
 }: {
-  useLoad: Function
-  word: string
-  sortInit: string
+  api: string
+  params: { [key: string]: string }
 }) {
   let [after, setAfter] = useState("")
-  const [sort, setSort] = useState(sortInit)
+  const [sort, setSort] = useState(params.sort)
   const [post, setPost] = useState<Post | null>()
 
-  let { data, loading, error } = useLoad(word, sort, after)
+  console.log("++++++++Renderring content with : ", { ...params, sort, after })
+  let { data, loading, error } = useLoadData(api, { ...params, sort, after })
 
   let move = {
     next: () => {
       if (!post) return
       let i = data.posts.indexOf(post)
-
+      if (i === data.posts.length - 1) return
       if (i === data.posts.length - 2) {
-        setAfter(data.after)
+        if (data.after) setAfter(data.after)
         setPost(data.posts[i + 1])
         return
       }
@@ -66,13 +66,6 @@ function Content({
         loading={loading}
         hasMore={data.after}
       />
-      {!data.after && !loading && (
-        <h1
-          style={{ zIndex: 4, position: "fixed", bottom: "10px", left: "3px" }}
-        >
-          ===========================
-        </h1>
-      )}
       {loading && (
         <h1
           style={{ zIndex: 4, position: "fixed", bottom: "30px", left: "3px" }}

@@ -4,7 +4,6 @@ import Head from "next/head"
 import Link from "next/link"
 import Viewer from "../../components/viewer"
 import Masonry from "../../components/masonry"
-import useLoadSearch from "../../hooks/useLoadSearch"
 import styles from "../../styles/subreddit.module.css"
 import Post from "../../schema/post"
 import Content from "../../components/content"
@@ -15,7 +14,8 @@ function Search({ query }: { query: string }) {
       <Head>
         <title>{query}</title>
       </Head>
-      <Content useLoad={useLoadSearch} word={query} sortInit="relevence" />
+      {/* <Content useLoad={useLoadSearch} word={query} sortInit="relevence" /> */}
+      <Content api="/api/search" params={{ q: query, sort: "best" }} />
     </div>
   )
 }

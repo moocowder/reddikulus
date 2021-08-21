@@ -10,7 +10,7 @@ import Post from "../../schema/post"
 import Content from "../../components/content"
 import fs from "fs"
 
-function Topic({ sub }: { sub: string }) {
+function Topic({ topic, sub }: { topic: string; sub: string }) {
   // const [subs, setSubs] = useState<string[]>([])
 
   // useEffect(() => {
@@ -22,10 +22,9 @@ function Topic({ sub }: { sub: string }) {
   return (
     <div>
       <Head>
-        <title>Reddikulus | Sports</title>
+        <title>Reddikulus | {topic}</title>
       </Head>
-
-      <Content useLoad={useLoadData} word={sub} sortInit="best" />
+      <Content api="/api/posts" params={{ sub, sort: "best" }} />
     </div>
   )
 }
@@ -39,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .subs.map((s: any) => s.name)
     .reduce((a: string, v: string) => a + "%2B" + v)
 
-  return { props: { sub } }
+  return { props: { topic, sub } }
 }
 
 export default Topic

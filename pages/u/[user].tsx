@@ -4,7 +4,6 @@ import Head from "next/head"
 import Link from "next/link"
 import Viewer from "../../components/viewer"
 import Masonry from "../../components/masonry"
-import useLoadUser from "../../hooks/useLoadUser"
 import styles from "../../styles/subreddit.module.css"
 import Post from "../../schema/post"
 import Content from "../../components/content"
@@ -55,7 +54,8 @@ function User({ user, about }: Props) {
       <h1>{about.title}</h1>
       <p>{about.description}</p>
       <p>{about.public_description}</p>
-      <Content useLoad={useLoadUser} word={user} sortInit="new" />
+      {/* <Content useLoad={useLoadUser} word={user} sortInit="new" /> */}
+      <Content api="/api/user" params={{ user, sort: "new" }} />
     </div>
   )
 }

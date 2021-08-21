@@ -23,7 +23,7 @@ function Gallery({ urls, style, onClick, fullscreen = false }) {
   // }, [progress])
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} onClick={onClick}>
       <img className={styles.background} src={urls[index]} alt="" />
 
       <span className={styles.number}>
@@ -33,7 +33,6 @@ function Gallery({ urls, style, onClick, fullscreen = false }) {
         // onLoad={setLoaded(true)}
         // style={{ transform: transform }}
         className={styles.media}
-        onClick={onClick}
         src={urls ? urls[index] : ""}
       ></img>
       <div key={urls[index]} className={styles.progress}></div>

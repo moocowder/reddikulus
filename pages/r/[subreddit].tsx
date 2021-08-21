@@ -10,7 +10,7 @@ import Post from "../../schema/post"
 import Content from "../../components/content"
 
 type About = {
-  submission_type: string
+  // submission_type: string
   banner_img: string
   banner_background_image: string
   mobile_banner_image: string
@@ -19,6 +19,7 @@ type About = {
   community_icon: string
   public_description: string
   primary_color: string
+  allow_media: boolean
 }
 
 type Props = {
@@ -27,7 +28,7 @@ type Props = {
 }
 
 function Subreddit({ sub, about }: Props) {
-  if (about.submission_type === "self")
+  if (!about.allow_media)
     return <h1>This sub doesn't contain any images or videos</h1>
 
   return (
@@ -67,7 +68,7 @@ function Subreddit({ sub, about }: Props) {
         <a href={`https://reddit.com/r/${sub}`}>r/{sub}</a>
       </h1>
       <p>{about.public_description}</p>
-      <Content useLoad={useLoadData} word={sub} sortInit="hot" />
+      <Content api="/api/posts" params={{ sub, sort: "hot" }} />
     </div>
   )
 }
@@ -77,7 +78,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let res = await fetch(`https://reddit.com/r/${sub}/about.json`)
   let data = await res.json()
 
-  return { props: { sub, about: data.data } }
+  let about: About = {
+    // submission_type: data.data.submission_type,
+    banner_img: data.data.banner_img,
+    banner_background_image: data.data.banner_background_image,
+    mobile_banner_image: data.data.mobile_banner_image,
+    header_img: data.data.header_img,
+    icon_img: data.data.icon_img,
+    community_icon: data.data.community_icon,
+    public_description: data.data.public_description,
+    primary_color: data.data.primary_color,
+    allow_media:
+      data.data.allow_galleries ||
+      data.data.allow_videogifs ||
+      data.data.allow_videos ||
+      data.data.allow_images,
+  }
+  return { props: { sub, about } }
 }
 
 export default Subreddit

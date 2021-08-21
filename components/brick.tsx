@@ -4,13 +4,14 @@ import Gallery from "./gallery"
 import { useState } from "react"
 import Infos from "./Infos"
 import Post from "../schema/post"
+import { LegacyRef } from "react"
 
 type Props = {
   post: Post
   position: { top: number; left: number }
   width: number
   height: number
-  lastElementRef: Function | null
+  lastElementRef: LegacyRef<HTMLDivElement> | null
   onClick: Function
 }
 function Brick({
@@ -50,7 +51,7 @@ function Brick({
         onMouseLeave={() => {
           setSelected(false)
         }}
-        // ref={lastElementRef}
+        ref={lastElementRef}
       >
         {post.media.type === "image" ? (
           <img

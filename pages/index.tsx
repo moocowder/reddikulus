@@ -14,6 +14,7 @@ import Topic from "../schema/topic"
 import Topics from "../components/topics"
 import Header from "../components/header"
 import Content from "../components/content"
+import Panel from "../components/panel"
 
 type Sub = {
   name: string
@@ -32,12 +33,13 @@ export default function Home({ allSubs }: { allSubs: Sub[] }) {
       </Head>
       <ul>
         {allSubs.map((s: Sub) => (
-          <li style={{ color: "pink" }}>
+          <li key={s.name} style={{ color: "pink" }}>
             <Link href={`/r/${s.name}`}>{s.name}</Link>
           </li>
         ))}
       </ul>
-      <Content useLoad={useLoadData} word="popular" sortInit="hot" />
+      {/* <Content useLoad={useLoadData} word="popular" sortInit="hot" /> */}
+      <Content api="/api/posts" params={{ sub: "popular", sort: "hot" }} />
     </div>
   )
 }

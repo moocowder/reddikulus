@@ -4,9 +4,14 @@ import Header from "../components/header"
 import UserContext from "../contexts/userContext"
 import { useEffect, useState } from "react"
 import User from "../schema/user"
+import Panel from "../components/panel"
+import fs from "fs"
+import { GetServerSideProps } from "next"
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User>({})
+  const [open, setOpen] = useState(false)
+
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user") || "{}"))
   }, [])
@@ -14,10 +19,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
       <UserContext.Provider value={[user, setUser]}>
-        <Header />
+        <Header setOpen={setOpen} />
+        {open && <Panel setOpen={setOpen} />}
         <Component {...pageProps} />
       </UserContext.Provider>
     </div>
   )
 }
+
 export default MyApp

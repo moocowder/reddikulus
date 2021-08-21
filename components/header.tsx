@@ -3,41 +3,22 @@ import styles from "../styles/header.module.css"
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 import UserContext from "../contexts/userContext"
+import { HiTrendingUp } from "react-icons/hi"
 
-// type Infos = {
-//   name: string
-//   icon: string
-// }
-
-function Header() {
+function Header({ setOpen }: { setOpen: Function }) {
   const [user, setUser] = useContext(UserContext)
-  // const [infos, setInfos] = useState<Infos>({ name: "", icon: "" })
 
   function logout() {
     setUser({})
     localStorage.removeItem("user")
   }
 
-  // useEffect(() => {
-  //   if (!user) return
-  //   fetch("https://oauth.reddit.com/api/me", {
-  //     headers: { Authorization: "Bearer " + user },
-  //   })
-  //     .then((r) => r.json())
-  //     .then((d) =>
-  //       setInfos({
-  //         name: d.data.name,
-  //         icon: d.data.icon_img.replace(/\?.*/, "") || d.data.snoovatar_img,
-  //       })
-  //     )
-  //     .catch((e) => console.log(e))
-  // }, [user])
-
   return (
     <div className={styles.container}>
       <Link href="/">
         <img src="/axolotl.svg" alt="" />
       </Link>
+      <HiTrendingUp onClick={() => setOpen(true)} />
       <Autocomplete />
       {JSON.stringify(user) !== "{}" ? (
         <div style={{ display: "flex " }}>

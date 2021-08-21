@@ -1,6 +1,7 @@
 import { ImArrowUp } from "react-icons/im"
 import Link from "next/link"
 import styles from "../styles/infos.module.css"
+import { BsFillChatDotsFill } from "react-icons/bs"
 
 type props = {
   ups: number
@@ -69,7 +70,11 @@ function Infos({ ups, title, permalink, sub, author, comments, date }: props) {
           <a className={styles.author}> u/{author}</a>
         </Link>
         <span>{relativeTime(date)}</span> |
-        <span>{format(comments)} comments</span> |
+        <span>
+          <BsFillChatDotsFill />
+          {format(comments)}
+        </span>{" "}
+        |
       </div>
     </div>
   )

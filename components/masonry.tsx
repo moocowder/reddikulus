@@ -30,6 +30,8 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   let rows: number[] = []
   const gap = 30
   let [iw, setIw] = useState(300)
+  const [end, setEnd] = useState(false)
+
   // const iw = 350
 
   useEffect(() => {
@@ -38,13 +40,17 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
       console.log("resize...", e)
     })
   }, [])
+
   const observer = useRef<IntersectionObserver>()
   const lastElementRef = (node: Element) => {
     if (loading) return
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore) {
-        loadMore()
+      if (entries[0].isIntersecting) {
+        if (hasMore) loadMore()
+        else setEnd(true)
+      } else {
+        setEnd(false)
       }
     })
     if (node) observer.current.observe(node)
@@ -109,6 +115,13 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
           />
         ))}
       </div>
+      {end && (
+        <h1
+          style={{ zIndex: 4, position: "fixed", bottom: "10px", left: "3px" }}
+        >
+          =========That's All folks=========
+        </h1>
+      )}
     </div>
   )
 }

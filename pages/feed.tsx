@@ -15,7 +15,8 @@ function Feed({ token }: { token: string }) {
       <Head>
         <title>Reddikulus!</title>
       </Head>
-      <Content useLoad={useLoadFeed} word={token} sortInit="hot" />
+      {/* <Content useLoad={useLoadFeed} word={token} sortInit="hot" /> */}
+      <Content api="/api/feed" params={{ token, sort: "best" }} />
     </div>
   )
 }
