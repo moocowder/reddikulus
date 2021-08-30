@@ -16,7 +16,10 @@ function Content({
   const [sort, setSort] = useState(params.sort)
   const [post, setPost] = useState<Post | null>()
 
-  console.log("++++++++Renderring content with : ", { ...params, sort, after })
+  console.log("++++++++++++++++++")
+  console.log("after :", after, "sort :", sort, "post :", post)
+  console.log("params :", params)
+  console.log("__________________")
   let { data, loading, error } = useLoadData(api, { ...params, sort, after })
 
   let move = {

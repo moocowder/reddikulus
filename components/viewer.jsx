@@ -103,12 +103,12 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       onMouseMove={(e) => {
         handleMouseMove(e)
       }}
-      onClick={(e) => {
-        prev(e)
-      }}
-      onContextMenu={(e) => {
-        next(e)
-      }}
+      // onClick={(e) => {
+      //   prev(e)
+      // }}
+      // onContextMenu={(e) => {
+      //   next(e)
+      // }}
       onMouseDown={(e) => {
         handleMouseDown(e)
       }}
@@ -132,8 +132,11 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
         />
       )}
 
+      <div className={styles.right} onClick={(e) => next(e)}></div>
+      <div className={styles.left} onClick={(e) => prev(e)}></div>
+
       {isVideo ? (
-        <img className={styles.background} src={post.thumbnail} alt="" />
+        <img className={styles.background} src={post.media.thumbnail} alt="" />
       ) : (
         <img className={styles.background} src={post.media.url} alt="" />
       )}

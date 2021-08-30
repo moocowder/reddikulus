@@ -1,6 +1,7 @@
 import Cinema from "../components/Cinema"
 import Gallery from "../components/gallery"
 import styles from "../styles/media.module.css"
+import Imagine from "./imagine"
 
 function Media({ media, onWheel, transform }) {
   return (
@@ -14,12 +15,16 @@ function Media({ media, onWheel, transform }) {
       {media.type === "video" && (
         <Cinema
           src={media.url}
-          id="image"
-          timestamp={media.timestamp || 0}
-          autoplay={true}
+          thumbnail={media.thumbnail}
+          duration={media.duration}
+          // id="image"
+          // timestamp={media.timestamp || 0}
+          // autoplay={true}
         ></Cinema>
       )}
-      {media.type === "image" && <img src={media.url} alt="image" />}
+      {media.type === "image" && (
+        <Imagine thumbnail={media.thumbnail} original={media.url} alt="image" />
+      )}
       {media.type === "gallery" && (
         <Gallery urls={media.urls} fullscreen={true} />
       )}

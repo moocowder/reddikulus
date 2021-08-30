@@ -5,6 +5,8 @@ import { useState } from "react"
 import Infos from "./Infos"
 import Post from "../schema/post"
 import { LegacyRef } from "react"
+import Imagine from "./imagine"
+import Mirage from "./Mirage"
 
 type Props = {
   post: Post
@@ -22,8 +24,10 @@ function Brick({
   lastElementRef,
   onClick,
 }: Props) {
-  let [iw, setIw] = useState(width)
-  let [selected, setSelected] = useState(false)
+  const [iw, setIw] = useState(width)
+  const [selected, setSelected] = useState(false)
+  const [visible, setVisible] = useState(false)
+
   return (
     <div>
       {selected && (
@@ -54,18 +58,34 @@ function Brick({
         ref={lastElementRef}
       >
         {post.media.type === "image" ? (
-          <img
-            className={styles.media}
-            src={post.media.url}
+          // <img
+          //   className={styles.media}
+          //   src={post.media.thumbnail}
+          //   onClick={() => onClick()}
+          // />
+          // <div className={styles.media} onClick={() => onClick()}>
+          <Imagine
+            thumbnail={post.media.thumbnail}
+            original={post.media.url}
             onClick={() => onClick()}
           />
-        ) : post.media.type === "video" ? (
+        ) : // </div>
+        post.media.type === "video" ? (
           <div>
-            <Cinema
-              src={post.media.url}
-              thumbnail={post.thumbnail}
+            {/* <Cinema
+              src={post.media.peek}
+              thumbnail={post.media.thumbnail}
+              poster={post.media.poster}
               onClick={(t) => onClick(t)}
-            ></Cinema>
+            ></Cinema> */}
+            <Mirage
+              thumbnail={post.media.thumbnail}
+              poster={post.media.poster || ""}
+              peek={post.media.peek || ""}
+              // url={post.media.url || ""}
+              duration={post.media.duration}
+              onClick={() => onClick()}
+            />
           </div>
         ) : (
           <Gallery
@@ -77,6 +97,7 @@ function Brick({
             }}
             onClick={() => onClick()}
             urls={post.media.urls}
+            thumbnails={post.media.thumbnails}
           />
         )}
       </div>

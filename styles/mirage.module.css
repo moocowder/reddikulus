@@ -1,0 +1,34 @@
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 5rem;
+  transform: translate(-50%, -50%);
+  /* top: 90;
+    left: 0; */
+  /* color: #740055; */
+  color: yellow;
+  /* transition: 0.3s; */
+  /* z-index: 5; */
+}
+
+.duration {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 0, 0.2);
+  padding: 2px;
+  border-radius: 5px;
+  font-size: 15px;
+  /* z-index: 2; */
+}
+
+.bar {
+  position: absolute;
+  background-color: yellow;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  z-index: 2;
+}

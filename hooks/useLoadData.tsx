@@ -11,20 +11,18 @@ export default function useLoadData(
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
-  console.log("!!!!!!!!rendering useLoadData with : ", params)
-
   useEffect(() => {
     if (!params.after) return
     console.log("111111111111111111111111111111111111111111 :", params)
     let posts
     async function getPage() {
       let d = await loadPage()
-      console.log("%%%%%%%%%%%%%%%", d.children)
-      if (d.children.length === 0) {
+      console.log("%%%%%%%%%%%%%%%", d.posts)
+      if (d?.posts.length === 0) {
         console.log("6^^^^^^^^^^")
-        getPage()
+        // getPage()
       } else {
-        posts = [...data.posts, ...d.children]
+        posts = [...data.posts, ...d?.posts]
         setData({ after: d.after, posts })
       }
     }
@@ -32,20 +30,20 @@ export default function useLoadData(
   }, [params.after])
 
   useEffect(() => {
+    console.log("something changed here :", params)
     setData({ after: "", posts: [] })
-    console.log("22222222222222222222222222222222222222222 data", data)
 
     async function getPage() {
       let d = await loadPage()
-      if (d.children.length === 0) {
+      if (d?.posts.length === 0) {
         console.log("6^^^^^^^^^^")
-        getPage()
+        // getPage()
       } else {
-        setData({ after: d.after, posts: d.children })
+        setData({ after: d.after, posts: d?.posts })
       }
     }
     getPage()
-  }, [params.sub, params.sort, params.user, params.query])
+  }, [params.sub, params.sort, params.user, params.q])
 
   async function loadPage() {
     setLoading(true)
@@ -53,8 +51,6 @@ export default function useLoadData(
 
     try {
       let r = await fetch(
-        // {sub:'dd',sort:'new'}
-        // [sub,sort]
         `${api}?` +
           Object.keys(params).reduce(
             (a, v) => a + v + "=" + params[v] + "&&",
@@ -62,14 +58,18 @@ export default function useLoadData(
           )
       )
       let d = await r.json()
-      d = filter(d)
-      return d
+      let ps = filter(d.children)
+      // d = {after: d.after}
+      return { posts: ps, after: d.after }
     } catch (e) {
-      console.log(e)
+      console.log(">>>>>>>>>>>>>>", e)
       setError(true)
+      return { posts: [], after: "" }
     } finally {
       setLoading(false)
     }
   }
+
+  console.log("use load data returned : ", { data, loading, error })
   return { data, loading, error }
 }

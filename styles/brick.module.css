@@ -17,7 +17,8 @@
   opacity: 1;
 }
 
-.media {
+.brick > * {
+  /* object-fit: contain; */
   width: inherit;
   height: inherit;
 }

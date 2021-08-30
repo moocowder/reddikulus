@@ -31,13 +31,13 @@ export default function Home({ allSubs }: { allSubs: Sub[] }) {
       <Head>
         <title>Reddikulus! | Search for communities</title>
       </Head>
-      <ul>
+      {/* <ul>
         {allSubs.map((s: Sub) => (
           <li key={s.name} style={{ color: "pink" }}>
             <Link href={`/r/${s.name}`}>{s.name}</Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
       {/* <Content useLoad={useLoadData} word="popular" sortInit="hot" /> */}
       <Content api="/api/posts" params={{ sub: "popular", sort: "hot" }} />
     </div>

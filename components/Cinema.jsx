@@ -14,72 +14,66 @@ import { ImSpinner9 } from "react-icons/im"
 function Cinema({
   src,
   thumbnail,
-  // style,
-  // width,
-  // height,
-  timestamp = null,
-  autoplay = false,
-  hasAudio = false,
-  onClick = (t) => {},
+  duration,
+  // poster,
+  // onClick = (t) => {},
 }) {
-  const [state, setState] = useState("init")
+  const [state, setState] = useState("loading")
   const [timer, setTimer] = useState("00:00")
   const [progress, setProgress] = useState(0)
   const [moving, setMoving] = useState(false)
   const [sound, setSound] = useState(false)
-  const [poster, setPoster] = useState(thumbnail)
+  // const [poster, setPoster] = useState(thumbnail)
   const [audioSrc, setAudioSrc] = useState("")
   let t
   const [voice, setVoice] = useState(null)
   let media = useRef()
   let audio = useRef()
 
+  // useEffect(() => {
+  //   if (hasAudio) return
+  //   fetch(src.replace(/DASH_\d+/, "DASH_audio"))
+  //     .then((d) => {
+  //       d.status === 200 && setAudioSrc(src.replace(/DASH_\d+/, "DASH_audio"))
+  //     })
+  //     .catch((e) => console.log(e, src, "does NOT have audio"))
+  // }, [hasAudio])
+
   useEffect(() => {
-    if (hasAudio) return
+    setState("loading")
+    setTimer("00:00")
+    setProgress(0)
+    setMoving(false)
+
     fetch(src.replace(/DASH_\d+/, "DASH_audio"))
       .then((d) => {
         d.status === 200 && setAudioSrc(src.replace(/DASH_\d+/, "DASH_audio"))
       })
       .catch((e) => console.log(e, src, "does NOT have audio"))
-  }, [hasAudio])
 
-  useEffect(() => {
-    setState("init")
-    setTimer("00:00")
-    setProgress(0)
-    setMoving(false)
+    media.current.addEventListener("canplay", () => {
+      play()
+    })
 
-    if (timestamp !== null) {
-      media.current.currentTime = timestamp
-    }
+    // play()
     // if (autoplay) {
     //   media.current.play().catch((e) => console.log("autoplay V : ", e))
     //   voice?.play().catch((e) => console.log("autoplay A : ", e))
     // }
   }, [src])
 
-  useEffect(() => {
-    if (!timestamp) return
-    media.current.currentTime = timestamp
-  }, [timestamp])
+  // useEffect(() => {
+  //   if (!autoplay || !voice) return
+  //   {
+  //     media.current.play()
+  //     voice.play()
+  //   }
+  // }, [autoplay, voice])
 
-  useEffect(() => {
-    if (!timestamp || !voice) return
-    voice.currentTime = timestamp
-  }, [timestamp, voice])
-
-  useEffect(() => {
-    if (!autoplay || !voice) return
-    {
-      media.current.play()
-      voice.play()
-    }
-  }, [autoplay, voice])
-
-  useEffect(() => {
-    if (!voice) return
-    if (timestamp) voice.currentTime = timestamp
-  }, [voice])
+  // useEffect(() => {
+  //   if (!voice) return
+  //   if (timestamp) voice.currentTime = timestamp
+  // }, [voice])
 
   useEffect(() => {
     if (!audioSrc) return
@@ -92,6 +86,7 @@ function Cinema({
     //   setPoster(null)
     //   setSound(true)
     // })
+    // return () => setVoice(null)
   }, [audioSrc])
 
   function handleVideoClick(target) {
@@ -100,20 +95,22 @@ function Cinema({
       // voice?.play().catch((e) => console.log("Initplay A", e))
       play()
     } else if (state === "ended") {
-      media.current.play()
-    } else {
-      if (target.localName !== "svg") {
-        if (voice) voice.muted = true
-        onClick(media.current.currentTime)
-      }
+      // media.current.play()
+      play()
     }
+    // else {
+    //   if (target.localName !== "svg") {
+    //     if (voice) voice.muted = true
+    //     onClick(media.current.currentTime)
+    //   }
+    // }
   }
 
   function updateTimer() {
     if (!media.current) return
     let time = format(media.current.currentTime)
     setTimer(time)
-    setProgress(media.current.currentTime / media.current.duration)
+    setProgress(media.current.currentTime / duration)
   }
 
   function format(s) {
@@ -140,15 +137,15 @@ function Cinema({
 
   function renderIcon() {
     switch (state) {
-      case "init":
-        return (
-          <CgPlayButtonO
-            onClick={() => {
-              play()
-            }}
-            className={`${styles.icon} ${styles.run} ${styles.start}`}
-          />
-        )
+      // case "init":
+      //   return (
+      //     <CgPlayButtonO
+      //       onClick={() => {
+      //         play()
+      //       }}
+      //       className={`${styles.icon} ${styles.run} ${styles.start}`}
+      //     />
+      //   )
       case "ended":
         return (
           <FaUndoAlt
@@ -187,10 +184,19 @@ function Cinema({
 
     return (
       // <div className={styles.controls}>
-      <div className={styles.timer}>
+      <div
+        className={styles.timer}
+        onClick={(e) => {
+          console.log(e.clientX)
+          console.log(window.innerWidth)
+          // vid.current.see
+          media.current.currentTime = (e.clientX / window.innerWidth) * duration
+          voice.currentTime = (e.clientX / window.innerWidth) * duration
+        }}
+      >
         <div style={{ width: `${progress * 100}%` }}></div>
         <span className={styles.info}>
-          {timer} / {format(media?.current?.duration)}
+          {timer} / {format(duration)}
         </span>
       </div>
       // </div>
@@ -235,6 +241,7 @@ function Cinema({
           voice?.pause()
           setState("loading")
         }}
+        poster={thumbnail}
         // poster="https://i.redd.it/x35cv8yd93i71.jpg"
         className={styles.video}
       >

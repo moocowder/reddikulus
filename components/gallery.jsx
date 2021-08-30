@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import styles from "../styles/gallery.module.css"
+import Imagine from "./imagine"
 
-function Gallery({ urls, style, onClick, fullscreen = false }) {
+function Gallery({ urls, thumbnails, style, onClick, fullscreen = false }) {
   let [index, setIndex] = useState(0)
   let [progress, setProgress] = useState(0)
   let [loaded, setLoaded] = useState(false)
+
   let timeout
   useEffect(() => {
     timeout = setTimeout(() => {
@@ -24,17 +26,18 @@ function Gallery({ urls, style, onClick, fullscreen = false }) {
 
   return (
     <div className={styles.wrapper} onClick={onClick}>
-      <img className={styles.background} src={urls[index]} alt="" />
+      {/* <img className={styles.background} src={thumbnails[index]} alt="" /> */}
 
       <span className={styles.number}>
         {index + 1} / {urls.length}
       </span>
-      <img
+      <Imagine thumbnail={thumbnails[index]} original={urls[index]} />
+      {/* <img
         // onLoad={setLoaded(true)}
         // style={{ transform: transform }}
         className={styles.media}
         src={urls ? urls[index] : ""}
-      ></img>
+      ></img> */}
       <div key={urls[index]} className={styles.progress}></div>
     </div>
   )
