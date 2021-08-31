@@ -1,0 +1,28 @@
+.sort {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  /* border: 1px solid red; */
+}
+
+.word {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+  background: #ffffff26;
+  border-radius: 30px;
+  padding: 5px 15px;
+}
+
+.word:hover {
+  color: #d2042d;
+  transition: 0.3s;
+}
+
+.active {
+  color: #d2042d;
+  background: #d2042d4b;
+  transition: 0.3s;
+}

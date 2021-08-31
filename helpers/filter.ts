@@ -31,12 +31,14 @@ function filter(children: Child[]) {
 
   children = children.map((p: any) => {
     if (p.data.crosspost_parent_list) {
-      p.data.is_self = p.data.crosspost_parent_list[0].is_self
-      p.data.post_hint = p.data.crosspost_parent_list[0].post_hint
-      p.data.secure_media = p.data.crosspost_parent_list[0].secure_media
-      if (p.data.crosspost_parent_list[0].is_gallery) {
+      let cross = p.data.crosspost_parent_list[0]
+
+      p.data.is_self = cross?.is_self
+      p.data.post_hint = cross?.post_hint
+      p.data.secure_media = cross?.secure_media
+      if (cross?.is_gallery) {
         p.data.is_gallery = true
-        p.data.media_metadata = p.data.crosspost_parent_list[0].media_metadata
+        p.data.media_metadata = cross?.media_metadata
       }
     }
     return p
@@ -89,11 +91,11 @@ function filter(children: Child[]) {
     }
 
     if (p.data.crosspost_parent_list) {
-      if (p.data.crosspost_parent_list[0].is_video) {
+      if (p.data.crosspost_parent_list[0]?.is_video) {
         p.data.url =
-          p.data.crosspost_parent_list[0].media.reddit_video.fallback_url
+          p.data.crosspost_parent_list[0]?.media?.reddit_video.fallback_url
         p.data.is_video = true
-      } else p.data.url = p.data.crosspost_parent_list[0].url
+      } else p.data.url = p.data.crosspost_parent_list[0]?.url
     }
 
     // post.author = "fobardoo"

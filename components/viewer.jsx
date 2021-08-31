@@ -20,12 +20,16 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
           close()
           document.body.style.overflow = "auto"
           break
+        // case "ArrowRight":
+        //   next(e)
+        // case "ArrowLeft":
+        //   prev(e)
       }
       // if (e.key !== "Escape") return
       // close()
       // document.body.style.overflow = "auto"
     })
-  }, [])
+  }, [post])
 
   useEffect(() => {
     setShow(true)
@@ -112,6 +116,8 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       onMouseDown={(e) => {
         handleMouseDown(e)
       }}
+      onKeyDown={(e) => alert("hh")}
+      onKeyPress={(e) => alert("hh")}
       // onKeyDown={(e) => {
       //   handleKeyDown(e)
       // tabIndex="0"

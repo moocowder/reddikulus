@@ -2,6 +2,9 @@ import { ImArrowUp } from "react-icons/im"
 import Link from "next/link"
 import styles from "../styles/infos.module.css"
 import { BsFillChatDotsFill } from "react-icons/bs"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import { useEffect } from "react"
 
 type props = {
   ups: number
@@ -19,6 +22,20 @@ type Units = {
 }
 
 function Infos({ ups, title, permalink, sub, author, comments, date }: props) {
+  const router = useRouter()
+  const [page, setPage] = useState<"/r" | "/u" | "">("")
+  const [img, setImg] = useState("")
+
+  useEffect(() => {
+    let p = router.pathname.substr(0, 2)
+    if (p !== "/r") {
+      fetch(`/api/icon?sub=` + sub)
+        .then((r) => r.json())
+        .then((d) => setImg(d.img))
+    }
+    if (p === "/r" || p === "/u") setPage(p)
+  }, [])
+
   function relativeTime(d1: number, d2 = +new Date()) {
     d2 = Number(d2.toString().substr(0, 10))
 
@@ -62,13 +79,20 @@ function Infos({ ups, title, permalink, sub, author, comments, date }: props) {
         </a>
       </div>
       <div>
-        <Link href={`/r/${sub}`}>
-          <a> r/{sub}</a>
-        </Link>{" "}
+        {page !== "/r" && (
+          <>
+            <img style={{ width: "50px" }} src={img} alt="" />
+            <Link href={`/r/${sub}`}>
+              <a> r/{sub}</a>
+            </Link>
+          </>
+        )}
         |
-        <Link href={`/u/${author}`}>
-          <a className={styles.author}> u/{author}</a>
-        </Link>
+        {page !== "/u" && (
+          <Link href={`/u/${author}`}>
+            <a className={styles.author}> u/{author}</a>
+          </Link>
+        )}
         <span>{relativeTime(date)}</span> |
         <span>
           <BsFillChatDotsFill />

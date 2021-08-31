@@ -4,6 +4,8 @@ import Masonry from "./masonry"
 import Viewer from "./viewer"
 import Data from "../schema/data"
 import useLoadData from "../hooks/useLoadData"
+import Sort from "./Sort"
+import Word from "../schema/sorts"
 
 function Content({
   api,
@@ -13,13 +15,13 @@ function Content({
   params: { [key: string]: string }
 }) {
   let [after, setAfter] = useState("")
-  const [sort, setSort] = useState(params.sort)
+  const [sort, setSort] = useState<Word>(params.sort)
   const [post, setPost] = useState<Post | null>()
 
-  console.log("++++++++++++++++++")
-  console.log("after :", after, "sort :", sort, "post :", post)
-  console.log("params :", params)
-  console.log("__________________")
+  // console.log("++++++++++++++++++")
+  // console.log("after :", after, "sort :", sort, "post :", post)
+  // console.log("params :", params)
+  // console.log("__________________")
   let { data, loading, error } = useLoadData(api, { ...params, sort, after })
 
   let move = {
@@ -51,9 +53,11 @@ function Content({
 
   return (
     <div>
-      <button onClick={() => setSort("hot")}>hot</button>
-      <button onClick={() => setSort("new")}>new</button>
-      <button onClick={() => setSort("top")}>top</button>
+      <Sort
+        words={["best", "hot", "new", "top"]}
+        sort={sort}
+        setSort={setSort}
+      />
       {post ? (
         <Viewer
           post={post}

@@ -125,7 +125,7 @@ function Cinema({
 
   function play() {
     console.log(">>>>>>>>>>>", voice)
-    media.current.play()
+    media.current?.play()
     voice?.play()
   }
 
