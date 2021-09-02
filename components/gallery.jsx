@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import styles from "../styles/gallery.module.css"
+import Film from "./film"
 import Imagine from "./imagine"
 
-function Gallery({ urls, thumbnails, style, onClick, fullscreen = false }) {
+function Gallery({ urls, thumbnails, style, fullscreen = false }) {
   let [index, setIndex] = useState(0)
   let [progress, setProgress] = useState(0)
   let [loaded, setLoaded] = useState(false)
@@ -25,9 +26,14 @@ function Gallery({ urls, thumbnails, style, onClick, fullscreen = false }) {
   // }, [progress])
 
   return (
-    <div className={styles.wrapper} onClick={onClick}>
-      {/* <img className={styles.background} src={thumbnails[index]} alt="" /> */}
-
+    <div className={styles.wrapper}>
+      <img
+        style={{ zIndex: -1 }}
+        className={styles.background}
+        src={thumbnails[index]}
+        alt=""
+      />
+      <Film thumbnails={thumbnails} index={index} setIndex={setIndex} />
       <span className={styles.number}>
         {index + 1} / {urls.length}
       </span>

@@ -1,22 +1,29 @@
 .icon {
-  position: absolute;
+  /* position: absolute;
   top: 50%;
   left: 50%;
   font-size: 5rem;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   /* top: 90;
     left: 0; */
   /* color: #740055; */
-  color: yellow;
+  /* color: yellow; */
   /* transition: 0.3s; */
   /* z-index: 5; */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5));
+  color: hsla(348, 96%, 42%, 0.6);
 }
 
 .duration {
   position: absolute;
   bottom: 5px;
   right: 5px;
-  background-color: rgba(255, 255, 0, 0.2);
+  background-color: hsla(345, 98%, 50%, 0.4);
+  /* background-color: rgba(255, 255, 0, 0.2); */
   padding: 2px;
   border-radius: 5px;
   font-size: 15px;

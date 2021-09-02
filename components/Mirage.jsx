@@ -5,6 +5,7 @@ import Cinema from "./Cinema"
 import Imagine from "./imagine"
 import styles from "../styles/mirage.module.css"
 import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
+import { FaPlay } from "react-icons/fa"
 
 // type Props = {
 //   thumbnail: string
@@ -43,7 +44,8 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
             setstate("two")
           }}
         >
-          <CgPlayButtonO className={`${styles.icon} `} />
+          <FaPlay className={`${styles.icon} `} />
+          {/* <CgPlayButtonO className={`${styles.icon} `} /> */}
           <Imagine thumbnail={thumbnail} original={poster} />
         </div>
       )}
@@ -61,6 +63,7 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
             }}
             onTimeUpdate={() => setProgress(vid.current.currentTime / duration)}
             // controls
+            loop
           ></video>
           {/* <div className={styles.timer}> */}
           <div

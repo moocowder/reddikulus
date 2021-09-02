@@ -26,7 +26,11 @@ function Media({ media, onWheel, transform }) {
         <Imagine thumbnail={media.thumbnail} original={media.url} alt="image" />
       )}
       {media.type === "gallery" && (
-        <Gallery urls={media.urls} fullscreen={true} />
+        <Gallery
+          urls={media.urls}
+          thumbnails={media.thumbnails}
+          fullscreen={true}
+        />
       )}
     </div>
   )

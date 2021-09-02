@@ -7,6 +7,7 @@ import Post from "../schema/post"
 import { LegacyRef } from "react"
 import Imagine from "./imagine"
 import Mirage from "./Mirage"
+import Album from "./album"
 
 type Props = {
   post: Post
@@ -44,6 +45,7 @@ function Brick({
       <div
         className={styles.brick}
         style={{
+          // border: "2px solid green",
           width,
           height,
           top: position.top,
@@ -56,6 +58,7 @@ function Brick({
           setSelected(false)
         }}
         ref={lastElementRef}
+        onClick={() => onClick()}
       >
         {post.media.type === "image" ? (
           // <img
@@ -64,11 +67,7 @@ function Brick({
           //   onClick={() => onClick()}
           // />
           // <div className={styles.media} onClick={() => onClick()}>
-          <Imagine
-            thumbnail={post.media.thumbnail}
-            original={post.media.url}
-            onClick={() => onClick()}
-          />
+          <Imagine thumbnail={post.media.thumbnail} original={post.media.url} />
         ) : // </div>
         post.media.type === "video" ? (
           <div>
@@ -84,21 +83,21 @@ function Brick({
               peek={post.media.peek || ""}
               // url={post.media.url || ""}
               duration={post.media.duration}
-              onClick={() => onClick()}
             />
           </div>
         ) : (
-          <Gallery
-            style={{
-              width: "inherit",
-              height: "inherit",
-              borderRadius: "3px",
-              border: "2px solid yellow",
-            }}
-            onClick={() => onClick()}
-            urls={post.media.urls}
-            thumbnails={post.media.thumbnails}
-          />
+          // <Gallery
+          //   style={{
+          //     width: "inherit",
+          //     height: "inherit",
+          //     borderRadius: "3px",
+          //     border: "2px solid yellow",
+          //   }}
+          //   onClick={() => onClick()}
+          //   urls={post.media.urls}
+          //   thumbnails={post.media.thumbnails}
+          // />
+          <Album thumbnails={post.media.thumbnails} />
         )}
       </div>
     </div>

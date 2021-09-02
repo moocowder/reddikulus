@@ -19,7 +19,7 @@ let n
 
 type Props = {
   posts: Post[]
-  onBrickClick: (i: number, t?: string) => void
+  onBrickClick: (i: number) => void
   loadMore: () => void
   loading: boolean
   hasMore: string
@@ -111,7 +111,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
             height={iw / p.media.ratio}
             position={getPos(p)}
             lastElementRef={i === posts.length - 1 ? lastElementRef : null}
-            onClick={(t?: string) => onBrickClick(i, t)}
+            onClick={() => onBrickClick(i)}
           />
         ))}
       </div>

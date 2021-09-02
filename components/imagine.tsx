@@ -5,11 +5,9 @@ import styles from "../styles/imagine.module.css"
 function Imagine({
   thumbnail,
   original,
-  onClick = () => {},
 }: {
   thumbnail: string
   original: string
-  onClick?: any
 }) {
   const [loaded, setLoaded] = useState(false)
 
@@ -24,17 +22,9 @@ function Imagine({
   return (
     <>
       {loaded ? (
-        <img
-          onClick={onClick}
-          className={`${styles.original}`}
-          src={original}
-        />
+        <img className={`${styles.original}`} src={original} />
       ) : (
-        <img
-          onClick={onClick}
-          className={`${styles.thumbnail}`}
-          src={thumbnail}
-        />
+        <img className={`${styles.thumbnail}`} src={thumbnail} />
       )}
     </>
   )

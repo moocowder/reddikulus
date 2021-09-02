@@ -42,6 +42,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
   function handleMouseMove(e) {
     e.preventDefault()
 
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     if (scale === 1) {
       setShow(true)
       clearTimeout(timeout.current)
@@ -101,18 +102,23 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
     document.body.style.overflow = "auto"
   }
 
+  function handleMouseEnter() {
+    console.log(timeout.current)
+    clearTimeout(timeout.current)
+  }
+
   return (
     <div
       className={styles.container}
       onMouseMove={(e) => {
         handleMouseMove(e)
       }}
-      // onClick={(e) => {
-      //   prev(e)
-      // }}
-      // onContextMenu={(e) => {
-      //   next(e)
-      // }}
+      onClick={(e) => {
+        prev(e)
+      }}
+      onContextMenu={(e) => {
+        next(e)
+      }}
       onMouseDown={(e) => {
         handleMouseDown(e)
       }}
@@ -128,6 +134,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
 
       {show && (
         <Infos
+          onMouseEnter={() => handleMouseEnter()}
           ups={post.ups}
           title={post.title}
           permalink={post.permalink}
@@ -138,8 +145,8 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
         />
       )}
 
-      <div className={styles.right} onClick={(e) => next(e)}></div>
-      <div className={styles.left} onClick={(e) => prev(e)}></div>
+      {/* <div className={styles.right} onClick={(e) => next(e)}></div>
+      <div className={styles.left} onClick={(e) => prev(e)}></div> */}
 
       {isVideo ? (
         <img className={styles.background} src={post.media.thumbnail} alt="" />

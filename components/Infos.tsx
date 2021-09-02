@@ -14,6 +14,7 @@ type props = {
   author?: string
   comments: number
   date: number
+  onMouseEnter: Function
 }
 
 type Units = {
@@ -21,7 +22,16 @@ type Units = {
   //   [key in "year" | "month" | "day" | "hour" | "minute" | "second"]?: number
 }
 
-function Infos({ ups, title, permalink, sub, author, comments, date }: props) {
+function Infos({
+  ups,
+  title,
+  permalink,
+  sub,
+  author,
+  comments,
+  date,
+}: // onMouseEnter,
+props) {
   const router = useRouter()
   const [page, setPage] = useState<"/r" | "/u" | "">("")
   const [img, setImg] = useState("")
@@ -66,7 +76,8 @@ function Infos({ ups, title, permalink, sub, author, comments, date }: props) {
   }
 
   return (
-    <div className={styles.infos}>
+    // onMouseEnter={() => onMouseEnter()}
+    <div className={styles.infos} onClick={(e) => e.stopPropagation()}>
       <div>
         <ImArrowUp />
         <b className={styles.ups}>{format(ups)}</b>

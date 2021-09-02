@@ -45,9 +45,8 @@ function Content({
     },
   }
 
-  function handleBrickClick(i: number, t?: string) {
+  function handleBrickClick(i: number) {
     document.body.style.overflow = "hidden"
-    data.posts[i].media.timestamp = t
     setPost(data.posts[i])
   }
 
