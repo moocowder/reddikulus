@@ -3,108 +3,53 @@ import { useState, useRef, useEffect } from "react"
 import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
 import { MdReplay } from "react-icons/md"
 import { VscDebugRestart } from "react-icons/vsc"
-import { FaUndoAlt, FaVolumeUp, FaVolumeMute } from "react-icons/fa"
+import {
+  FaUndoAlt,
+  FaVolumeUp,
+  FaVolumeMute,
+  FaPlay,
+  FaPause,
+  FaUndo,
+} from "react-icons/fa"
 import { ImSpinner9 } from "react-icons/im"
 
-//check if there is audio
-//get audio
-//if timestamp then move video and audio to timestamp
-//if autoplay then play video and audio
-
-function Cinema({
-  src,
-  thumbnail,
-  duration,
-  // poster,
-  // onClick = (t) => {},
-}) {
+function Cinema({ src, thumbnail, duration }) {
   const [state, setState] = useState("loading")
   const [timer, setTimer] = useState("00:00")
   const [progress, setProgress] = useState(0)
-  const [moving, setMoving] = useState(false)
   const [sound, setSound] = useState(false)
-  // const [poster, setPoster] = useState(thumbnail)
+  const [show, setShow] = useState(true)
   const [audioSrc, setAudioSrc] = useState("")
-  let t
   const [voice, setVoice] = useState(null)
   let media = useRef()
-  let audio = useRef()
-
-  // useEffect(() => {
-  //   if (hasAudio) return
-  //   fetch(src.replace(/DASH_\d+/, "DASH_audio"))
-  //     .then((d) => {
-  //       d.status === 200 && setAudioSrc(src.replace(/DASH_\d+/, "DASH_audio"))
-  //     })
-  //     .catch((e) => console.log(e, src, "does NOT have audio"))
-  // }, [hasAudio])
+  let timeout = useRef()
 
   useEffect(() => {
     setState("loading")
     setTimer("00:00")
     setProgress(0)
-    setMoving(false)
 
-    fetch(src.replace(/DASH_\d+/, "DASH_audio"))
-      .then((d) => {
-        d.status === 200 && setAudioSrc(src.replace(/DASH_\d+/, "DASH_audio"))
-      })
-      .catch((e) => console.log(e, src, "does NOT have audio"))
+    setShow(1)
+    clearTimeout(timeout.current)
+    timeout.current = setTimeout(() => {
+      setShow(0)
+    }, 3000)
+
+    // fetch(src.replace(/DASH_\d+/, "DASH_audio"))
+    //   .then((d) => {
+    //     d.status === 200 && setAudioSrc(src.replace(/DASH_\d+/, "DASH_audio"))
+    //   })
+    //   .catch((e) => console.log(e, src, "does NOT have audio"))
 
     media.current.addEventListener("canplay", () => {
       play()
     })
-
-    // play()
-    // if (autoplay) {
-    //   media.current.play().catch((e) => console.log("autoplay V : ", e))
-    //   voice?.play().catch((e) => console.log("autoplay A : ", e))
-    // }
   }, [src])
 
   // useEffect(() => {
-  //   if (!autoplay || !voice) return
-  //   {
-  //     media.current.play()
-  //     voice.play()
-  //   }
-  // }, [autoplay, voice])
-
-  // useEffect(() => {
-  //   if (!voice) return
-  //   if (timestamp) voice.currentTime = timestamp
-  // }, [voice])
-
-  useEffect(() => {
-    if (!audioSrc) return
-    setVoice(new Audio(audioSrc))
-
-    // voice.play()
-    // voice = a
-
-    // voice?.addEventListener("canplay", () => {
-    //   setPoster(null)
-    //   setSound(true)
-    // })
-    // return () => setVoice(null)
-  }, [audioSrc])
-
-  function handleVideoClick(target) {
-    if (state === "init") {
-      // media.current.play().catch((e) => console.log("Initplay V", e))
-      // voice?.play().catch((e) => console.log("Initplay A", e))
-      play()
-    } else if (state === "ended") {
-      // media.current.play()
-      play()
-    }
-    // else {
-    //   if (target.localName !== "svg") {
-    //     if (voice) voice.muted = true
-    //     onClick(media.current.currentTime)
-    //   }
-    // }
-  }
+  //   if (!audioSrc) return
+  //   setVoice(new Audio(audioSrc))
+  // }, [audioSrc])
 
   function updateTimer() {
     if (!media.current) return
@@ -124,82 +69,92 @@ function Cinema({
   }
 
   function play() {
-    console.log(">>>>>>>>>>>", voice)
     media.current?.play()
     voice?.play()
   }
 
   function pause() {
-    console.log("+_+++++++", voice)
     media.current.pause()
     voice?.pause()
   }
 
   function renderIcon() {
     switch (state) {
-      // case "init":
-      //   return (
-      //     <CgPlayButtonO
-      //       onClick={() => {
-      //         play()
-      //       }}
-      //       className={`${styles.icon} ${styles.run} ${styles.start}`}
-      //     />
-      //   )
       case "ended":
         return (
-          <FaUndoAlt
-            className={`${styles.icon} ${styles.run} ${styles.start}`}
-            onClick={() => {
-              media.current.play()
+          <div
+            className={styles.icon}
+            onClick={(e) => {
+              e.stopPropagation()
+              play()
             }}
-          />
+          >
+            <FaUndoAlt />
+          </div>
         )
       case "paused":
         return (
-          <CgPlayButtonO
-            onClick={() => {
+          <div
+            className={styles.icon}
+            onClick={(e) => {
+              e.stopPropagation()
               play()
             }}
-            className={`${styles.icon} ${styles.run} ${styles.paused}`}
-          />
+          >
+            <FaPlay />
+          </div>
         )
       case "loading":
-        return <ImSpinner9 className={`${styles.icon} ${styles.loading}`} />
+        return (
+          <div className={styles.icon}>
+            <ImSpinner9 className={` ${styles.loading}`} />
+          </div>
+        )
       case "running":
         return (
-          <CgPlayPauseO
-            onClick={() => {
+          <div
+            className={styles.icon}
+            onClick={(e) => {
+              e.stopPropagation()
               pause()
             }}
-            className={`${styles.icon} ${styles.pause}`}
-          />
+          >
+            <FaPause />
+          </div>
         )
     }
   }
 
-  function renderTimer() {
-    if (state === "init" || state === "ended") return
-    // if (state === "running" && !moving) return
-
+  function renderControls() {
     return (
-      // <div className={styles.controls}>
       <div
-        className={styles.timer}
-        onClick={(e) => {
-          console.log(e.clientX)
-          console.log(window.innerWidth)
-          // vid.current.see
-          media.current.currentTime = (e.clientX / window.innerWidth) * duration
-          voice.currentTime = (e.clientX / window.innerWidth) * duration
+        style={{
+          opacity: show || state === "paused" || state === "ended" ? 1 : 0,
         }}
+        className={styles.controls}
+        onMouseEnter={(e) => handleMouseEnter(e)}
+        onMouseMove={(e) => e.stopPropagation()}
       >
-        <div style={{ width: `${progress * 100}%` }}></div>
         <span className={styles.info}>
           {timer} / {format(duration)}
         </span>
+        <div
+          onClick={(e) => {
+            e.stopPropagation()
+            media.current.currentTime =
+              (e.clientX / window.innerWidth) * duration
+            voice.currentTime = (e.clientX / window.innerWidth) * duration
+          }}
+          className={styles.timer}
+        >
+          {/* <div className={styles.bar}> */}
+          <div
+            className={styles.progress}
+            style={{ width: `${progress * 100}%` }}
+          ></div>
+          {/* </div> */}
+        </div>
       </div>
-      // </div>
     )
   }
 
@@ -208,21 +163,22 @@ function Cinema({
     return <FaVolumeUp className={`${styles.unmute} ${styles.info}`} />
   }
 
+  function handleMouseMove() {
+    // if (scale === 1) {
+    setShow(1)
+    clearTimeout(timeout.current)
+    timeout.current = setTimeout(() => {
+      setShow(0)
+    }, 3000)
+    // }
+  }
+
+  function handleMouseEnter(e) {
+    clearTimeout(timeout.current)
+  }
+
   return (
-    <div
-      className={styles.player}
-      // style={{ ...style, width, height }}
-      // onMouseMove={() => {
-      //   clearTimeout(t)
-      //   setMoving(true)
-      //   t = setTimeout(() => {
-      //     setMoving(true)
-      //   }, 4000)
-      // }}
-      onClick={({ target }) => {
-        handleVideoClick(target)
-      }}
-    >
+    <div className={styles.player} onMouseMove={() => handleMouseMove()}>
       <video
         ref={media}
         key={"v" + src}
@@ -242,7 +198,6 @@ function Cinema({
           setState("loading")
         }}
         poster={thumbnail}
-        // poster="https://i.redd.it/x35cv8yd93i71.jpg"
         className={styles.video}
       >
         <source src={src} type="video/mp4" />
@@ -254,7 +209,7 @@ function Cinema({
       )} */}
       <img src={src} alt="" />
       {renderIcon()}
-      {renderTimer()}
+      {renderControls()}
       {renderSound()}
     </div>
   )

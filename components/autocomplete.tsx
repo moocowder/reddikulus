@@ -68,7 +68,7 @@ function Autocomplete() {
               router.push(`/${s.name}`)
             }}
           >
-            <img src={s.community_icon || s.icon} alt="" />
+            <img src={s.communityIcon || s.icon} alt="" />
             <div className={styles.infos}>
               <span>{s.name}</span>
               <b>{s.numSubscribers}</b> members

@@ -13,6 +13,8 @@
   flex-direction: column;
   text-shadow: 0 0 22px black, 0 0 22px black;
   z-index: 5;
+  transition: 0.3s;
+  /* display: block; */
 }
 
 /* .infos:hover {

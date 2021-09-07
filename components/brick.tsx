@@ -33,6 +33,7 @@ function Brick({
     <div>
       {selected && (
         <Infos
+          opacity={1}
           ups={post.ups}
           title={post.title}
           permalink={post.permalink}

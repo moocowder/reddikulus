@@ -9,7 +9,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
   let [scale, setScale] = useState(1)
   let [start, setStart] = useState({ x: 0, y: 0 })
   let [zoomTranslate, setZoomTranslate] = useState({ x: 0, y: 0 })
-  let [show, setShow] = useState(true)
+  let [show, setShow] = useState(1)
   let timeout = useRef()
   const a = 1.3
 
@@ -32,10 +32,10 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
   }, [post])
 
   useEffect(() => {
-    setShow(true)
+    setShow(1)
     clearTimeout(timeout.current)
     timeout.current = setTimeout(() => {
-      setShow(false)
+      setShow(0)
     }, 3000)
   }, [post])
 
@@ -44,10 +44,11 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
 
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     if (scale === 1) {
-      setShow(true)
+      setShow(1)
+      console.log(timeout.current)
       clearTimeout(timeout.current)
       timeout.current = setTimeout(() => {
-        setShow(false)
+        setShow(0)
       }, 3000)
       return
     }
@@ -60,7 +61,7 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
 
   function handleWheel(e) {
     e.preventDefault()
-    setShow(false)
+    setShow(0)
     setStart({ x: e.clientX, y: e.clientY })
 
     let delta
@@ -132,18 +133,19 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
 
       </div> */}
 
-      {show && (
-        <Infos
-          onMouseEnter={() => handleMouseEnter()}
-          ups={post.ups}
-          title={post.title}
-          permalink={post.permalink}
-          sub={post.sub}
-          author={post.author}
-          comments={post.comments}
-          date={post.date}
-        />
-      )}
+      {/* {show && ( */}
+      <Infos
+        onMouseEnter={() => handleMouseEnter()}
+        opacity={show}
+        ups={post.ups}
+        title={post.title}
+        permalink={post.permalink}
+        sub={post.sub}
+        author={post.author}
+        comments={post.comments}
+        date={post.date}
+      />
+      {/* )} */}
 
       {/* <div className={styles.right} onClick={(e) => next(e)}></div>
       <div className={styles.left} onClick={(e) => prev(e)}></div> */}

@@ -2,9 +2,13 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import styles from "../styles/panel.module.css"
 import { FaTimes } from "react-icons/fa"
+import { MdPlayArrow } from "react-icons/md"
+import Subpanel from "./subpanel"
 
 function Panel({ setOpen }: { setOpen: Function }) {
   const [topics, setTopics] = useState<string[]>([])
+  const [topic, setTopic] = useState<string | null>(null)
+
   useEffect(() => {
     fetch("/api/topics?topic=")
       .then((r) => r.json())
@@ -13,16 +17,20 @@ function Panel({ setOpen }: { setOpen: Function }) {
   }, [])
 
   return (
-    <ul className={styles.panel}>
-      <li>
-        <FaTimes onClick={() => setOpen(false)} />
-      </li>
-      {topics?.map((t) => (
-        <li key={t}>
-          <Link href={"/topics/" + t}>{t}</Link>
+    <div className={styles.menu} onMouseLeave={() => setOpen(false)}>
+      <ul className={styles.panel}>
+        <li>
+          <FaTimes onClick={() => setOpen(false)} />
         </li>
-      ))}
-    </ul>
+        {topics?.map((t) => (
+          <li className={styles.item} key={t}>
+            <Link href={"/topics/" + t}>{t}</Link>
+            <MdPlayArrow onMouseEnter={() => setTopic(t)} />
+          </li>
+        ))}
+      </ul>
+      {topic && <Subpanel topic={topic} setTopic={setTopic} />}
+    </div>
   )
 }
 

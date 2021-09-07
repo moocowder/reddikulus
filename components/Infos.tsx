@@ -14,6 +14,7 @@ type props = {
   author?: string
   comments: number
   date: number
+  opacity: number
   onMouseEnter: Function
 }
 
@@ -30,21 +31,23 @@ function Infos({
   author,
   comments,
   date,
+  opacity,
+  onMouseEnter,
 }: // onMouseEnter,
 props) {
   const router = useRouter()
   const [page, setPage] = useState<"/r" | "/u" | "">("")
   const [img, setImg] = useState("")
 
-  useEffect(() => {
-    let p = router.pathname.substr(0, 2)
-    if (p !== "/r") {
-      fetch(`/api/icon?sub=` + sub)
-        .then((r) => r.json())
-        .then((d) => setImg(d.img))
-    }
-    if (p === "/r" || p === "/u") setPage(p)
-  }, [])
+  // useEffect(() => {
+  //   let p = router.pathname.substr(0, 2)
+  //   if (p !== "/r") {
+  //     fetch(`/api/icon?sub=` + sub)
+  //       .then((r) => r.json())
+  //       .then((d) => setImg(d.img))
+  //   }
+  //   if (p === "/r" || p === "/u") setPage(p)
+  // }, [])
 
   function relativeTime(d1: number, d2 = +new Date()) {
     d2 = Number(d2.toString().substr(0, 10))
@@ -77,7 +80,13 @@ props) {
 
   return (
     // onMouseEnter={() => onMouseEnter()}
-    <div className={styles.infos} onClick={(e) => e.stopPropagation()}>
+    <div
+      className={styles.infos}
+      style={{ display: opacity === 1 ? "block" : "none" }}
+      onClick={(e) => e.stopPropagation()}
+      onMouseEnter={(e) => onMouseEnter(e)}
+      onMouseMove={(e) => e.stopPropagation()}
+    >
       <div>
         <ImArrowUp />
         <b className={styles.ups}>{format(ups)}</b>

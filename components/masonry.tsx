@@ -81,7 +81,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   return (
     // style={{ border: "1px solid red", width: "99vw", height: "5440rem" }}
     <div>
-      <div className="slidecontainer">
+      {/* <div className="slidecontainer">
         <p>Zoom in/out :</p>
         <input
           type="range"
@@ -93,7 +93,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
             setIw(Number(e.target.value))
           }}
         />
-      </div>
+      </div> */}
       <div
         className={styles.masonry}
         style={{

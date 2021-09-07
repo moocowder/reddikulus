@@ -18,7 +18,7 @@ function Header({ setOpen }: { setOpen: Function }) {
       <Link href="/">
         <img src="/axolotl.svg" alt="" />
       </Link>
-      <HiTrendingUp onClick={() => setOpen(true)} />
+      <HiTrendingUp style={{ fontSize: 66 }} onClick={() => setOpen(true)} />
       <Autocomplete />
       {JSON.stringify(user) !== "{}" ? (
         <div style={{ display: "flex " }}>

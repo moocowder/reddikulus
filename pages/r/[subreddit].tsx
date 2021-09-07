@@ -28,6 +28,7 @@ type Props = {
 }
 
 function Subreddit({ sub, about }: Props) {
+  if (!about) return <h1>subreddit "{sub}" doesn't exist.</h1>
   if (!about.allow_media)
     return <h1>This sub doesn't contain any images or videos</h1>
 
@@ -77,23 +78,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let sub = context.params?.subreddit
   let res = await fetch(`https://reddit.com/r/${sub}/about.json`)
   let data = await res.json()
+  let about: About | null
 
-  let about: About = {
-    // submission_type: data.data.submission_type,
-    banner_img: data.data.banner_img,
-    banner_background_image: data.data.banner_background_image,
-    mobile_banner_image: data.data.mobile_banner_image,
-    header_img: data.data.header_img,
-    icon_img: data.data.icon_img,
-    community_icon: data.data.community_icon,
-    public_description: data.data.public_description,
-    primary_color: data.data.primary_color,
-    allow_media:
-      data.data.allow_galleries ||
-      data.data.allow_videogifs ||
-      data.data.allow_videos ||
-      data.data.allow_images,
-  }
+  if (data.kind === "Listing") about = null
+  else
+    about = {
+      // submission_type: data.data.submission_type,
+      banner_img: data.data.banner_img,
+      banner_background_image: data.data.banner_background_image,
+      mobile_banner_image: data.data.mobile_banner_image,
+      header_img: data.data.header_img,
+      icon_img: data.data.icon_img,
+      community_icon: data.data.community_icon,
+      public_description: data.data.public_description,
+      primary_color: data.data.primary_color,
+      allow_media:
+        data.data.allow_galleries ||
+        data.data.allow_videogifs ||
+        data.data.allow_videos ||
+        data.data.allow_images,
+    }
   return { props: { sub, about } }
 }
 
