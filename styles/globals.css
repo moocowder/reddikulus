@@ -1,7 +1,8 @@
 html,
 body {
-  background-color: #110a1a;
-  color: white;
+  /* background-color: #110a1a; */
+  background-color: #090014;
+  color: rgb(236, 236, 236);
   /* padding: 0; */
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -26,4 +27,7 @@ ul {
 
 :root {
   --cherry: #d2042d;
+  --sorbe: #ff0066;
+  --ocean-dark: #110a1a;
+  --ocean-light: #220e3b;
 }

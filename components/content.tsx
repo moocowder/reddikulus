@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Post from "../schema/post"
 import Masonry from "./masonry"
 import Viewer from "./viewer"
@@ -18,11 +18,20 @@ function Content({
   const [sort, setSort] = useState<Word>(params.sort)
   const [post, setPost] = useState<Post | null>()
 
-  // console.log("++++++++++++++++++")
-  // console.log("after :", after, "sort :", sort, "post :", post)
-  // console.log("params :", params)
-  // console.log("__________________")
   let { data, loading, error } = useLoadData(api, { ...params, sort, after })
+
+  // useEffect(() => {
+  //   console.log("000000000000000000000")
+  //   setAfter("")
+  // }, [params.sub, params.user, params.q, params.sort])
+
+  // useEffect(() => {
+  //   if (data.after === "") {
+  //     console.log("@@@@@@@@@@@@@@@@@@@@")
+
+  //     setAfter("")
+  //   }
+  // }, [data])
 
   let move = {
     next: () => {
@@ -57,14 +66,14 @@ function Content({
         sort={sort}
         setSort={setSort}
       />
-      {post ? (
+      {post && (
         <Viewer
           post={post}
           close={() => setPost(null)}
           isVideo={post.media.type === "video"}
           move={move}
         />
-      ) : null}
+      )}
       <Masonry
         posts={data.posts}
         onBrickClick={handleBrickClick}
@@ -79,7 +88,13 @@ function Content({
           loading...
         </h1>
       )}
-      {error && <h1>error!</h1>}
+      {error && (
+        <h1
+          style={{ zIndex: 4, position: "fixed", bottom: "30px", left: "3px" }}
+        >
+          error!
+        </h1>
+      )}
     </div>
   )
 }

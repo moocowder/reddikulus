@@ -1,14 +1,16 @@
 .brick {
   position: absolute;
   border-radius: 3px;
-  box-shadow: 0 0 8px 0px #b30083;
+  /* box-shadow: 0 0 8px 0px #b30083; */
+  box-shadow: 0 0 8px 0px #ff0066;
   transition: 0.2s;
   overflow: hidden;
 }
 
 .brick:hover {
   cursor: pointer;
-  box-shadow: 0 0 12px 1px #b30083;
+  /* box-shadow: 0 0 12px 1px #b30083; */
+  box-shadow: 0 0 12px 1px #ff0066;
   transition: 0.2s;
   transform: scale(1.03);
 }

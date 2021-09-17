@@ -5,6 +5,9 @@ import { BsFillChatDotsFill } from "react-icons/bs"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { useEffect } from "react"
+import { FiMessageSquare } from "react-icons/fi"
+import { FaRegClock } from "react-icons/fa"
+import { IoLogoReddit } from "react-icons/io"
 
 type props = {
   ups: number
@@ -32,7 +35,7 @@ function Infos({
   comments,
   date,
   opacity,
-  onMouseEnter,
+  onMouseEnter = () => {},
 }: // onMouseEnter,
 props) {
   const router = useRouter()
@@ -79,26 +82,28 @@ props) {
   }
 
   return (
-    // onMouseEnter={() => onMouseEnter()}
     <div
       className={styles.infos}
       style={{ display: opacity === 1 ? "block" : "none" }}
+      onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
       onMouseEnter={(e) => onMouseEnter(e)}
       onMouseMove={(e) => e.stopPropagation()}
     >
-      <div>
-        <ImArrowUp />
-        <b className={styles.ups}>{format(ups)}</b>
+      <div className={styles.top}>
+        <div className={styles.stat}>
+          <ImArrowUp />
+          {format(ups)}
+        </div>
         <a
           href={"https://reddit.com" + permalink}
           target="_blank"
           className={styles.title}
         >
-          {title}
+          <b>{title}</b>
         </a>
       </div>
-      <div>
+      <div className={styles.top}>
         {page !== "/r" && (
           <>
             <img style={{ width: "50px" }} src={img} alt="" />
@@ -107,18 +112,22 @@ props) {
             </Link>
           </>
         )}
-        |
         {page !== "/u" && (
-          <Link href={`/u/${author}`}>
-            <a className={styles.author}> u/{author}</a>
-          </Link>
+          <div className={styles.stat}>
+            <IoLogoReddit />
+            <Link href={`/u/${author}`}>
+              <a className={styles.author}> u/{author}</a>
+            </Link>
+          </div>
         )}
-        <span>{relativeTime(date)}</span> |
-        <span>
-          <BsFillChatDotsFill />
+        <span className={styles.stat}>
+          <FaRegClock />
+          {relativeTime(date)}
+        </span>
+        <span className={styles.stat}>
+          <FiMessageSquare />
           {format(comments)}
-        </span>{" "}
-        |
+        </span>
       </div>
     </div>
   )

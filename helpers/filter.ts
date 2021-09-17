@@ -19,6 +19,7 @@ type Data = {
   permalink: string
   domain: string
   created_utc: number
+  over_18: boolean
 }
 
 function filter(children: Child[]) {
@@ -52,6 +53,7 @@ function filter(children: Child[]) {
   // children = children.filter((p: any) => p.kind === "t3")
 
   // p.data.post_hint === "image"
+  children = children.filter((p) => !p.data.over_18)
   children = children.filter(
     (p: any) =>
       p.data.is_gallery ||

@@ -17,12 +17,12 @@
 }
 
 .word:hover {
-  color: #d2042d;
+  color: #ff006f;
   transition: 0.3s;
 }
 
 .active {
-  color: #d2042d;
-  background: #d2042d4b;
+  color: #ff006f;
+  background: #ff006f28;
   transition: 0.3s;
 }

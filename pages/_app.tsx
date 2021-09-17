@@ -5,8 +5,6 @@ import UserContext from "../contexts/userContext"
 import { useEffect, useState } from "react"
 import User from "../schema/user"
 import Panel from "../components/panel"
-import fs from "fs"
-import { GetServerSideProps } from "next"
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User>({})

@@ -1,6 +1,5 @@
 import { GetServerSideProps } from "next"
 import { useEffect, useState, useContext } from "react"
-import useLoadFeed from "../hooks/useLoadFeed"
 import Masonry from "../components/masonry"
 import { useRouter } from "next/router"
 import UserContext from "../contexts/userContext"

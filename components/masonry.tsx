@@ -56,6 +56,12 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
     if (node) observer.current.observe(node)
   }
 
+  function lastBrick() {
+    console.log("***********************")
+    if (loading) return
+    if (hasMore) loadMore()
+    else setEnd(true)
+  }
   //uselayouteffect
   // let width
   // useLayoutEffect(() => {
@@ -112,6 +118,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
             position={getPos(p)}
             lastElementRef={i === posts.length - 1 ? lastElementRef : null}
             onClick={() => onBrickClick(i)}
+            lastBrick={i === posts.length - 1 ? lastBrick : null}
           />
         ))}
       </div>

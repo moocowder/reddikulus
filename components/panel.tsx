@@ -17,7 +17,7 @@ function Panel({ setOpen }: { setOpen: Function }) {
   }, [])
 
   return (
-    <div className={styles.menu} onMouseLeave={() => setOpen(false)}>
+    <div className={styles.menu} onMouseLeave={() => {}}>
       <ul className={styles.panel}>
         <li>
           <FaTimes onClick={() => setOpen(false)} />

@@ -2,16 +2,11 @@ import Cinema from "../components/Cinema"
 import Gallery from "../components/gallery"
 import styles from "../styles/media.module.css"
 import Imagine from "./imagine"
+import Zoom from "./zoom"
 
-function Media({ media, onWheel, transform }) {
+function Media({ media }) {
   return (
-    <div
-      className={styles.wrapper}
-      style={{ transform: transform }}
-      onWheel={(e) => {
-        onWheel(e)
-      }}
-    >
+    <div className={styles.wrapper}>
       {media.type === "video" && (
         <Cinema
           src={media.url}
@@ -23,7 +18,16 @@ function Media({ media, onWheel, transform }) {
         ></Cinema>
       )}
       {media.type === "image" && (
-        <Imagine thumbnail={media.thumbnail} original={media.url} alt="image" />
+        <>
+          <img src={media.thumbnail} className={styles.background} alt="" />
+          <Zoom>
+            <Imagine
+              thumbnail={media.thumbnail}
+              original={media.url}
+              alt="image"
+            />
+          </Zoom>
+        </>
       )}
       {media.type === "gallery" && (
         <Gallery

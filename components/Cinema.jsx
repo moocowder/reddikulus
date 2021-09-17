@@ -12,6 +12,7 @@ import {
   FaUndo,
 } from "react-icons/fa"
 import { ImSpinner9 } from "react-icons/im"
+import Zoom from "./zoom"
 
 function Cinema({ src, thumbnail, duration }) {
   const [state, setState] = useState("loading")
@@ -20,8 +21,10 @@ function Cinema({ src, thumbnail, duration }) {
   const [sound, setSound] = useState(false)
   const [show, setShow] = useState(true)
   const [audioSrc, setAudioSrc] = useState("")
-  const [voice, setVoice] = useState(null)
+  // const [voice, setVoice] = useState(null)
   let media = useRef()
+  let audio = useRef()
+  let voice = audio.current
   let timeout = useRef()
 
   useEffect(() => {
@@ -39,7 +42,10 @@ function Cinema({ src, thumbnail, duration }) {
     //   .then((d) => {
     //     d.status === 200 && setAudioSrc(src.replace(/DASH_\d+/, "DASH_audio"))
     //   })
-    //   .catch((e) => console.log(e, src, "does NOT have audio"))
+    //   .catch((e) => {
+    //     setAudioSrc("")
+    //     console.log(e, src, "does NOT have audio")
+    //   })
 
     media.current.addEventListener("canplay", () => {
       play()
@@ -47,8 +53,10 @@ function Cinema({ src, thumbnail, duration }) {
   }, [src])
 
   // useEffect(() => {
-  //   if (!audioSrc) return
-  //   setVoice(new Audio(audioSrc))
+  //   if (!audioSrc) setVoice(null)
+  //   if (audioSrc)
+  //     if (voice) voice.src = audioSrc
+  //     else setVoice(new Audio(audioSrc))
   // }, [audioSrc])
 
   function updateTimer() {
@@ -106,7 +114,7 @@ function Cinema({ src, thumbnail, duration }) {
         )
       case "loading":
         return (
-          <div className={styles.icon}>
+          <div className={styles.iconVisible}>
             <ImSpinner9 className={` ${styles.loading}`} />
           </div>
         )
@@ -143,7 +151,8 @@ function Cinema({ src, thumbnail, duration }) {
             e.stopPropagation()
             media.current.currentTime =
               (e.clientX / window.innerWidth) * duration
-            voice.currentTime = (e.clientX / window.innerWidth) * duration
+            if (voice)
+              voice.currentTime = (e.clientX / window.innerWidth) * duration
           }}
           className={styles.timer}
         >
@@ -179,38 +188,42 @@ function Cinema({ src, thumbnail, duration }) {
 
   return (
     <div className={styles.player} onMouseMove={() => handleMouseMove()}>
-      <video
-        ref={media}
-        key={"v" + src}
-        onPlaying={() => {
-          voice?.play()
-          setState("running")
-        }}
-        onPause={() => {
-          setState("paused")
-        }}
-        onEnded={() => {
-          setState("ended")
-        }}
-        onTimeUpdate={updateTimer}
-        onWaiting={() => {
-          voice?.pause()
-          setState("loading")
-        }}
-        poster={thumbnail}
-        className={styles.video}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-      {/* {audioSrc && (
-        <audio ref={audio} key={"a" + src}>
-          <source src={audioSrc} type="audio/mp4" />
-        </audio>
-      )} */}
-      <img src={src} alt="" />
-      {renderIcon()}
-      {renderControls()}
-      {renderSound()}
+      <img src={thumbnail} className={styles.background} alt="" />
+      <Zoom>
+        <video
+          ref={media}
+          key={"v" + src}
+          onPlaying={() => {
+            voice?.play()
+            setState("running")
+          }}
+          onPause={() => {
+            setState("paused")
+          }}
+          onEnded={() => {
+            setState("ended")
+          }}
+          onTimeUpdate={updateTimer}
+          onWaiting={() => {
+            voice?.pause()
+            setState("loading")
+          }}
+          poster={thumbnail}
+          className={styles.video}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+
+        {audioSrc && (
+          <audio ref={audio} key={"a" + src}>
+            <source src={audioSrc} type="audio/mp4" />
+          </audio>
+        )}
+        <img src={src} alt="" />
+        {renderIcon()}
+        {renderControls()}
+        {renderSound()}
+      </Zoom>
     </div>
   )
 }

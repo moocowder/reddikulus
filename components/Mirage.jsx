@@ -36,14 +36,14 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
   }
 
   return (
-    <div style={{ border: "0px solid white" }}>
+    <div
+      style={{ border: "0px solid white" }}
+      // onMouseEnter={() => setstate("two")}
+      // onMouseLeave={() => setstate("one")}
+    >
       <span className={styles.duration}>{format(duration)}</span>
       {state === "one" && (
-        <div
-          onMouseEnter={() => {
-            setstate("two")
-          }}
-        >
+        <div>
           <FaPlay className={`${styles.icon} `} />
           {/* <CgPlayButtonO className={`${styles.icon} `} /> */}
           <Imagine thumbnail={thumbnail} original={poster} />
@@ -55,7 +55,6 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
             // onClick={() => setstate("three")}
             ref={vid}
             style={{ width: "100%", height: "100%" }}
-            onMouseLeave={() => setstate("one")}
             autoPlay
             src={peek}
             onClick={() => {

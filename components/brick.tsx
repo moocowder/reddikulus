@@ -16,6 +16,7 @@ type Props = {
   height: number
   lastElementRef: LegacyRef<HTMLDivElement> | null
   onClick: Function
+  lastBrick: Function
 }
 function Brick({
   post,
@@ -24,10 +25,24 @@ function Brick({
   height,
   lastElementRef,
   onClick,
+  lastBrick,
 }: Props) {
   const [iw, setIw] = useState(width)
   const [selected, setSelected] = useState(false)
   const [visible, setVisible] = useState(false)
+
+  let observer
+  function rendered(node) {
+    if (observer) observer.disconnect()
+    observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setVisible(true)
+        if (lastBrick) lastBrick()
+      }
+      // console.log("our node has intersected with viewport", node)
+    })
+    if (node) observer.observe(node)
+  }
 
   return (
     <div>
@@ -43,7 +58,7 @@ function Brick({
           date={post.date}
         />
       )}
-      <div
+    <div
         className={styles.brick}
         style={{
           // border: "2px solid green",
@@ -58,48 +73,57 @@ function Brick({
         onMouseLeave={() => {
           setSelected(false)
         }}
-        ref={lastElementRef}
+        // ref={lastElementRef}
+
+        ref={rendered}
         onClick={() => onClick()}
       >
-        {post.media.type === "image" ? (
-          // <img
-          //   className={styles.media}
-          //   src={post.media.thumbnail}
-          //   onClick={() => onClick()}
-          // />
-          // <div className={styles.media} onClick={() => onClick()}>
-          <Imagine thumbnail={post.media.thumbnail} original={post.media.url} />
-        ) : // </div>
-        post.media.type === "video" ? (
-          <div>
-            {/* <Cinema
+        {post.media.type === "image"
+          ? // <img
+            //   className={styles.media}
+            //   src={post.media.thumbnail}
+            //   onClick={() => onClick()}
+            // />
+            // <div className={styles.media} onClick={() => onClick()}>
+
+            visible && (
+              <Imagine
+                thumbnail={post.media.thumbnail}
+                original={post.media.url}
+              />
+            )
+          : // <Imagine thumbnail={post.media.thumbnail} original={post.media.url} />
+          // </div>
+          post.media.type === "video"
+          ? // <div>
+            /* <Cinema
               src={post.media.peek}
               thumbnail={post.media.thumbnail}
               poster={post.media.poster}
               onClick={(t) => onClick(t)}
-            ></Cinema> */}
-            <Mirage
-              thumbnail={post.media.thumbnail}
-              poster={post.media.poster || ""}
-              peek={post.media.peek || ""}
-              // url={post.media.url || ""}
-              duration={post.media.duration}
-            />
-          </div>
-        ) : (
-          // <Gallery
-          //   style={{
-          //     width: "inherit",
-          //     height: "inherit",
-          //     borderRadius: "3px",
-          //     border: "2px solid yellow",
-          //   }}
-          //   onClick={() => onClick()}
-          //   urls={post.media.urls}
-          //   thumbnails={post.media.thumbnails}
-          // />
-          <Album thumbnails={post.media.thumbnails} />
-        )}
+            ></Cinema> */
+            visible && (
+              <Mirage
+                thumbnail={post.media.thumbnail}
+                poster={post.media.poster || ""}
+                peek={post.media.peek || ""}
+                // url={post.media.url || ""}
+                duration={post.media.duration}
+              />
+            )
+          : // </div>
+            // <Gallery
+            //   style={{
+            //     width: "inherit",
+            //     height: "inherit",
+            //     borderRadius: "3px",
+            //     border: "2px solid yellow",
+            //   }}
+            //   onClick={() => onClick()}
+            //   urls={post.media.urls}
+            //   thumbnails={post.media.thumbnails}
+            // />
+            visible && <Album thumbnails={post.media.thumbnails} />}
       </div>
     </div>
   )

@@ -4,8 +4,17 @@ import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 import UserContext from "../contexts/userContext"
 import { HiTrendingUp } from "react-icons/hi"
+import { IoMenu } from "react-icons/io5"
+import { GrReddit } from "react-icons/gr"
+import { BsFillHeartFill } from "react-icons/bs"
+import { FaReddit } from "react-icons/fa"
+import { SiReddit } from "react-icons/si"
+import { IoMdLogOut } from "react-icons/io"
+import { useRouter } from "next/router"
+import { CgArrowTopRightO } from "react-icons/cg"
 
 function Header({ setOpen }: { setOpen: Function }) {
+  const router = useRouter()
   const [user, setUser] = useContext(UserContext)
 
   function logout() {
@@ -15,27 +24,46 @@ function Header({ setOpen }: { setOpen: Function }) {
 
   return (
     <div className={styles.container}>
-      <Link href="/">
-        <img src="/axolotl.svg" alt="" />
-      </Link>
-      <HiTrendingUp style={{ fontSize: 66 }} onClick={() => setOpen(true)} />
+      <div>
+        <IoMenu onClick={() => setOpen(true)} />
+        <Link href="/">
+          <img style={{ width: "50px" }} src="/axolotl.svg" alt="" />
+        </Link>
+      </div>
       <Autocomplete />
-      {JSON.stringify(user) !== "{}" ? (
-        <div style={{ display: "flex " }}>
-          <div>
-            <img style={{ height: "100%" }} src={user.icon} alt="" />
-            <span>{user.name}</span>
-          </div>
-          <span onClick={logout}>Logout</span>
+      <div>
+        <div className={styles.icons}>
+          <BsFillHeartFill title="Support me!" />
+          <SiReddit title="r/reddikulus" />
+          {JSON.stringify(user) !== "{}" && (
+            <CgArrowTopRightO title="popular" />
+          )}
         </div>
-      ) : (
-        <a
-          style={{ fontSize: "24px", color: "red" }}
-          href="https://www.reddit.com/api/v1/authorize?client_id=vskQlp48i50FcgXAenvHbA&response_type=code&state=astringofyourshoosing&redirect_uri=http://localhost:3000/login&duration=temporary&scope=identity read"
-        >
-          login
-        </a>
-      )}
+        {JSON.stringify(user) !== "{}" ? (
+          <div className={styles.session}>
+            <div
+              className={styles.user}
+              onClick={() => router.push("/u/" + user.name)}
+            >
+              <img src={user.icon} alt="" />
+              <span>{user.name}</span>
+            </div>
+            <IoMdLogOut
+              title="Logout"
+              className={styles.logout}
+              onClick={logout}
+            />
+          </div>
+        ) : (
+          <a
+            className={styles.login}
+            href="https://www.reddit.com/api/v1/authorize?client_id=vskQlp48i50FcgXAenvHbA&response_type=code&state=astringofyourshoosing&redirect_uri=http://localhost:3000/login&duration=temporary&scope=identity read"
+          >
+            <GrReddit />
+            login
+          </a>
+        )}
+      </div>
     </div>
   )
 }

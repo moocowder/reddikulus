@@ -18,3 +18,14 @@
   /* display: block; */
   box-shadow: 0 0 120px 0 rgba(0, 0, 0, 0.5);
 }
+
+.background {
+  position: fixed;
+  object-fit: cover;
+
+  filter: blur(15px) brightness(40%);
+  margin: -30px;
+  width: calc(100% + 60px);
+  height: calc(100% + 60px);
+  /* z-index: 1; */
+}

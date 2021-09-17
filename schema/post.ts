@@ -8,6 +8,7 @@ type Post = {
   ups: number
   comments: number
   date: number
+  // over_18: boolean
   // media: Image | Video | Gallery
   media: Media
 }

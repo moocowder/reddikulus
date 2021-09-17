@@ -3,8 +3,88 @@
   display: flex;
   justify-content: space-between;
   background-color: rgb(0, 0, 0);
+  /* background-color: rgb(17, 0, 37); */
+}
+.container > * {
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  /* padding: 1rem; */
 }
 
+.container svg {
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.container svg:hover {
+  transform: scale(1.2);
+  transition: 0.1s;
+}
+
+.login {
+  background: #ff4500;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icons > :nth-child(1) {
+  color: red;
+}
+.icons > :nth-child(2) {
+  color: #ff4500;
+  /* border: 2px solid #ff4500; */
+  background-color: white;
+  border-radius: 100%;
+}
+
+.session {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.session > svg:hover {
+  color: var(--sorbe);
+  transition: 0.3s;
+}
+.user {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  transition: 0.3s;
+}
+
+.user:hover {
+  color: var(--sorbe);
+  transition: 0.3s;
+}
+.user:hover > img {
+  /* border: 2px solid var(--sorbe); */
+  background-color: var(--sorbe);
+  transition: 0.3s;
+}
+
+.user > img {
+  width: 40px;
+  border-radius: 100%;
+  /* border: 2px solid white; */
+  /* background-color: rgba(128, 128, 128, 0.4); */
+  background-color: var(--ocean-light);
+  transition: 0.5s;
+}
 /* .container > * {
   border: 1px solid cyan;
 } */

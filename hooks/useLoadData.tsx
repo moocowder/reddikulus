@@ -13,34 +13,41 @@ export default function useLoadData(
 
   useEffect(() => {
     if (!params.after) return
-    console.log("111111111111111111111111111111111111111111 :", params)
+    console.log("useLoadData :: after changed :: ", params.after)
+    // console.log("111111111111111111111111111111111111111111 :", params)
     let posts
     async function getPage() {
       let d = await loadPage()
-      console.log("%%%%%%%%%%%%%%%", d.posts)
-      if (d?.posts.length === 0) {
-        console.log("6^^^^^^^^^^")
-        // getPage()
-      } else {
-        posts = [...data.posts, ...d?.posts]
-        setData({ after: d.after, posts })
-      }
+      posts = [...data.posts, ...d?.posts]
+      setData({ after: d.after, posts })
+      // console.log("%%%%%%%%%%%%%%%", d.posts)
+      // if (d?.posts.length === 0) {
+      //   console.log("6^^^^^^^^^^")
+      //   // getPage()
+      // } else {
+      //   posts = [...data.posts, ...d?.posts]
+      //   setData({ after: d.after, posts })
+      // }
     }
     getPage()
   }, [params.after])
 
   useEffect(() => {
-    console.log("something changed here :", params)
+    params = { ...params, after: "" }
+    console.log("useLoadData :: state :: ", params)
+    // console.log("something changed here :", params)
     setData({ after: "", posts: [] })
 
     async function getPage() {
       let d = await loadPage()
-      if (d?.posts.length === 0) {
-        console.log("6^^^^^^^^^^")
-        // getPage()
-      } else {
-        setData({ after: d.after, posts: d?.posts })
-      }
+      setData({ after: d.after, posts: d?.posts })
+
+      // if (d?.posts.length === 0) {
+      //   console.log("6^^^^^^^^^^")
+      //   // getPage()
+      // } else {
+      //   setData({ after: d.after, posts: d?.posts })
+      // }
     }
     getPage()
   }, [params.sub, params.sort, params.user, params.q])

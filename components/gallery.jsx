@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import styles from "../styles/gallery.module.css"
 import Film from "./film"
 import Imagine from "./imagine"
+import Zoom from "./zoom"
 
 function Gallery({ urls, thumbnails, style, fullscreen = false }) {
   let [index, setIndex] = useState(0)
@@ -37,7 +38,9 @@ function Gallery({ urls, thumbnails, style, fullscreen = false }) {
       <span className={styles.number}>
         {index + 1} / {urls.length}
       </span>
-      <Imagine thumbnail={thumbnails[index]} original={urls[index]} />
+      <Zoom>
+        <Imagine thumbnail={thumbnails[index]} original={urls[index]} />
+      </Zoom>
       {/* <img
         // onLoad={setLoaded(true)}
         // style={{ transform: transform }}

@@ -2,6 +2,7 @@
 /data.json
 data.json
 /tmp.json
+pages/observer.jsx
 # dependencies
 /node_modules
 /.pnp
