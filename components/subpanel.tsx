@@ -7,15 +7,16 @@ type Sub = {
   name: string
   icon: string
 }
+
 function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
   const [subs, setSubs] = useState<Sub[]>([])
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [done, setDone] = useState(false)
 
   const size = 15
   let observer //= useRef()
   const lastElementRef = (node: Element) => {
-    console.log(":::::::::::::::;")
     if (loading) return
     // if (loading) return
     if (observer) observer.disconnect()
@@ -44,24 +45,27 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
 
   useEffect(() => {
     setLoading(true)
-
+    setDone(false)
     setPage(0)
+    setSubs([])
     fetch(`/api/topicSubs?topic=${topic}&&page=${page}&&size=${size}`)
       .then((r) => r.json())
       .then((d) => {
-        setLoading(false)
+        console.log("999999999999", d)
         setSubs(d)
+        setLoading(false)
       })
       .catch((e) => console.log(e))
   }, [topic])
 
   useEffect(() => {
-    setLoading(true)
     if (page === 0) return
+    setLoading(true)
     fetch(`/api/topicSubs?topic=${topic}&&page=${page}&&size=${size}`)
       .then((r) => r.json())
       .then((d) => {
         setLoading(false)
+        if (d.length < 15) setDone(true)
         setSubs([...subs, ...d])
       })
       .catch((e) => console.log(e))
@@ -81,8 +85,13 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
           <Link href={"/r/" + s.name}>{s.name}</Link>
         </li>
       ))}
-      <p ref={lastElementRef}>Loading...</p>
-      <button onClick={() => setPage(page + 1)}>more</button>
+
+      {!done && (
+        <li ref={lastElementRef} className={styles.item} key="1">
+          <span className={styles.sk}></span>
+          <span className={styles.sk2}></span>
+        </li>
+      )}
     </ul>
   )
 }

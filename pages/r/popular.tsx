@@ -1,4 +1,6 @@
+import Content from "../../components/content"
+
 function Popular() {
-  return <h3>foo</h3>
+  return <Content api="/api/posts" params={{ sub: "popular", sort: "hot" }} />
 }
 export default Popular

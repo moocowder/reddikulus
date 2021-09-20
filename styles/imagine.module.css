@@ -42,11 +42,11 @@
   }
 } */
 
-@keyframes unblur {
+/* @keyframes unblur {
   from {
     filter: blur(3px);
   }
   to {
     filter: blur(0px);
   }
-}
+} */

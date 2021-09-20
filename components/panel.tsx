@@ -17,15 +17,27 @@ function Panel({ setOpen }: { setOpen: Function }) {
   }, [])
 
   return (
-    <div className={styles.menu} onMouseLeave={() => {}}>
+    <div
+      className={styles.menu}
+      onMouseLeave={() => {
+        // setOpen(false)
+      }}
+    >
       <ul className={styles.panel}>
-        <li>
-          <FaTimes onClick={() => setOpen(false)} />
-        </li>
         {topics?.map((t) => (
-          <li className={styles.item} key={t}>
-            <Link href={"/topics/" + t}>{t}</Link>
-            <MdPlayArrow onMouseEnter={() => setTopic(t)} />
+          <li
+            className={styles.item}
+            key={t}
+            style={{ backgroundColor: t === topic ? "rgb(15,15,15)" : "" }}
+          >
+            <div>{t}</div>
+            <div
+              onMouseEnter={() => setTopic(t)}
+              style={{ color: t === topic ? "var(--sorbe)" : "" }}
+            >
+              <MdPlayArrow />
+            </div>
+            {/* <Link href={"/topics/" + t}>{t}</Link> */}
           </li>
         ))}
       </ul>

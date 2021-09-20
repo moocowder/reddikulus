@@ -36,7 +36,10 @@ function Header({ setOpen }: { setOpen: Function }) {
           <BsFillHeartFill title="Support me!" />
           <SiReddit title="r/reddikulus" />
           {JSON.stringify(user) !== "{}" && (
-            <CgArrowTopRightO title="popular" />
+            <CgArrowTopRightO
+              onClick={() => router.push("/r/popular")}
+              title="popular"
+            />
           )}
         </div>
         {JSON.stringify(user) !== "{}" ? (

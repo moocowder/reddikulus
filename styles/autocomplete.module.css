@@ -78,7 +78,7 @@
   display: flex;
   flex-wrap: wrap;
   /* align-items: center; */
-  justify-content: start;
+  justify-content: flex-start;
   padding: auto;
   /* flex-direction: column; */
   gap: 0.2rem;

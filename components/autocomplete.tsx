@@ -10,6 +10,7 @@ import { BsArrowReturnLeft } from "react-icons/bs"
 import { GrReturn } from "react-icons/gr"
 import { IoMdReturnLeft } from "react-icons/io"
 import { AiOutlineEnter } from "react-icons/ai"
+import Badge from "./badge"
 
 type Sub = {
   name: string
@@ -96,9 +97,12 @@ function Autocomplete() {
             }}
           >
             <img src={s.communityIcon || s.icon} alt="" />
+            {!s.communityIcon && !s.icon && (
+              <Badge side={50} text={s.name} color="#ff0000" />
+            )}
             <div className={styles.infos}>
               <span>{s.name}</span>
-              <b>{s.numSubscribers}</b> members
+              <b>{s.numSubscribers}</b>
             </div>
           </li>
         ))}

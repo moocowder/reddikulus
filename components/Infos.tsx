@@ -18,7 +18,7 @@ type props = {
   comments: number
   date: number
   opacity: number
-  onMouseEnter: Function
+  onMouseEnter?: Function
 }
 
 type Units = {

@@ -13,6 +13,7 @@ type About = {
   // submission_type: string
   banner_img: string
   banner_background_image: string
+  // banner_background_color
   mobile_banner_image: string
   header_img: string
   icon_img: string

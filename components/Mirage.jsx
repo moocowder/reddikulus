@@ -37,9 +37,9 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
 
   return (
     <div
-      style={{ border: "0px solid white" }}
-      // onMouseEnter={() => setstate("two")}
-      // onMouseLeave={() => setstate("one")}
+    // style={{ border: "5px solid white" }}
+    // onMouseEnter={() => setstate("two")}
+    // onMouseLeave={() => setstate("one")}
     >
       <span className={styles.duration}>{format(duration)}</span>
       {state === "one" && (

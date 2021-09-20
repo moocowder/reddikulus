@@ -58,7 +58,7 @@ function Brick({
           date={post.date}
         />
       )}
-    <div
+      <div
         className={styles.brick}
         style={{
           // border: "2px solid green",
@@ -74,7 +74,6 @@ function Brick({
           setSelected(false)
         }}
         // ref={lastElementRef}
-
         ref={rendered}
         onClick={() => onClick()}
       >

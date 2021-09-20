@@ -24,7 +24,7 @@ function Login({ token }: { token: string }) {
 
         localStorage.setItem("user", JSON.stringify(u))
         setUser(u)
-        router.push("/feed")
+        router.push("/")
       })
       .catch((e) => console.log(e))
   }, [])
