@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from "react"
 import styles from "../styles/viewer.module.css"
-import Link from "next/link"
 import Media from "../components/media"
 import Infos from "./Infos"
 
-const Viewer = ({ post, move, close, isVideo = false }) => {
+const Viewer = ({ post, move, close }) => {
   let [show, setShow] = useState(1)
   let timeout = useRef()
   let fullRef = useRef()
@@ -29,6 +28,14 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
     })
   }, [post])
 
+  useEffect(() => {
+    setShow(1)
+    clearTimeout(timeout.current)
+    timeout.current = setTimeout(() => {
+      setShow(0)
+    }, 3000)
+  }, [post])
+
   function openFullscreen() {
     if (fullRef.current.requestFullscreen) {
       fullRef.current.requestFullscreen()
@@ -40,14 +47,6 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
       fullRef.current.msRequestFullscreen()
     }
   }
-
-  useEffect(() => {
-    setShow(1)
-    clearTimeout(timeout.current)
-    timeout.current = setTimeout(() => {
-      setShow(0)
-    }, 3000)
-  }, [post])
 
   function handleMouseMove(e) {
     e.preventDefault()
@@ -84,8 +83,10 @@ const Viewer = ({ post, move, close, isVideo = false }) => {
   }
 
   function handleMouseEnter() {
+    console.log("%%%%%")
     console.log(timeout.current)
     clearTimeout(timeout.current)
+    console.log(timeout.current)
   }
 
   return (

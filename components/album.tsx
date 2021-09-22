@@ -34,12 +34,13 @@ function Album({ thumbnails }: { thumbnails: string[] }) {
         setHover(false)
       }}
     >
-      {/* <img className={styles.background} src={thumbnails[index]} alt="" /> */}
       {!hover && <IoLayers className={`${styles.icon} `} />}
       <span className={styles.number}>
         {index + 1} / {thumbnails.length}
       </span>
       {/* <Imagine thumbnail={thumbnails[index]} original={urls[index]} /> */}
+      <img className={styles.background} src={thumbnails[index]} alt="" />
+
       <img
         onLoad={() => setLoaded(true)}
         // onLoadStart={() => alert("loading...")}
@@ -49,6 +50,7 @@ function Album({ thumbnails }: { thumbnails: string[] }) {
         onLoadStartCapture={() => {
           setLoaded(false)
         }}
+        // style={{ zIndex: 3 }}
         className={styles.img}
         src={thumbnails[index]}
         alt=""

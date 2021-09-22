@@ -24,9 +24,11 @@
   padding: 2px;
   border-radius: 5px;
   font-size: 15px;
+  z-index: 1;
 }
 
 .img {
+  position: absolute;
   width: inherit;
   height: inherit;
   object-fit: contain;
@@ -45,10 +47,24 @@
   box-shadow: 0 0 22px 0 rgba(0, 0, 0, 0.2); */
   /* transform: translate(-50%, -50%); */
   color: hsla(348, 96%, 42%, 0.6);
+  z-index: 1;
   /* top: 90;
     left: 0; */
   /* color: #740055; */
   /* color: var(--cherry); */
   /* transition: 0.3s; */
   /* z-index: 5; */
+}
+
+.background {
+  /* position: fixed; */
+  position: absolute;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  filter: blur(15px) brightness(40%);
+  /* margin: -30px;
+  width: calc(100% + 60px);
+  height: calc(100% + 60px); */
+  /* z-index: -2; */
 }
