@@ -42,6 +42,7 @@ function Autocomplete() {
           }
           return s
         })
+        console.log(r.data.subreddits)
         setSubs(r.data.subreddits)
       })
       .catch((e) => {
@@ -90,6 +91,7 @@ function Autocomplete() {
       <ul className={styles.list}>
         {subs?.map((s: any) => (
           <li
+            key={s.name}
             className={styles.item}
             onClick={() => {
               setQuery("")

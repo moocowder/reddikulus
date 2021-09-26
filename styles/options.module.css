@@ -1,0 +1,51 @@
+.options {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  width: 60px;
+  /* border: 2px solid springgreen; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 1rem; */
+  font-size: 26px;
+  opacity: 0;
+  /* z-index: 3; */
+}
+
+.options:hover {
+  opacity: 1;
+}
+
+.options > * {
+  cursor: pointer;
+  padding: 0.5rem;
+  color: white;
+  /* z-index: 3; */
+  background-color: rgba(0, 0, 0, 0.3);
+  /* margin: auto; */
+}
+
+.options > * > svg {
+  transition: 0.2s;
+}
+
+.options > *:hover > svg {
+  /* font-size: 32px; */
+  /* scale: ; */
+  transform: scale(1.3);
+}
+
+.options > :first-child {
+  color: red;
+}
+.options > :nth-child(2) {
+  color: green;
+}
+.options > :nth-child(3) {
+  color: yellow;
+}
+.options > :nth-child(4) {
+  color: purple;
+}

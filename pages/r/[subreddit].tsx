@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { GetServerSideProps } from "next"
 import Head from "next/head"
-import Link from "next/link"
-import Viewer from "../../components/viewer"
-import Masonry from "../../components/masonry"
-import useLoadData from "../../hooks/useLoadData"
 import styles from "../../styles/subreddit.module.css"
-import Post from "../../schema/post"
 import Content from "../../components/content"
 
 type About = {

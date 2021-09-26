@@ -1,7 +1,7 @@
-import Post from "./post"
+import { Post } from "./post"
 
 type Data = {
-  posts: Post[]
+  posts: Post<any>[]
   after: string
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Post from "../schema/post"
+import { Post } from "../schema/post"
 import Data from "../schema/data"
 import filter from "../helpers/filter"
 

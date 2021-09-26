@@ -1,7 +1,9 @@
 .masonry {
   position: relative;
-  width: 100vw;
-  box-sizing: border-box;
+  /* width: 100vw; */
+  /* overflow: hi; */
+  /* overflow: unset; */
+  /* box-sizing: border-box; */
 }
 
 .title {

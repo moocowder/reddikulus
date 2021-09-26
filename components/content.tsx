@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
-import Post from "../schema/post"
+import { useState } from "react"
+import { Post } from "../schema/post"
 import Masonry from "./masonry"
 import Viewer from "./viewer"
-import Data from "../schema/data"
 import useLoadData from "../hooks/useLoadData"
 import Sort from "./Sort"
 import Word from "../schema/sorts"
+import styles from "../styles/content.module.css"
 
 function Content({
   api,
@@ -15,8 +15,8 @@ function Content({
   params: { [key: string]: string }
 }) {
   let [after, setAfter] = useState("")
-  const [sort, setSort] = useState<Word>(params.sort)
-  const [post, setPost] = useState<Post | null>()
+  const [sort, setSort] = useState<string>(params.sort)
+  const [post, setPost] = useState<Post<any> | null>()
 
   let { data, loading, error } = useLoadData(api, { ...params, sort, after })
 
@@ -66,14 +66,7 @@ function Content({
         sort={sort}
         setSort={setSort}
       />
-      {post && (
-        <Viewer
-          post={post}
-          close={() => setPost(null)}
-          isVideo={post.media.type === "video"}
-          move={move}
-        />
-      )}
+      {post && <Viewer post={post} close={() => setPost(null)} move={move} />}
       <Masonry
         posts={data.posts}
         onBrickClick={handleBrickClick}
@@ -81,13 +74,7 @@ function Content({
         loading={loading}
         hasMore={data.after}
       />
-      {loading && (
-        <h1
-          style={{ zIndex: 4, position: "fixed", bottom: "30px", left: "3px" }}
-        >
-          loading...
-        </h1>
-      )}
+      {loading && <span className={styles.bar}></span>}
       {error && (
         <h1
           style={{ zIndex: 4, position: "fixed", bottom: "30px", left: "3px" }}

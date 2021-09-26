@@ -17,7 +17,8 @@ function Sort({
   setSort,
 }: {
   words: Word[]
-  sort: Word
+  // sort: Word
+  sort: string
   setSort: Function
 }) {
   return (

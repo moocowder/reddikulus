@@ -15,8 +15,8 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
   const [done, setDone] = useState(false)
 
   const size = 15
-  let observer //= useRef()
-  const lastElementRef = (node: Element) => {
+  let observer: IntersectionObserver //= useRef()
+  const lastElementRef = (node: HTMLLIElement) => {
     if (loading) return
     // if (loading) return
     if (observer) observer.disconnect()

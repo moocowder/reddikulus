@@ -30,6 +30,7 @@ function Panel({ setOpen }: { setOpen: Function }) {
             key={t}
             style={{ backgroundColor: t === topic ? "rgb(15,15,15)" : "" }}
           >
+            <img src="/boo.jpg" alt="" />
             <div>{t}</div>
             <div
               onMouseEnter={() => setTopic(t)}

@@ -112,12 +112,6 @@ function Cinema({ src, thumbnail, duration }) {
             <FaPlay />
           </div>
         )
-      case "loading":
-        return (
-          <div className={styles.iconVisible}>
-            <ImSpinner9 className={` ${styles.loading}`} />
-          </div>
-        )
       case "running":
         return (
           <div
@@ -137,7 +131,7 @@ function Cinema({ src, thumbnail, duration }) {
     return (
       <div
         style={{
-          opacity: show || state === "paused" || state === "ended" ? 1 : 0,
+          opacity: show || state !== "running" ? 1 : 0,
         }}
         className={styles.controls}
         onMouseEnter={(e) => handleMouseEnter(e)}
@@ -154,7 +148,7 @@ function Cinema({ src, thumbnail, duration }) {
             if (voice)
               voice.currentTime = (e.clientX / window.innerWidth) * duration
           }}
-          className={styles.timer}
+          className={`${styles.timer} ${state === "loading" && styles.loading}`}
         >
           {/* <div className={styles.bar}> */}
           <div

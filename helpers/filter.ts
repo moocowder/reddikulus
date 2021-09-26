@@ -1,4 +1,4 @@
-import Post from "../schema/post"
+import { Post, Image, Video, Gallery } from "../schema/post"
 
 type Page = {
   after: string
@@ -23,13 +23,15 @@ type Data = {
 }
 
 function filter(children: Child[]) {
-  let post: Post
-  let posts: Post[]
+  let post: Post<Image | Video | Gallery>
+
+  let posts: Post<Image | Video | Gallery>[]
   let img
   let urls: string[] = []
   let thumbnails: string[] = []
   let ext
 
+  //info from cross posts
   children = children.map((p: any) => {
     if (p.data.crosspost_parent_list) {
       let cross = p.data.crosspost_parent_list[0]
@@ -41,6 +43,12 @@ function filter(children: Child[]) {
         p.data.is_gallery = true
         p.data.media_metadata = cross?.media_metadata
       }
+      if (cross?.is_video) {
+        // p.data.url =
+        //   cross?.media?.reddit_video.fallback_url
+        p.data.media = cross?.media
+        p.data.is_video = true
+      } else p.data.url = cross?.url
     }
     return p
   })
@@ -52,8 +60,9 @@ function filter(children: Child[]) {
   //(for users) remove all comments
   // children = children.filter((p: any) => p.kind === "t3")
 
-  // p.data.post_hint === "image"
+  //+18
   children = children.filter((p) => !p.data.over_18)
+  // filter links
   children = children.filter(
     (p: any) =>
       p.data.is_gallery ||
@@ -74,6 +83,7 @@ function filter(children: Child[]) {
         let pic = p.data.media_metadata[k]
         // ext = p.data.media_metadata[k].m.replace("image/", ".")
         // urls.push("https://i.redd.it/" + p.data.media_metadata[k].id + ext)
+        if (!pic.s.u) alert(p.data.permalink)
         urls.push(pic.s.u.replace(/&amp;/g, "&"))
         thumbnails.push(pic.p[0].u.replace(/&amp;/g, "&"))
         if (!p.data.ratio) p.data.ratio = pic.s.x / pic.s.y
@@ -92,13 +102,13 @@ function filter(children: Child[]) {
       p.data.ratio = 0.5
     }
 
-    if (p.data.crosspost_parent_list) {
-      if (p.data.crosspost_parent_list[0]?.is_video) {
-        p.data.url =
-          p.data.crosspost_parent_list[0]?.media?.reddit_video.fallback_url
-        p.data.is_video = true
-      } else p.data.url = p.data.crosspost_parent_list[0]?.url
-    }
+    // if (p.data.crosspost_parent_list) {
+    //   if (p.data.crosspost_parent_list[0]?.is_video) {
+    //     p.data.url =
+    //       p.data.crosspost_parent_list[0]?.media?.reddit_video.fallback_url
+    //     p.data.is_video = true
+    //   } else p.data.url = p.data.crosspost_parent_list[0]?.url
+    // }
 
     // post.author = "fobardoo"
     post = {
@@ -137,6 +147,44 @@ function filter(children: Child[]) {
   })
 
   return posts || []
+}
+
+function media(p: any, type: string) {
+  switch (type) {
+    case "image":
+      return {
+        thumbnail: p.data.preview?.images[0].resolutions[0]?.url?.replace(
+          /&amp;/g,
+          "&"
+        ),
+        url: p.data.url,
+        type,
+        ratio: p.data.ratio,
+      }
+
+    case "video":
+      return {
+        thumbnail: p.data.preview?.images[0].resolutions[0]?.url?.replace(
+          /&amp;/g,
+          "&"
+        ),
+        url: p.data.url,
+        peek: p.data.secure_media?.reddit_video?.scrubber_media_url,
+        duration: p.data.secure_media?.reddit_video?.duration,
+        poster: p.data.preview?.images[0].resolutions
+          .pop()
+          .url?.replace(/&amp;/g, "&"),
+        type,
+        ratio: p.data.ratio,
+      }
+    case "gallery":
+      return {
+        // urls: urls,
+        // thumbnails: thumbnails,
+        type,
+        ratio: p.data.ratio,
+      }
+  }
 }
 
 export default filter

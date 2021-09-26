@@ -31,3 +31,23 @@ ul {
   --ocean-dark: #110a1a;
   --ocean-light: #220e3b;
 }
+
+.bar {
+  /* position: -webkit-sticky; */
+  position: sticky;
+  top: 3rem;
+  width: 600px;
+  height: 2px;
+  background: var(--sorbe);
+  /* animation: slide 5s linear infinite; */
+  z-index: 5;
+}
+
+@keyframes slide {
+  from {
+    left: -400px;
+  }
+  to {
+    left: 100vw;
+  }
+}

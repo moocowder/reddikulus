@@ -1,4 +1,4 @@
-type Post = {
+type Post<M> = {
   kind: string
   title: string
   author: string
@@ -10,41 +10,39 @@ type Post = {
   date: number
   // over_18: boolean
   // media: Image | Video | Gallery
-  media: Media
+  media: M
 }
 
 type Media = {
   type: "image" | "video" | "gallery"
-  thumbnail: string
-  poster?: string
-  url: string
-  thumbnails?: string[]
-  urls?: string[]
-  peek?: string
-  duration?: number
   ratio: number
-  timestamp?: string
+  // thumbnail?: undefined
+  // poster?: undefined
+  // url?: undefined
+  // thumbnails?: undefined[]
+  // urls?: undefined[]
+  // peek?: undefined
+  // duration?: undefined
+  // timestamp?: undefined
 }
 
-// interface Media {
-//   // url: string
-//   ratio: string
-// }
+interface Image extends Media {
+  url: string
+  thumbnail: string
+}
 
-// interface Image extends Media {
-//   url: string
-//   thumbnail: string
-// }
+interface Video extends Media {
+  poster: string
+  thumbnail: string
+  peek: string
+  duration: number
+  timestamp?: string
+  url: string
+}
 
-// interface Video extends Media {
-//   url: string
-//   thumbnail: string
-//   peek: string
-//   timestamp: string
-// }
+interface Gallery extends Media {
+  thumbnails: string[]
+  urls: string[]
+}
 
-// interface Gallery extends Media {
-//   urls: string[]
-//   thumbnails: string[]
-// }
-export default Post
+export type { Post, Image, Video, Gallery }

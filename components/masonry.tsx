@@ -12,13 +12,13 @@ import "react-lazy-load-image-component/src/effects/blur.css"
 import useWindow from "../hooks/useWindow"
 import Image from "next/image"
 import Cinema from "./Cinema"
-import Post from "../schema/post"
+import { Post } from "../schema/post"
 import Brick from "../components/brick"
 import Infos from "./Infos"
 let n
 
 type Props = {
-  posts: Post[]
+  posts: Post<any>[]
   onBrickClick: (i: number) => void
   loadMore: () => void
   loading: boolean
@@ -74,7 +74,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
 
   rows = Array(n).fill(0)
 
-  function getPos(p: Post) {
+  function getPos(p: Post<any>) {
     let minI = rows.indexOf(Math.min.apply(null, rows))
     let h = rows[minI]
     rows[minI] += iw / p.media.ratio + gap
@@ -103,6 +103,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
       <div
         className={styles.masonry}
         style={{
+          // border: "1px solid red",
           marginLeft: (width - (iw + gap) * n + gap) / 2,
           // width: "99vw",
           marginTop: "3rem",
@@ -116,7 +117,6 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
             width={iw}
             height={iw / p.media.ratio}
             position={getPos(p)}
-            lastElementRef={i === posts.length - 1 ? lastElementRef : null}
             onClick={() => onBrickClick(i)}
             lastBrick={i === posts.length - 1 ? lastBrick : null}
           />

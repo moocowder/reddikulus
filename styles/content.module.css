@@ -1,0 +1,18 @@
+.bar {
+  position: fixed;
+  /* left: 0; */
+  bottom: 0;
+  width: 400px;
+  height: 2px;
+  background: var(--sorbe);
+  animation: slide 1s linear infinite;
+}
+
+@keyframes slide {
+  from {
+    left: -400px;
+  }
+  to {
+    left: 100vw;
+  }
+}

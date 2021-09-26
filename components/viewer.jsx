@@ -2,29 +2,28 @@ import { useEffect, useState, useRef } from "react"
 import styles from "../styles/viewer.module.css"
 import Media from "../components/media"
 import Infos from "./Infos"
+import Options from "./options"
 
 const Viewer = ({ post, move, close }) => {
   let [show, setShow] = useState(1)
   let timeout = useRef()
-  let fullRef = useRef()
+  let viewerRef = useRef()
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
-      switch (e.key) {
-        case "Escape":
-          close()
-          document.body.style.overflow = "auto"
-          break
-        // case "ArrowRight":
-        //   next(e)
-        //   break
-        // case "ArrowLeft":
-        //   prev(e)
-        //   break
-      }
-      // if (e.key !== "Escape") return
-      // close()
-      // document.body.style.overflow = "auto"
+      if (e.keyCode === 13) prev()
+      // switch (e.key) {
+      //   // case "Escape":
+      //   //   close()
+      //   //   document.body.style.overflow = "auto"
+      //   //   break
+      //   // case "ArrowRight":
+      //   //   next(e)
+      //   //   break
+      //   // case "ArrowLeft":
+      //   //   prev()
+      //   //   break
+      // }
     })
   }, [post])
 
@@ -36,16 +35,32 @@ const Viewer = ({ post, move, close }) => {
     }, 3000)
   }, [post])
 
-  function openFullscreen() {
-    if (fullRef.current.requestFullscreen) {
-      fullRef.current.requestFullscreen()
-    } else if (fullRef.current.webkitRequestFullscreen) {
+  function maximize() {
+    if (viewerRef.current.requestFullscreen) {
+      viewerRef.current.requestFullscreen()
+    } else if (viewerRef.current.webkitRequestFullscreen) {
       /* Safari */
-      fullRef.current.webkitRequestFullscreen()
-    } else if (fullRef.current.msRequestFullscreen) {
+      viewerRef.current.webkitRequestFullscreen()
+    } else if (viewerRef.current.msRequestFullscreen) {
       /* IE11 */
-      fullRef.current.msRequestFullscreen()
+      viewerRef.current.msRequestFullscreen()
     }
+  }
+
+  function minimize() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen()
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen()
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen()
+    }
+  }
+
+  function download() {
+    window.open(post.media.url)
   }
 
   function handleMouseMove(e) {
@@ -66,27 +81,21 @@ const Viewer = ({ post, move, close }) => {
 
   function next(e) {
     e.preventDefault()
-    // if (e.target.localName === "a") return
     move.next()
   }
 
-  function prev(e) {
-    // if (e.target.localName === "svg" || e.target.localName === "path") return
+  function prev() {
     move.prev()
   }
 
   function handleMouseDown(e) {
-    if (e.target.localName === "a") return
     if (e.button !== 1) return
     close()
     document.body.style.overflow = "auto"
   }
 
   function handleMouseEnter() {
-    console.log("%%%%%")
-    console.log(timeout.current)
     clearTimeout(timeout.current)
-    console.log(timeout.current)
   }
 
   return (
@@ -97,6 +106,11 @@ const Viewer = ({ post, move, close }) => {
       onContextMenu={(e) => next(e)}
       onMouseDown={(e) => handleMouseDown(e)}
       onWheel={(e) => handleWheel(e)}
+      ref={viewerRef}
+      style={{ cursor: show ? "" : "none" }}
+      // onKeyPress={() => {
+      //   alert("ff")
+      // }}
       // onKeyDown={(e) => alert("hh")}
       // onKeyPress={(e) => alert("hh")}
       // onKeyDown={(e) => {
@@ -116,6 +130,14 @@ const Viewer = ({ post, move, close }) => {
       />
 
       <Media media={post.media} />
+      {show === 1 && (
+        <Options
+          close={close}
+          maximize={maximize}
+          minimize={minimize}
+          download={download}
+        />
+      )}
     </div>
   )
 }

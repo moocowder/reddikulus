@@ -13,7 +13,7 @@ import { IoMdLogOut } from "react-icons/io"
 import { useRouter } from "next/router"
 import { CgArrowTopRightO } from "react-icons/cg"
 
-function Header({ setOpen }: { setOpen: Function }) {
+function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
   const router = useRouter()
   const [user, setUser] = useContext(UserContext)
 
@@ -25,7 +25,10 @@ function Header({ setOpen }: { setOpen: Function }) {
   return (
     <div className={styles.container}>
       <div>
-        <IoMenu onClick={() => setOpen(true)} />
+        <IoMenu
+          style={{ color: open ? "var(--sorbe)" : "" }}
+          onClick={() => setOpen(!open)}
+        />
         <Link href="/">
           <img style={{ width: "50px" }} src="/axolotl.svg" alt="" />
         </Link>
