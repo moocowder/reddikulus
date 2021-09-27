@@ -13,7 +13,12 @@
   /* top: 0; */
   /* width: 400px; */
   height: 100%;
-  background-color: black;
+  background: rgb(182, 0, 73);
+  background: linear-gradient(
+    300deg,
+    rgba(255, 0, 102, 1) 0%,
+    rgba(54, 0, 52, 1) 100%
+  );
   overflow: scroll;
   /* z-index: 2; */
 }

@@ -3,25 +3,21 @@ import { useState, useRef, useEffect } from "react"
 import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
 import { MdReplay } from "react-icons/md"
 import { VscDebugRestart } from "react-icons/vsc"
-import {
-  FaUndoAlt,
-  FaVolumeUp,
-  FaVolumeMute,
-  FaPlay,
-  FaPause,
-  FaUndo,
-} from "react-icons/fa"
+
 import { ImSpinner9 } from "react-icons/im"
 import Zoom from "./zoom"
+import Controls from "./Controls"
+import Icon from "./icon"
+import useLoadSound from "../hooks/useLoadSound"
 
 function Cinema({ src, thumbnail, duration }) {
   const [state, setState] = useState("loading")
   const [timer, setTimer] = useState("00:00")
-  const [progress, setProgress] = useState(0)
-  const [sound, setSound] = useState(false)
+  // const [sound, setSound] = useState(false)
   const [show, setShow] = useState(true)
   const [audioSrc, setAudioSrc] = useState("")
   // const [voice, setVoice] = useState(null)
+  let sound = useLoadSound(src)
   let media = useRef()
   let audio = useRef()
   let voice = audio.current
@@ -29,141 +25,37 @@ function Cinema({ src, thumbnail, duration }) {
 
   useEffect(() => {
     setState("loading")
-    setTimer("00:00")
-    setProgress(0)
+    setTimer(0)
 
     setShow(1)
     clearTimeout(timeout.current)
     timeout.current = setTimeout(() => {
       setShow(0)
     }, 3000)
-
-    // fetch(src.replace(/DASH_\d+/, "DASH_audio"))
-    //   .then((d) => {
-    //     d.status === 200 && setAudioSrc(src.replace(/DASH_\d+/, "DASH_audio"))
-    //   })
-    //   .catch((e) => {
-    //     setAudioSrc("")
-    //     console.log(e, src, "does NOT have audio")
-    //   })
-
-    media.current.addEventListener("canplay", () => {
-      play()
-    })
   }, [src])
 
-  // useEffect(() => {
-  //   if (!audioSrc) setVoice(null)
-  //   if (audioSrc)
-  //     if (voice) voice.src = audioSrc
-  //     else setVoice(new Audio(audioSrc))
-  // }, [audioSrc])
+  useEffect(() => {
+    if (!voice) return
+    voice.currentTime = media.current.currentTime
+  }, [voice])
 
   function updateTimer() {
     if (!media.current) return
-    let time = format(media.current.currentTime)
-    setTimer(time)
-    setProgress(media.current.currentTime / duration)
-  }
-
-  function format(s) {
-    let minutes = Math.floor(s / 60)
-    let seconds = Math.floor(s % 60)
-
-    minutes = ("0" + minutes).slice(-2)
-    seconds = ("0" + seconds).slice(-2)
-
-    return minutes + ":" + seconds
+    setTimer(media.current.currentTime)
   }
 
   function play() {
-    media.current?.play()
-    voice?.play()
+    try {
+      media.current?.play()
+      voice?.play()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   function pause() {
     media.current.pause()
     voice?.pause()
-  }
-
-  function renderIcon() {
-    switch (state) {
-      case "ended":
-        return (
-          <div
-            className={styles.icon}
-            onClick={(e) => {
-              e.stopPropagation()
-              play()
-            }}
-          >
-            <FaUndoAlt />
-          </div>
-        )
-      case "paused":
-        return (
-          <div
-            className={styles.icon}
-            onClick={(e) => {
-              e.stopPropagation()
-              play()
-            }}
-          >
-            <FaPlay />
-          </div>
-        )
-      case "running":
-        return (
-          <div
-            className={styles.icon}
-            onClick={(e) => {
-              e.stopPropagation()
-              pause()
-            }}
-          >
-            <FaPause />
-          </div>
-        )
-    }
-  }
-
-  function renderControls() {
-    return (
-      <div
-        style={{
-          opacity: show || state !== "running" ? 1 : 0,
-        }}
-        className={styles.controls}
-        onMouseEnter={(e) => handleMouseEnter(e)}
-        onMouseMove={(e) => e.stopPropagation()}
-      >
-        <span className={styles.info}>
-          {timer} / {format(duration)}
-        </span>
-        <div
-          onClick={(e) => {
-            e.stopPropagation()
-            media.current.currentTime =
-              (e.clientX / window.innerWidth) * duration
-            if (voice)
-              voice.currentTime = (e.clientX / window.innerWidth) * duration
-          }}
-          className={`${styles.timer} ${state === "loading" && styles.loading}`}
-        >
-          {/* <div className={styles.bar}> */}
-          <div
-            className={styles.progress}
-            style={{ width: `${progress * 100}%` }}
-          ></div>
-          {/* </div> */}
-        </div>
-      </div>
-    )
-  }
-
-  function renderSound() {
-    if (!sound || state === "init" || state === "ended") return
-    return <FaVolumeUp className={`${styles.unmute} ${styles.info}`} />
   }
 
   function handleMouseMove() {
@@ -180,10 +72,29 @@ function Cinema({ src, thumbnail, duration }) {
     clearTimeout(timeout.current)
   }
 
+  function seek(t) {
+    media.current.currentTime = t
+    if (voice) voice.currentTime = t
+  }
+
   return (
     <div className={styles.player} onMouseMove={() => handleMouseMove()}>
       <img src={thumbnail} className={styles.background} alt="" />
+      <img src={src} alt="" />
+
       <Zoom>
+        {sound.loading && (
+          <div
+            style={{
+              position: "fixed",
+              top: "4rem",
+              background: "red",
+              zIndex: 5,
+            }}
+          >
+            loading
+          </div>
+        )}
         <video
           ref={media}
           key={"v" + src}
@@ -202,21 +113,30 @@ function Cinema({ src, thumbnail, duration }) {
             voice?.pause()
             setState("loading")
           }}
+          onCanPlay={() => {
+            play()
+          }}
           poster={thumbnail}
           className={styles.video}
         >
           <source src={src} type="video/mp4" />
         </video>
 
-        {audioSrc && (
-          <audio ref={audio} key={"a" + src}>
-            <source src={audioSrc} type="audio/mp4" />
+        {sound.src && (
+          <audio ref={audio} key={"a" + sound.src}>
+            <source src={sound.src} type="audio/mp4" />
           </audio>
         )}
-        <img src={src} alt="" />
-        {renderIcon()}
-        {renderControls()}
-        {renderSound()}
+        <Icon state={state} show={show} play={play} pause={pause} />
+        <Controls
+          state={state}
+          show={show}
+          onMouseEnter={handleMouseEnter}
+          duration={duration}
+          seek={(t) => seek(t)}
+          sound={sound}
+          timer={timer}
+        />
       </Zoom>
     </div>
   )

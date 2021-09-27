@@ -29,9 +29,9 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
           style={{ color: open ? "var(--sorbe)" : "" }}
           onClick={() => setOpen(!open)}
         />
-        <Link href="/">
-          <img style={{ width: "50px" }} src="/axolotl.svg" alt="" />
-        </Link>
+        {/* <Link href="/">
+          <img style={{ height: "80%" }} src="/reddikulus-logo.png" alt="" />
+        </Link> */}
       </div>
       <Autocomplete />
       <div>
