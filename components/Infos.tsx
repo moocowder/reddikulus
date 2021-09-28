@@ -108,7 +108,7 @@ props) {
           <>
             <img style={{ width: "50px" }} src={img} alt="" />
             <Link href={`/r/${sub}`}>
-              <a> r/{sub}</a>
+              <span> r/{sub}</span>
             </Link>
           </>
         )}
@@ -116,7 +116,7 @@ props) {
           <div className={styles.stat}>
             <IoLogoReddit />
             <Link href={`/u/${author}`}>
-              <a className={styles.author}> u/{author}</a>
+              <span className={styles.author}> u/{author}</span>
             </Link>
           </div>
         )}

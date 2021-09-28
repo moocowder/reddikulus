@@ -61,7 +61,7 @@ function filter(children: Child[]) {
   // children = children.filter((p: any) => p.kind === "t3")
 
   //+18
-  children = children.filter((p) => !p.data.over_18)
+  // children = children.filter((p) => !p.data.over_18)
   // filter links
   children = children.filter(
     (p: any) =>

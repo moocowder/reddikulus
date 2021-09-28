@@ -10,7 +10,8 @@
 .brick:hover {
   cursor: pointer;
   /* box-shadow: 0 0 12px 1px #b30083; */
-  box-shadow: 0 0 12px 1px #ff0066;
+  /* box-shadow: 0 0 12px 1px #ff0066; */
+  box-shadow: none;
   transition: 0.2s;
   transform: scale(1.03);
 }

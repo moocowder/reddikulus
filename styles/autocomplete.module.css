@@ -16,7 +16,7 @@
   /* border: 5px solid green; */
   /* display: flex;
   align-items: center; */
-  z-index: 4;
+  /* z-index: 4; */
 }
 
 .container input {
@@ -32,7 +32,9 @@
   /* height: 2rem; */
   /* background-color: var(--ocean-dark); */
   /* background-color: #090014; */
-  background-color: rgba(128, 128, 128, 0.26);
+  /* background-color: rgba(128, 128, 128, 0.26); */
+  background-color: #200038;
+  /* border: 1px solid var(--sorbe); */
   /* border: 2px solid white; */
   border-radius: 5px;
   /* transition: 0.2s; */
@@ -74,7 +76,8 @@
   /* width: 100%; */
   max-height: 80vh;
   overflow: scroll;
-  background-color: black;
+  /* background-color: black; */
+  background: #090014;
   display: flex;
   flex-wrap: wrap;
   /* align-items: center; */
@@ -82,10 +85,11 @@
   padding: auto;
   /* flex-direction: column; */
   gap: 0.2rem;
+  z-index: 1;
 }
 
 .item {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
   width: 300px;
   cursor: pointer;
   /* border: 1px solid grey; */
@@ -97,6 +101,7 @@
 
 .item:hover {
   color: hotpink;
+  background: #0e0018;
   transition: 0.2s;
 }
 

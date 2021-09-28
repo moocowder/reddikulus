@@ -9,6 +9,7 @@ import Zoom from "./zoom"
 import Controls from "./Controls"
 import Icon from "./icon"
 import useLoadSound from "../hooks/useLoadSound"
+import useTimedState from "../hooks/useTimedState"
 
 function Cinema({ src, thumbnail, duration }) {
   const [state, setState] = useState("loading")
@@ -21,17 +22,14 @@ function Cinema({ src, thumbnail, duration }) {
   let media = useRef()
   let audio = useRef()
   let voice = audio.current
-  let timeout = useRef()
+  const [ctrlDisplay, setCtrlDisplay, cancel] = useTimedState()
+  // let timeout = useRef()
 
   useEffect(() => {
     setState("loading")
     setTimer(0)
 
-    setShow(1)
-    clearTimeout(timeout.current)
-    timeout.current = setTimeout(() => {
-      setShow(0)
-    }, 3000)
+    setCtrlDisplay(true, 3000)
   }, [src])
 
   useEffect(() => {
@@ -59,17 +57,11 @@ function Cinema({ src, thumbnail, duration }) {
   }
 
   function handleMouseMove() {
-    // if (scale === 1) {
-    setShow(1)
-    clearTimeout(timeout.current)
-    timeout.current = setTimeout(() => {
-      setShow(0)
-    }, 3000)
-    // }
+    setCtrlDisplay(true, 3000)
   }
 
   function handleMouseEnter(e) {
-    clearTimeout(timeout.current)
+    cancel()
   }
 
   function seek(t) {
@@ -130,7 +122,7 @@ function Cinema({ src, thumbnail, duration }) {
         <Icon state={state} show={show} play={play} pause={pause} />
         <Controls
           state={state}
-          show={show}
+          show={ctrlDisplay}
           onMouseEnter={handleMouseEnter}
           duration={duration}
           seek={(t) => seek(t)}

@@ -4,10 +4,11 @@
   justify-content: space-between;
   /* background-color: transparent; */
   /* background-color: #360034; */
-  background: black;
+  background: #250040;
+  /* box-shadow: ; */
   /* border-bottom: 2px solid #ff0066; */
-  margin-bottom: 4rem;
-  /* box-shadow: 0 0 80px 50px rgb(255, 0, 106, 0.1); */
+  /* margin-bottom: 4rem; */
+  box-shadow: 0 0 5px 5px rgb(255, 0, 106, 0.1);
   /* background-color: rgb(17, 0, 37); */
 }
 .container > * {
@@ -30,15 +31,19 @@
 }
 
 .login {
-  background: #ff4500;
+  /* background: #ff4500; */
+  border: 2px solid var(--sorbe);
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 15px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  transition: 0.3s;
 }
-
+.login:hover {
+  background: var(--sorbe);
+}
 .icons {
   display: flex;
   align-items: center;

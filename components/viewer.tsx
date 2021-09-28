@@ -1,12 +1,18 @@
 import { useEffect, useState, useRef } from "react"
 import styles from "../styles/viewer.module.css"
-import Media from "../components/media"
+import Media from "./media"
 import Infos from "./Infos"
 import Options from "./options"
+import useTimedState from "../hooks/useTimedState"
+import { Post } from "../schema/post"
 
-const Viewer = ({ post, move, close }) => {
-  let [show, setShow] = useState(1)
-  let timeout = useRef()
+interface Props {
+  post: Post<any>
+  move: { next: Function; prev: Function }
+  close: Function
+}
+const Viewer = ({ post, move, close }: Props) => {
+  const [display, setDisplay, cancel] = useTimedState(true)
   let viewerRef = useRef()
 
   useEffect(() => {
@@ -28,58 +34,48 @@ const Viewer = ({ post, move, close }) => {
   }, [post])
 
   useEffect(() => {
-    setShow(1)
-    clearTimeout(timeout.current)
-    timeout.current = setTimeout(() => {
-      setShow(0)
-    }, 3000)
+    setDisplay(true, 3000)
   }, [post])
 
-  function maximize() {
-    if (viewerRef.current.requestFullscreen) {
-      viewerRef.current.requestFullscreen()
-    } else if (viewerRef.current.webkitRequestFullscreen) {
-      /* Safari */
-      viewerRef.current.webkitRequestFullscreen()
-    } else if (viewerRef.current.msRequestFullscreen) {
-      /* IE11 */
-      viewerRef.current.msRequestFullscreen()
-    }
-  }
+  // function maximize() {
+  //   if (viewerRef.current.requestFullscreen) {
+  //     viewerRef.current.requestFullscreen()
+  //   } else if (viewerRef.current.webkitRequestFullscreen) {
+  //     /* Safari */
+  //     viewerRef.current.webkitRequestFullscreen()
+  //   } else if (viewerRef.current.msRequestFullscreen) {
+  //     /* IE11 */
+  //     viewerRef.current.msRequestFullscreen()
+  //   }
+  // }
 
-  function minimize() {
-    if (document.exitFullscreen) {
-      document.exitFullscreen()
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen()
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen()
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen()
-    }
-  }
+  // function minimize() {
+  //   if (document.exitFullscreen) {
+  //     document.exitFullscreen()
+  //   } else if (document.webkitExitFullscreen) {
+  //     document.webkitExitFullscreen()
+  //   } else if (document.mozCancelFullScreen) {
+  //     document.mozCancelFullScreen()
+  //   } else if (document.msExitFullscreen) {
+  //     document.msExitFullscreen()
+  //   }
+  // }
 
   function download() {
     window.open(post.media.url)
   }
 
-  function handleMouseMove(e) {
-    e.preventDefault()
-
-    setShow(1)
-    clearTimeout(timeout.current)
-    timeout.current = setTimeout(() => {
-      setShow(0)
-    }, 3000)
-    return
+  function handleMouseMove() {
+    // e.preventDefault()
+    setDisplay(true, 3000)
   }
 
-  function handleWheel(e) {
+  function handleWheel(e: any) {
     e.preventDefault()
-    setShow(0)
+    setDisplay(false)
   }
 
-  function next(e) {
+  function next(e: any) {
     e.preventDefault()
     move.next()
   }
@@ -88,26 +84,26 @@ const Viewer = ({ post, move, close }) => {
     move.prev()
   }
 
-  function handleMouseDown(e) {
+  function handleMouseDown(e: any) {
     if (e.button !== 1) return
     close()
     document.body.style.overflow = "auto"
   }
 
   function handleMouseEnter() {
-    clearTimeout(timeout.current)
+    cancel()
   }
 
   return (
     <div
       className={styles.container}
-      onMouseMove={(e) => handleMouseMove(e)}
-      onClick={(e) => prev(e)}
+      onMouseMove={(e) => handleMouseMove()}
+      onClick={(e) => prev()}
       onContextMenu={(e) => next(e)}
       onMouseDown={(e) => handleMouseDown(e)}
       onWheel={(e) => handleWheel(e)}
       ref={viewerRef}
-      style={{ cursor: show ? "" : "none" }}
+      style={{ cursor: display ? "" : "none" }}
       // onKeyPress={() => {
       //   alert("ff")
       // }}
@@ -119,7 +115,7 @@ const Viewer = ({ post, move, close }) => {
     >
       <Infos
         onMouseEnter={() => handleMouseEnter()}
-        opacity={show}
+        opacity={display ? 1 : 0}
         ups={post.ups}
         title={post.title}
         permalink={post.permalink}
@@ -130,14 +126,14 @@ const Viewer = ({ post, move, close }) => {
       />
 
       <Media media={post.media} />
-      {show === 1 && (
+      {/* {display === 1 && (
         <Options
           close={close}
           maximize={maximize}
           minimize={minimize}
           download={download}
         />
-      )}
+      )} */}
     </div>
   )
 }

@@ -14,12 +14,9 @@
   /* width: 400px; */
   height: 100%;
   background: rgb(182, 0, 73);
-  background: linear-gradient(
-    300deg,
-    rgba(255, 0, 102, 1) 0%,
-    rgba(54, 0, 52, 1) 100%
-  );
+  background: linear-gradient(300deg, rgba(255, 0, 102, 1) 0%, #48007a 100%);
   overflow: scroll;
+  background: #250040;
   /* z-index: 2; */
 }
 

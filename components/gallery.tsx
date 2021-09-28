@@ -5,16 +5,23 @@ import Imagine from "./imagine"
 import Zoom from "./zoom"
 import { FaPlay, FaPause } from "react-icons/fa"
 import { useRef } from "react"
+import useTimedState from "../hooks/useTimedState"
 
-function Gallery({ urls, thumbnails, style, fullscreen = false }) {
+interface Props {
+  urls: string[]
+  thumbnails: string[]
+}
+function Gallery({ urls, thumbnails }: Props) {
   let [index, setIndex] = useState(0)
   let [progress, setProgress] = useState(0)
   let [loaded, setLoaded] = useState(false)
   let [run, setRun] = useState(true)
-  let [show, setShow] = useState(true)
 
-  let timeout
-  let filmTimeout = useRef()
+  const [filmDisplay, setFilmDisplay, cancelFilm] = useTimedState(true)
+  // const [run, setRun, cancelRun] = useTimedState()
+
+  let timeout: any
+  // let filmTimeout = useRef()
   useEffect(() => {
     if (!run) return
     timeout = setTimeout(() => {
@@ -24,31 +31,21 @@ function Gallery({ urls, thumbnails, style, fullscreen = false }) {
   }, [index])
 
   useEffect(() => {
-    setShow(true)
-    clearTimeout(filmTimeout.current)
-    filmTimeout.current = setTimeout(() => {
-      setShow(0)
-    }, 3000)
+    setFilmDisplay(true, 3000)
   }, [urls])
 
-  function handleMouseMove(e) {
+  function handleMouseMove(e: any) {
     e.preventDefault()
-
-    setShow(true)
-    clearTimeout(filmTimeout.current)
-    filmTimeout.current = setTimeout(() => {
-      setShow(false)
-    }, 3000)
-    return
+    setFilmDisplay(true, 3000)
   }
 
-  function handleWheel(e) {
+  function handleWheel(e: any) {
     e.preventDefault()
-    setShow(0)
+    setFilmDisplay(false)
   }
 
   function handleMouseEnter() {
-    clearTimeout(filmTimeout.current)
+    cancelFilm()
   }
 
   // useEffect(() => {
@@ -106,26 +103,19 @@ function Gallery({ urls, thumbnails, style, fullscreen = false }) {
           </div>
         )}
       </Zoom>
-      {/* {show && ( */}
+
       <Film
-        opacity={show}
+        opacity={filmDisplay}
         onMouseEnter={() => handleMouseEnter()}
         thumbnails={thumbnails}
         index={index}
         setIndex={setIndex}
       />
-      {/* )} */}
 
       {/* <span className={styles.number}>
         {index + 1} / {urls.length}
       </span> */}
 
-      {/* <img
-        // onLoad={setLoaded(true)}
-        // style={{ transform: transform }}
-        className={styles.media}
-        src={urls ? urls[index] : ""}
-      ></img> */}
       {run && <div key={urls[index]} className={styles.progress}></div>}
     </div>
   )

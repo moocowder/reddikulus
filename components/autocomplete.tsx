@@ -54,7 +54,7 @@ function Autocomplete() {
 
   return (
     <div className={styles.container}>
-      <div>
+      <div style={{ position: "relative" }}>
         <input
           value={query}
           onChange={(e) => {
@@ -72,8 +72,8 @@ function Autocomplete() {
         <IoMdReturnLeft
           style={{
             position: "absolute",
-            left: "30px",
-            top: "20px",
+            left: "10px",
+            top: "10px",
             color: "var(--sorbe)",
             opacity: query ? 1 : 0,
           }}
@@ -82,7 +82,8 @@ function Autocomplete() {
         <BiSearch
           style={{
             position: "absolute",
-            left: "30px",
+            left: "10px",
+            top: "8px",
             // color: "grey",
             opacity: query ? 0 : 1,
           }}

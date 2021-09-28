@@ -26,7 +26,6 @@ function Controls({
   onMouseEnter,
   duration,
   seek,
-  //   progress,
   sound,
   timer,
 }: Props) {
