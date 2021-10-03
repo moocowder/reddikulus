@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import styles from "../styles/panel.module.css"
-import { FaTimes } from "react-icons/fa"
+import { FaTimes, FaPlay } from "react-icons/fa"
 import { MdPlayArrow } from "react-icons/md"
 import Subpanel from "./subpanel"
 
@@ -28,15 +28,20 @@ function Panel({ setOpen }: { setOpen: Function }) {
           <li
             className={styles.item}
             key={t}
-            style={{ backgroundColor: t === topic ? "rgb(15,15,15)" : "" }}
+            style={{ backgroundColor: t === topic ? "#1c002f" : "" }}
           >
-            <img src="/boo.jpg" alt="" />
-            <div>{t}</div>
+            <div className="topic">
+              <div>
+                <img src="/boo.jpg" alt="" />
+              </div>
+              <div>{t}</div>
+            </div>
             <div
+              className="arrow"
               onMouseEnter={() => setTopic(t)}
               style={{ color: t === topic ? "var(--sorbe)" : "" }}
             >
-              <MdPlayArrow />
+              <FaPlay />
             </div>
             {/* <Link href={"/topics/" + t}>{t}</Link> */}
           </li>

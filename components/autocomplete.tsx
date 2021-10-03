@@ -24,12 +24,13 @@ function Autocomplete() {
   let [query, setQuery] = useState("")
   let [subs, setSubs] = useState<Sub[]>([])
   const router = useRouter()
+  const url = "https://www.reddit.com/api/subreddit_autocomplete.json"
 
   useEffect(() => {
     let cancel: any
     axios({
       method: "GET",
-      url: `https://www.reddit.com/api/subreddit_autocomplete.json`,
+      url,
       params: { query, include_over_18: user?.nsfw },
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     })
@@ -60,7 +61,7 @@ function Autocomplete() {
           onChange={(e) => {
             setQuery(e.target.value)
           }}
-          placeholder="search for anything"
+          placeholder="search for anything..."
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               setQuery("")
@@ -99,13 +100,14 @@ function Autocomplete() {
               router.push(`/${s.name}`)
             }}
           >
-            <img src={s.communityIcon || s.icon} alt="" />
-            {!s.communityIcon && !s.icon && (
+            {s.communityIcon || s.icon ? (
+              <img src={s.communityIcon || s.icon} alt="" />
+            ) : (
               <Badge side={50} text={s.name} color="#ff0000" />
             )}
             <div className={styles.infos}>
-              <span>{s.name}</span>
-              <b>{s.numSubscribers}</b>
+              <b>{s.name}</b>
+              <span>{s.numSubscribers}</span>
             </div>
           </li>
         ))}

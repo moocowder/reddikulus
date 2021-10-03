@@ -81,6 +81,8 @@ function filter(children: Child[]) {
     if (p.data.is_gallery && p.data.media_metadata) {
       Object.keys(p.data.media_metadata).map((k) => {
         let pic = p.data.media_metadata[k]
+        if (!pic.s) alert(p.data.permalink)
+
         // ext = p.data.media_metadata[k].m.replace("image/", ".")
         // urls.push("https://i.redd.it/" + p.data.media_metadata[k].id + ext)
         if (!pic.s.u) alert(p.data.permalink)

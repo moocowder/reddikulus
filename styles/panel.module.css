@@ -2,20 +2,25 @@
   position: fixed;
   top: 3rem;
   height: calc(100vh - 3rem);
+  display: flex;
   /* width: 600px; */
   z-index: 2;
+
+  /* border: 2px solid red; */
 }
 
 .panel {
+  padding-top: 1rem;
+
   display: flex;
   flex-direction: column;
-  position: fixed;
+  /* position: fixed; */
   /* top: 0; */
   /* width: 400px; */
   height: 100%;
-  background: rgb(182, 0, 73);
-  background: linear-gradient(300deg, rgba(255, 0, 102, 1) 0%, #48007a 100%);
-  overflow: scroll;
+  /* background: rgb(182, 0, 73);
+  background: linear-gradient(300deg, rgba(255, 0, 102, 1) 0%, #48007a 100%); */
+  overflow-y: scroll;
   background: #250040;
   /* z-index: 2; */
 }
@@ -27,33 +32,64 @@
   min-height: 3rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-left: 10px;
+  /* justify-content: space-between; */
+  /* gap: 15px; */
+  /* margin-left: 10px; */
   box-sizing: border-box;
+  cursor: pointer;
 }
 
-/* .item > * {
-  border: 1px solid green;
-} */
+.item > * {
+  /* border: 1px solid green; */
+}
 .item:hover {
-  background-color: rgb(15, 15, 15);
+  /* background-color: rgb(15, 15, 15); */
+  background: #1c002f;
 }
-.item:hover > :first-child {
+/* .item:hover > :first-child {
   border: 2px solid var(--sorbe);
-}
+} */
 .item > :first-child {
   flex: 1;
-  width: 100%;
+  display: flex;
+
+  gap: 0.5rem;
+  /* border: 1px solid white; */
+  transition: 0.3s;
+}
+.item > :first-child > * {
+  /* border: 1px solid green; */
+}
+.item > :first-child:hover {
+  color: var(--sorbe);
+}
+.item > :first-child > :first-child {
+  /* flex: 1; */
+  /* width: 100%; */
+  width: 3rem;
+  height: 3rem;
+  padding: 5px;
   /* height: 2px; */
+}
+
+.item > :first-child:hover > :first-child {
+  padding: 3px;
+}
+
+.item > :first-child > :first-child > :first-child {
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
 }
-.item > :nth-child(2) {
+.item > :first-child > :nth-child(2) {
   /* background-color: orange; */
   /* height: 100%; */
+  /* text-align: left; */
+  /* width: 100%; */
   line-height: 3rem;
-  flex: 4;
-  cursor: pointer;
+  /* width: 100%; */
+  /* flex: 4; */
+  /* flex: 1; */
 }
 
 .item > :nth-child(2):hover {
@@ -63,16 +99,26 @@
 
 .item > :last-child {
   /* background-color: plum; */
-  flex: 1;
-  height: 100%;
-  margin: auto;
+  /* flex: 1; */
+  height: 3rem;
+  width: 2.5rem;
+  /* margin: auto; */
   line-height: 3rem;
   text-align: center;
-  font-size: 24px;
+  font-size: 18px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border-bottom-left-radius: 30px;
+  border-top-left-radius: 30px; */
+  /* border-bottom-right-radius: 30px;
+  border-top-right-radius: 30px; */
 }
 
 .item > :last-child:hover {
+  /* background-color: var(--sorbe); */
+  /* background: #ffffff26; */
   color: var(--sorbe);
   transition: 0.2s;
 }

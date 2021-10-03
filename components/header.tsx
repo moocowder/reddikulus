@@ -11,6 +11,7 @@ import { FaReddit } from "react-icons/fa"
 import { SiReddit } from "react-icons/si"
 import { IoMdLogOut } from "react-icons/io"
 import { useRouter } from "next/router"
+import { BiLogOutCircle, BiLogInCircle } from "react-icons/bi"
 import { CgArrowTopRightO } from "react-icons/cg"
 
 function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
@@ -25,13 +26,19 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
   return (
     <div className={styles.container}>
       <div>
-        <IoMenu
-          style={{ color: open ? "var(--sorbe)" : "" }}
+        <div
           onClick={() => setOpen(!open)}
-        />
+          className={styles.open}
+          style={{
+            background: open ? "var(--sorbe)" : "",
+            color: open ? "white" : "",
+          }}
+        >
+          <IoMenu />
+        </div>
         <Link href="/">
           <img
-            style={{ height: "80%", width: "200px" }}
+            style={{ cursor: "pointer", height: "80%", width: "200px" }}
             src="/reddikulus-logo.png"
             alt=""
           />
@@ -40,7 +47,9 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
       <Autocomplete />
       <div>
         <div className={styles.icons}>
-          <BsFillHeartFill title="Support me!" />
+          <div className={styles.open}>
+            <BsFillHeartFill title="Support me!" />
+          </div>
           <SiReddit title="r/reddikulus" />
           {JSON.stringify(user) !== "{}" && (
             <CgArrowTopRightO
@@ -58,19 +67,19 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
               <img src={user.icon} alt="" />
               <span>{user.name}</span>
             </div>
-            <IoMdLogOut
-              title="Logout"
-              className={styles.logout}
-              onClick={logout}
-            />
+            <div className={styles.login}>
+              <IoMdLogOut title="Logout" onClick={logout} />
+            </div>
           </div>
         ) : (
           <a
+            title="Login"
             className={styles.login}
             href="https://www.reddit.com/api/v1/authorize?client_id=vskQlp48i50FcgXAenvHbA&response_type=code&state=astringofyourshoosing&redirect_uri=http://localhost:3000/login&duration=temporary&scope=identity read"
           >
-            <GrReddit />
-            login
+            {/* <GrReddit />
+            Login */}
+            <BiLogInCircle />
           </a>
         )}
       </div>

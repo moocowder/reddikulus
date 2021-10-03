@@ -15,15 +15,15 @@ import { FaPlay } from "react-icons/fa"
 // }
 
 function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
-  const [state, setstate] = useState("one")
+  const [hover, setHover] = useState(false)
   const [progress, setProgress] = useState(0)
 
   let vid = useRef()
   useEffect(() => {
-    if (state !== "two") return
+    if (!hover) return
 
     vid.current.playbackRate = 3
-  }, [state])
+  }, [hover])
 
   function format(s) {
     let minutes = Math.floor(s / 60)
@@ -38,23 +38,23 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
   return (
     <div
       // style={{ border: "5px solid white" }}
-      onMouseEnter={() => setstate("two")}
-      onMouseLeave={() => setstate("one")}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <span className={styles.duration}>{format(duration)}</span>
-      {state === "one" && (
-        <div>
-          <FaPlay className={`${styles.icon} `} />
-          {/* <CgPlayButtonO className={`${styles.icon} `} /> */}
-          <Imagine thumbnail={thumbnail} original={poster} />
-        </div>
-      )}
-      {state === "two" && (
-        <div>
+
+      <div style={{ position: "absolute" }}>
+        <FaPlay className={`${styles.icon} `} />
+        {/* <CgPlayButtonO className={`${styles.icon} `} /> */}
+        <Imagine thumbnail={thumbnail} original={poster} />
+        {/* <img style={{ position: "absolute" }} src={thumbnail} alt="" /> */}
+      </div>
+
+      {hover && (
+        <div className={styles.peek}>
           <video
-            // onClick={() => setstate("three")}
             ref={vid}
-            style={{ width: "100%", height: "100%", position: "absolute" }}
+            // style={{ width: "100%", height: "100%", position: "absolute" }}
             autoPlay
             src={peek}
             onClick={() => {

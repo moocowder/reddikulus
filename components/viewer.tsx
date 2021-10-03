@@ -13,7 +13,12 @@ interface Props {
 }
 const Viewer = ({ post, move, close }: Props) => {
   const [display, setDisplay, cancel] = useTimedState(true)
+  // const [optDisplay, setOptDisplay, optCancel] = useTimedState(true)
   let viewerRef = useRef()
+
+  // useEffect(() => {
+  //   setOptDisplay(true, 1500)
+  // }, [])
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
@@ -102,7 +107,7 @@ const Viewer = ({ post, move, close }: Props) => {
       onContextMenu={(e) => next(e)}
       onMouseDown={(e) => handleMouseDown(e)}
       onWheel={(e) => handleWheel(e)}
-      ref={viewerRef}
+      // ref={viewerRef}
       style={{ cursor: display ? "" : "none" }}
       // onKeyPress={() => {
       //   alert("ff")
@@ -126,14 +131,14 @@ const Viewer = ({ post, move, close }: Props) => {
       />
 
       <Media media={post.media} />
-      {/* {display === 1 && (
-        <Options
-          close={close}
-          maximize={maximize}
-          minimize={minimize}
-          download={download}
-        />
-      )} */}
+      {/* {optDisplay && ( */}
+      <Options
+        close={close}
+        maximize={() => {}}
+        minimize={() => {}}
+        download={download}
+      />
+      {/* )} */}
     </div>
   )
 }

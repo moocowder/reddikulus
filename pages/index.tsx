@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Reddikulus! | Search for communities</title>
+        <title>Reddikulus! | A truly amusing client for Reddit.</title>
       </Head>
 
       {token ? (

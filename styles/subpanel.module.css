@@ -1,21 +1,24 @@
 .subpanel {
   /* border: 1px solid yellow; */
-  position: fixed;
+  /* position: fixed; */
   display: flex;
   flex-direction: column;
+  padding-top: 1rem;
   /* gap: 0.5rem; */
   /* top: 0; */
-  left: 300px;
-  width: 300px;
+  /* left: 300px; */
+  /* width: 300px; */
   /* height: 100%; */
   height: calc(100vh - 3rem);
-  background-color: black;
-  overflow: scroll;
+  background-color: #1c002f;
+  /* 1c002f */
+  overflow-y: scroll;
   /* z-index: 2; */
 }
 
 .item {
   /* padding: 1rem; */
+  cursor: pointer;
   /* border: 1px solid red; */
   min-height: 3rem;
   /* width: 100%; */
@@ -25,18 +28,29 @@
   /* justify-content: space-between; */
 }
 
-.item > img {
+.item > :first-child {
+  /* border: 1px solid white; */
+  width: 3rem;
+  height: 3rem;
+  padding: 5px;
+}
+
+.item img {
   border-radius: 100%;
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  height: 100%;
 }
 
 .item:hover {
-  cursor: pointer;
   color: var(--sorbe);
-  transition: 0.2s;
-  background-color: rgb(15, 15, 15);
+  transition: 0.3s;
+  background-color: #0f001a;
 }
+
+.item:hover > :first-child {
+  padding: 3px;
+}
+
 .sk {
   border-radius: 100%;
   width: 50px;

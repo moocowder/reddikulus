@@ -51,7 +51,6 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
     fetch(`/api/topicSubs?topic=${topic}&&page=${page}&&size=${size}`)
       .then((r) => r.json())
       .then((d) => {
-        console.log("999999999999", d)
         setSubs(d)
         setLoading(false)
       })
@@ -81,7 +80,9 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
     >
       {subs?.map((s) => (
         <li className={styles.item} key={s.name}>
-          <img src={s.icon} alt="" />
+          <div>
+            <img src={s.icon} alt="" />
+          </div>
           <Link href={"/r/" + s.name}>{s.name}</Link>
         </li>
       ))}

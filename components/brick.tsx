@@ -8,6 +8,7 @@ import Album from "./album"
 
 type Props = {
   post: Post<any>
+  setSelected: Function
   position: { top: number; left: number }
   width: number
   height: number
@@ -15,36 +16,36 @@ type Props = {
   lastBrick: Function | null
 }
 
-function Brick({ post, position, width, height, onClick, lastBrick }: Props) {
-  const [selected, setSelected] = useState(false)
+function Brick({
+  post,
+  setSelected,
+  position,
+  width,
+  height,
+  onClick,
+  lastBrick,
+}: Props) {
   const [visible, setVisible] = useState(false)
 
   let observer: IntersectionObserver
   function rendered(node: HTMLDivElement) {
     if (observer) observer.disconnect()
-    observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setVisible(true)
-        if (lastBrick) lastBrick()
-      }
-    })
+    observer = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
+        if (entries[0].isIntersecting) {
+          setVisible(true)
+          if (lastBrick) lastBrick()
+        } else {
+          setVisible(false)
+        }
+      },
+      { threshold: 0 }
+    )
     if (node) observer.observe(node)
   }
 
   return (
     <div>
-      {selected && (
-        <Infos
-          opacity={1}
-          ups={post.ups}
-          title={post.title}
-          permalink={post.permalink}
-          sub={post.sub}
-          author={post.author}
-          comments={post.comments}
-          date={post.date}
-        />
-      )}
       <div
         className={styles.brick}
         style={{
@@ -52,9 +53,12 @@ function Brick({ post, position, width, height, onClick, lastBrick }: Props) {
           height,
           top: position.top,
           left: position.left,
+          // animation: "loading 3s linear infinite",
         }}
-        onMouseEnter={() => setSelected(true)}
-        onMouseLeave={() => setSelected(false)}
+        // onMouseEnter={() => setSelected(true)}
+        onMouseEnter={() => setSelected(post)}
+        // onMouseLeave={() => setSelected(false)}
+        onMouseLeave={() => setSelected(null)}
         ref={rendered}
         onClick={() => onClick()}
       >
@@ -72,24 +76,6 @@ function Brick({ post, position, width, height, onClick, lastBrick }: Props) {
         {post.media.type === "gallery" && visible && (
           <Album thumbnails={post.media.thumbnails} />
         )}
-        {/* {post.media.type === "image"
-          ? visible && (
-              <Imagine
-                thumbnail={post.media.thumbnail}
-                original={post.media.url}
-              />
-            )
-          : post.media.type === "video"
-          ? visible && (
-              <Mirage
-                thumbnail={post.media.thumbnail}
-                poster={post.media.poster || ""}
-                peek={post.media.peek || ""}
-                // url={post.media.url || ""}
-                duration={post.media.duration}
-              />
-            )
-          : visible && <Album thumbnails={post.media.thumbnails} />} */}
       </div>
     </div>
   )

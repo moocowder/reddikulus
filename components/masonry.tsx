@@ -26,6 +26,8 @@ type Props = {
 }
 
 function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
+  const [selected, setSelected] = useState<Post<any> | null>()
+
   console.log("renderring masonry")
   let rows: number[] = []
   const gap = 30
@@ -41,23 +43,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
     })
   }, [])
 
-  const observer = useRef<IntersectionObserver>()
-  const lastElementRef = (node: Element) => {
-    if (loading) return
-    if (observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (hasMore) loadMore()
-        else setEnd(true)
-      } else {
-        setEnd(false)
-      }
-    })
-    if (node) observer.current.observe(node)
-  }
-
   function lastBrick() {
-    console.log("***********************")
     if (loading) return
     if (hasMore) loadMore()
     else setEnd(true)
@@ -85,21 +71,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   }
 
   return (
-    // style={{ border: "1px solid red", width: "99vw", height: "5440rem" }}
     <div>
-      {/* <div className="slidecontainer">
-        <p>Zoom in/out :</p>
-        <input
-          type="range"
-          min="200"
-          max="800"
-          step="50"
-          value={iw}
-          onChange={(e) => {
-            setIw(Number(e.target.value))
-          }}
-        />
-      </div> */}
       <div
         className={styles.masonry}
         style={{
@@ -110,10 +82,23 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
           // border: "1px solid white",
         }}
       >
+        {selected && (
+          <Infos
+            opacity={1}
+            ups={selected.ups}
+            title={selected.title}
+            permalink={selected.permalink}
+            sub={selected.sub}
+            author={selected.author}
+            comments={selected.comments}
+            date={selected.date}
+          />
+        )}
         {posts?.map((p, i) => (
           <Brick
             key={i}
             post={p}
+            setSelected={setSelected}
             width={iw}
             height={iw / p.media.ratio}
             position={getPos(p)}
