@@ -16,7 +16,8 @@ function Search({ query }: { query: string }) {
       <Sublist query={query} />
       <Content
         api="/api/search"
-        params={{ q: query, sort: "best", nsfw: user.nsfw || "" }}
+        params={{ q: query, sort: "relevance", nsfw: user.nsfw || "" }}
+        sorts={["relevance", "hot", "new", "top", "comments"]}
       />
     </div>
   )

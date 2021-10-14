@@ -16,9 +16,17 @@ export default function Home() {
       </Head>
 
       {token ? (
-        <Content api="/api/feed" params={{ token, sort: "best" }} />
+        <Content
+          api="/api/feed"
+          params={{ token, sort: "best" }}
+          sorts={["best", "new", "top", "rising"]}
+        />
       ) : (
-        <Content api="/api/posts" params={{ sub: "popular", sort: "hot" }} />
+        <Content
+          api="/api/posts"
+          params={{ sub: "popular", sort: "hot" }}
+          sorts={["hot", "new", "top", "rising"]}
+        />
       )}
     </div>
   )

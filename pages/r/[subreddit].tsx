@@ -42,7 +42,11 @@ function Subreddit({ sub, about }: Props) {
         members={about.subscribers}
         text={about.public_description}
       />
-      <Content api="/api/posts" params={{ sub, sort: "hot" }} />
+      <Content
+        api="/api/posts"
+        params={{ sub, sort: "hot" }}
+        sorts={["hot", "new", "top", "rising"]}
+      />
     </div>
   )
 }

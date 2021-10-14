@@ -38,12 +38,13 @@
   background-color: rgba(128, 128, 128, 0.1);
   /* border: 2px solid white; */
   border-radius: 30px;
-  /* transition: 0.2s; */
+  transition: 0.1s;
   /* transition: 0.3s; */
 }
 
 .container input:focus {
-  border: 3px dashed var(--sorbe);
+  border: 3px solid var(--sorbe);
+  box-shadow: 0 0 6px 0px var(--sorbe);
   /* border: 2px solid var(--sorbe); */
   /* background-color: #e91e63; */
   /* transition: 0.2s; */

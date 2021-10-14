@@ -37,7 +37,11 @@ function User({ user, about }: Props) {
         created={about.created}
         text={about.description}
       />
-      <Content api="/api/user" params={{ user, sort: "new" }} />
+      <Content
+        api="/api/user"
+        params={{ user, sort: "new" }}
+        sorts={["new", "hot", "top"]}
+      />
     </div>
   )
 }

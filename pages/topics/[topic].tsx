@@ -18,7 +18,11 @@ function Topic({ topic, sub }: { topic: string; sub: string }) {
       <Head>
         <title>Reddikulus | {topic}</title>
       </Head>
-      <Content api="/api/posts" params={{ sub, sort: "best" }} />
+      <Content
+        api="/api/posts"
+        params={{ sub, sort: "hot" }}
+        sorts={["hot", "new", "top", "rising"]}
+      />
     </div>
   )
 }

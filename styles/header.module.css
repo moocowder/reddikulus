@@ -41,13 +41,14 @@
   transition: 0.3s;
 } */
 .login {
-  border: 3px dashed var(--sorbe);
+  border: 3px solid var(--sorbe);
   border-radius: 23px;
   padding: 5px 1rem;
   margin-right: 10px;
-  /* background: #130020; */
+  background: #440072;
   font-weight: bold;
-  transition: 0.2s;
+  transition: 0.4s;
+  box-shadow: 0 0 4px 0px var(--sorbe);
 }
 .login svg {
   transform: rotate(180deg);
@@ -57,7 +58,7 @@
   color: var(--sorbe); */
   background: var(--sorbe);
   /* color: white; */
-  box-shadow: 0 0 4px 2px var(--sorbe);
+  box-shadow: 0 0 6px 2px var(--sorbe);
   /* border: 2px solid var(--sorbe); */
   /* background: transparent; */
 }

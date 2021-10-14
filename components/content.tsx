@@ -10,9 +10,11 @@ import styles from "../styles/content.module.css"
 function Content({
   api,
   params,
+  sorts,
 }: {
   api: string
   params: { [key: string]: string }
+  sorts: Word[]
 }) {
   let [after, setAfter] = useState("")
   const [sort, setSort] = useState<string>(params.sort)
@@ -61,11 +63,7 @@ function Content({
 
   return (
     <div>
-      <Sort
-        words={["best", "hot", "new", "top"]}
-        sort={sort}
-        setSort={setSort}
-      />
+      <Sort words={sorts} sort={sort} setSort={setSort} />
       {post && <Viewer post={post} close={() => setPost(null)} move={move} />}
       <Masonry
         posts={data.posts}

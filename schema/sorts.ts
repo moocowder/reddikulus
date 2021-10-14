@@ -1,3 +1,3 @@
-type Word = "best" | "hot" | "new" | "top"
+type Word = "best" | "hot" | "new" | "top" | "rising" | "relevance" | "comments"
 
 export default Word
