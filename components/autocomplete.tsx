@@ -11,6 +11,7 @@ import { GrReturn } from "react-icons/gr"
 import { IoMdReturnLeft } from "react-icons/io"
 import { AiOutlineEnter } from "react-icons/ai"
 import Badge from "./badge"
+import format from "../utils/format"
 
 type Sub = {
   name: string
@@ -107,7 +108,7 @@ function Autocomplete() {
             )}
             <div className={styles.infos}>
               <b>{s.name}</b>
-              <span>{s.numSubscribers}</span>
+              <span>{format(s.numSubscribers)}</span>
             </div>
           </li>
         ))}

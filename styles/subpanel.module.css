@@ -33,12 +33,18 @@
   width: 3rem;
   height: 3rem;
   padding: 5px;
+  /* border: 1px solid red; */
 }
 
 .item img {
   border-radius: 100%;
   width: 100%;
   height: 100%;
+}
+
+.item > :last-child {
+  /* border: 1px solid red; */
+  min-width: 270px;
 }
 
 .item:hover {
@@ -53,13 +59,27 @@
 
 .sk {
   border-radius: 100%;
-  width: 50px;
-  height: 50px;
-  background-color: grey;
+  width: 100%;
+  height: 100%;
+  animation: loading 1s linear infinite alternate;
 }
 
 .sk2 {
-  width: 150px;
+  width: 10px;
   height: 30px;
   background-color: grey;
+  animation: loading 1s linear infinite alternate;
+}
+
+.anime {
+  animation: loading 1s linear infinite alternate;
+}
+
+@keyframes loading {
+  from {
+    background: #ffffff0e;
+  }
+  to {
+    background: #ffffff26;
+  }
 }

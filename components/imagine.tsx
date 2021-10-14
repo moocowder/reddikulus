@@ -2,16 +2,16 @@ import { useEffect } from "react"
 import { useState } from "react"
 import styles from "../styles/imagine.module.css"
 
-function Imagine({
-  thumbnail,
-  original = "",
-}: {
+interface Props {
   thumbnail: string
   original?: string
-}) {
+  appeared?: () => void
+}
+function Imagine({ thumbnail, original = "", appeared = () => {} }: Props) {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
+    setLoaded(false)
     if (!original) return
     const buffer = new Image()
     buffer.src = original
@@ -23,9 +23,19 @@ function Imagine({
   return (
     <>
       {original && loaded ? (
-        <img className={`${styles.original}`} src={original} />
+        <img
+          // importance="low"
+          // onLoad={() => alert("loaded")}
+          className={`${styles.original}`}
+          src={original}
+        />
       ) : (
-        <img className={`${styles.thumbnail}`} src={thumbnail} />
+        <img
+          // importance="hight"
+          onLoad={() => appeared()}
+          className={`${styles.thumbnail}`}
+          src={thumbnail}
+        />
       )}
     </>
   )

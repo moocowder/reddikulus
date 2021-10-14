@@ -47,10 +47,10 @@
   bottom: 0;
   left: 0;
   height: 5px;
-  background-color: yellow;
+  background-color: var(--sorbe);
   animation-name: example;
-  animation: example 5s linear;
-  /* z-index: 4; */
+  animation: example 4s linear;
+  z-index: 1;
 }
 
 @keyframes go {

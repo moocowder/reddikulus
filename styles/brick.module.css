@@ -5,7 +5,8 @@
   /* box-shadow: 0 0 8px 0px #ff0066; */
   transition: 0.2s;
   overflow: hidden;
-  animation: loading 1s linear infinite alternate;
+  /* animation: loading 1s linear infinite alternate; */
+  background: #ffffff0e;
 }
 
 .brick:hover {

@@ -10,6 +10,7 @@ import Controls from "./Controls"
 import Icon from "./icon"
 import useLoadSound from "../hooks/useLoadSound"
 import useTimedState from "../hooks/useTimedState"
+import useEventListener from "../hooks/useEventListener"
 
 function Cinema({ src, thumbnail, duration }) {
   const [state, setState] = useState("loading")
@@ -23,6 +24,12 @@ function Cinema({ src, thumbnail, duration }) {
   let audio = useRef()
   let voice = audio.current
   const [ctrlDisplay, setCtrlDisplay, cancel] = useTimedState()
+  useEventListener("keydown", (e) => {
+    if (e.key === " ") {
+      if (state === "running") pause()
+      else play()
+    }
+  })
   // let timeout = useRef()
 
   useEffect(() => {

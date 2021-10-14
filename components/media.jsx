@@ -4,9 +4,14 @@ import styles from "../styles/media.module.css"
 import Imagine from "./imagine"
 import Zoom from "./zoom"
 
-function Media({ media }) {
+function Media({ media, direction }) {
   return (
-    <div className={styles.wrapper}>
+    <div
+      key={media.url}
+      className={`${styles.wrapper} ${direction === 1 && styles.right} ${
+        direction === -1 && styles.left
+      }`}
+    >
       {media.type === "video" && (
         <Cinema
           src={media.url}
@@ -21,11 +26,7 @@ function Media({ media }) {
         <>
           <img src={media.thumbnail} className={styles.background} alt="" />
           <Zoom>
-            <Imagine
-              thumbnail={media.thumbnail}
-              original={media.url}
-              alt="image"
-            />
+            <Imagine thumbnail={media.thumbnail} original={media.url} />
           </Zoom>
         </>
       )}

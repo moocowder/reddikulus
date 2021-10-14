@@ -29,3 +29,28 @@
   height: calc(100% + 60px);
   /* z-index: 1; */
 }
+
+.left {
+  animation: left 0.2s linear;
+}
+.right {
+  animation: right 0.2s linear;
+}
+
+@keyframes left {
+  from {
+    transform: translate(-100%, 0);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes right {
+  from {
+    transform: translate(100%, 0);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}

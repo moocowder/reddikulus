@@ -79,7 +79,8 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
           >
             {/* <GrReddit />
             Login */}
-            <BiLogInCircle />
+            {/* <BiLogInCircle /> */}
+            Login
           </a>
         )}
       </div>

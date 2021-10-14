@@ -8,6 +8,7 @@ import {
   FaUndo,
 } from "react-icons/fa"
 import useTimedState from "../hooks/useTimedState"
+import { useEffect, useState } from "react"
 
 interface Props {
   state: "running" | "loading" | "paused" | "ended"
@@ -17,13 +18,20 @@ interface Props {
 
 function Icon({ state, play, pause }: Props) {
   const [display, setDisplay, cancel] = useTimedState(false)
+
+  useEffect(() => {
+    if (state === "ended") return
+    cancel()
+    setDisplay(true, 500)
+  }, [state])
+
   return (
     <div
-      // onMouseMove={() => setDisplay(true, 1000)}
+      onMouseMove={() => setDisplay(true, 1000)}
       className={styles.icon}
       onClick={(e) => {
         e.stopPropagation()
-        setDisplay(true, 200)
+        // setDisplay(true, 200)
         // cancel()
         if (state === "ended" || state === "paused") play()
         else pause()

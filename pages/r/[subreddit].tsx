@@ -3,18 +3,19 @@ import { GetServerSideProps } from "next"
 import Head from "next/head"
 import styles from "../../styles/subreddit.module.css"
 import Content from "../../components/content"
+import format from "../../utils/format"
+import date from "../../utils/date"
+import Cover from "../../components/cover"
+import About from "../../components/about"
 
 type About = {
-  // submission_type: string
-  banner_img: string
-  banner_background_image: string
-  // banner_background_color
-  mobile_banner_image: string
-  header_img: string
-  icon_img: string
-  community_icon: string
+  banner: string
+  icon: string
+  title: string
+  subscribers: number
+  created: number
   public_description: string
-  primary_color: string
+  color: string
   allow_media: boolean
 }
 
@@ -33,38 +34,14 @@ function Subreddit({ sub, about }: Props) {
       <Head>
         <title>{sub}</title>
       </Head>
-      <div
-        className={styles.wrapper}
-        style={{
-          background: about.primary_color || "yellow",
-          // boxShadow: "inset 0 -30px 22px -22px  red",
-        }}
-      >
-        <img
-          className={styles.banner}
-          src={
-            about.banner_background_image.replace(/\?.*/, "") ||
-            about.banner_img ||
-            about.mobile_banner_image
-          }
-          alt=""
-        />
-      </div>
-      <img
-        className={styles.icon}
-        src={
-          about.community_icon.replace(/\?.*/, "") ||
-          about.icon_img ||
-          "/axolotl.svg"
-        }
-        alt=""
+      <Cover banner={about.banner} icon={about.icon} color={about.color} />
+      <About
+        name={"r/" + sub}
+        title={about.title}
+        created={about.created}
+        members={about.subscribers}
+        text={about.public_description}
       />
-      <br />
-      <br />
-      <h1>
-        <a href={`https://reddit.com/r/${sub}`}>r/{sub}</a>
-      </h1>
-      <p>{about.public_description}</p>
       <Content api="/api/posts" params={{ sub, sort: "hot" }} />
     </div>
   )
@@ -72,22 +49,29 @@ function Subreddit({ sub, about }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let sub = context.params?.subreddit
-  let res = await fetch(`https://reddit.com/r/${sub}/about.json`)
+  let res = await fetch(`https://reddit.com/r/${sub}/about.json?raw_json=1`)
   let data = await res.json()
   let about: About | null
 
   if (data.kind === "Listing") about = null
   else
     about = {
-      // submission_type: data.data.submission_type,
-      banner_img: data.data.banner_img,
-      banner_background_image: data.data.banner_background_image,
-      mobile_banner_image: data.data.mobile_banner_image,
-      header_img: data.data.header_img,
-      icon_img: data.data.icon_img,
-      community_icon: data.data.community_icon,
+      banner:
+        data.data.banner_img ||
+        data.data.banner_background_image?.replace(/\?.*/, "") ||
+        data.data.mobile_banner_image,
+      icon:
+        data.data.icon_img ||
+        data.data.community_icon?.replace(/\?.*/, "") ||
+        data.data.header_img,
+      title: data.data.title,
+      subscribers: data.data.subscribers,
+      created: data.data.created,
       public_description: data.data.public_description,
-      primary_color: data.data.primary_color,
+      color:
+        data.data.banner_background_color ||
+        data.data.primary_color ||
+        data.data.key_color,
       allow_media:
         data.data.allow_galleries ||
         data.data.allow_videogifs ||

@@ -4,7 +4,14 @@ import { IoMdAlbums } from "react-icons/io"
 import { FiLayers } from "react-icons/fi"
 import { IoLayers } from "react-icons/io5"
 import { IoIosAlbums } from "react-icons/io"
-function Album({ thumbnails }: { thumbnails: string[] }) {
+import Imagine from "./imagine"
+function Album({
+  thumbnails,
+  originals,
+}: {
+  thumbnails: string[]
+  originals: string[]
+}) {
   let [index, setIndex] = useState(0)
   let [hover, setHover] = useState(false)
   let [loaded, setLoaded] = useState(false)
@@ -25,6 +32,10 @@ function Album({ thumbnails }: { thumbnails: string[] }) {
     }, 1000)
   }, [loaded, hover])
 
+  useEffect(() => {
+    setLoaded(false)
+  }, [index])
+
   return (
     <div
       className={styles.wrapper}
@@ -36,24 +47,29 @@ function Album({ thumbnails }: { thumbnails: string[] }) {
     >
       {!hover && <IoLayers className={`${styles.icon} `} />}
       <span className={styles.number}>
-        {index + 1} / {thumbnails.length}
+        {index + 1}/{thumbnails.length}
       </span>
       {/* <Imagine thumbnail={thumbnails[index]} original={urls[index]} /> */}
       <img className={styles.background} src={thumbnails[index]} alt="" />
 
-      <img
+      {/* <img
         onLoad={() => setLoaded(true)}
         // onLoadStart={() => alert("loading...")}
         // onLoadCapture={() => {
         //   alert("on load  capture")
         // }}
-        onLoadStartCapture={() => {
-          setLoaded(false)
-        }}
+        // onLoadStartCapture={() => {
+        //   setLoaded(false)
+        // }}
         // style={{ zIndex: 3 }}
         className={styles.img}
         src={thumbnails[index]}
         alt=""
+      /> */}
+      <Imagine
+        thumbnail={thumbnails[index]}
+        original={originals[index]}
+        appeared={() => setLoaded(true)}
       />
     </div>
   )

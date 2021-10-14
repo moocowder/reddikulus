@@ -8,7 +8,15 @@ type Sub = {
   icon: string
 }
 
-function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
+function Subpanel({
+  topic,
+  setTopic,
+  setOpen,
+}: {
+  topic: string
+  setTopic: Function
+  setOpen: Function
+}) {
   const [subs, setSubs] = useState<Sub[]>([])
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -17,7 +25,7 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
   const size = 15
   let observer: IntersectionObserver //= useRef()
   const lastElementRef = (node: HTMLLIElement) => {
-    if (loading) return
+    if (loading || done) return
     // if (loading) return
     if (observer) observer.disconnect()
     observer = new IntersectionObserver((entries) => {
@@ -46,25 +54,30 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
   useEffect(() => {
     setLoading(true)
     setDone(false)
-    setPage(0)
     setSubs([])
-    fetch(`/api/topicSubs?topic=${topic}&&page=${page}&&size=${size}`)
-      .then((r) => r.json())
-      .then((d) => {
-        setSubs(d)
-        setLoading(false)
-      })
-      .catch((e) => console.log(e))
+    setPage(0)
+
+    async function dofetch() {
+      fetch(`/api/topicSubs?topic=${topic}&&page=0&&size=${size}`)
+        .then((r) => r.json())
+        .then((d) => {
+          setSubs(d)
+          setLoading(false)
+        })
+        .catch((e) => console.log(e))
+    }
+    dofetch()
   }, [topic])
 
   useEffect(() => {
     if (page === 0) return
+    // alert("page 0")
     setLoading(true)
     fetch(`/api/topicSubs?topic=${topic}&&page=${page}&&size=${size}`)
       .then((r) => r.json())
       .then((d) => {
         setLoading(false)
-        if (d.length < 15) setDone(true)
+        if (d.length < size) setDone(true)
         setSubs([...subs, ...d])
       })
       .catch((e) => console.log(e))
@@ -81,17 +94,39 @@ function Subpanel({ topic, setTopic }: { topic: string; setTopic: Function }) {
       {subs?.map((s) => (
         <li className={styles.item} key={s.name}>
           <div>
-            <img src={s.icon} alt="" />
+            {s.icon ? (
+              <img
+                src={s.icon.replace(/&amp;/g, "&")}
+                style={{ background: "anime" }}
+                alt=""
+              />
+            ) : (
+              <div style={{ background: "orange" }}>kk</div>
+            )}
           </div>
-          <Link href={"/r/" + s.name}>{s.name}</Link>
+          <Link href={"/r/" + s.name}>
+            <div onClick={() => setOpen(false)}>{s.name}</div>
+          </Link>
         </li>
       ))}
 
       {!done && (
-        <li ref={lastElementRef} className={styles.item} key="1">
-          <span className={styles.sk}></span>
-          <span className={styles.sk2}></span>
-        </li>
+        <>
+          <li ref={lastElementRef} className={styles.item}>
+            <div>
+              <div className={styles.sk}></div>
+            </div>
+            <div className={styles.sk2}></div>
+          </li>
+          {Array.from(Array(5).keys()).map((i: number) => (
+            <li className={styles.item} key={i}>
+              <div>
+                <div className={styles.sk}></div>
+              </div>
+              <div className={styles.sk2}></div>
+            </li>
+          ))}
+        </>
       )}
     </ul>
   )

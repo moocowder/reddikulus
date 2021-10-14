@@ -15,6 +15,8 @@ import Cinema from "./Cinema"
 import { Post } from "../schema/post"
 import Brick from "../components/brick"
 import Infos from "./Infos"
+import useWindowSize from "../hooks/useWindowSize"
+
 let n
 
 type Props = {
@@ -27,7 +29,8 @@ type Props = {
 
 function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   const [selected, setSelected] = useState<Post<any> | null>()
-
+  // const { width, height } = useWindowSize()
+  // const width = useWindow()
   console.log("renderring masonry")
   let rows: number[] = []
   const gap = 30

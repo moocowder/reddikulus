@@ -43,6 +43,7 @@ interface Video extends Media {
 interface Gallery extends Media {
   thumbnails: string[]
   urls: string[]
+  ratios: number[]
 }
 
 export type { Post, Image, Video, Gallery }

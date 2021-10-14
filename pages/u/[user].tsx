@@ -1,17 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { GetServerSideProps } from "next"
 import Head from "next/head"
-import styles from "../../styles/subreddit.module.css"
 import Content from "../../components/content"
+import Cover from "../../components/cover"
+import About from "../../components/about"
 
 type About = {
   title: string
   // name: string
   description: string
+  karma: number
+  created: number
   public_description: string
-  icon_img: string
-  snoovatar_img: string
-  banner_img: string
+  avatar: string
+  icon: string
+  banner: string
 }
 
 type Props = {
@@ -26,31 +29,14 @@ function User({ user, about }: Props) {
         <title>{user}</title>
       </Head>
 
-      <div className={styles.wrapper}>
-        <img
-          className={styles.banner}
-          src={about.banner_img?.replace(/\?.*/, "")}
-          alt=""
-        />
-      </div>
-      <img
-        className={styles.icon}
-        src={
-          about.icon_img?.replace(/\?.*/, "") ||
-          about.snoovatar_img?.replace(/\?.*/, "")
-        }
-        alt=""
+      <Cover banner={about.banner} avatar={about.avatar} icon={about.icon} />
+      <About
+        name={"u/" + user}
+        title={about.title}
+        karma={about.karma}
+        created={about.created}
+        text={about.description}
       />
-
-      <br />
-      <br />
-      <h1>
-        <a href={`https://reddit.com/u/${user}`}>u/{user}</a>
-      </h1>
-      <h1>{about.title}</h1>
-      <p>{about.description}</p>
-      <p>{about.public_description}</p>
-      {/* <Content useLoad={useLoadUser} word={user} sortInit="new" /> */}
       <Content api="/api/user" params={{ user, sort: "new" }} />
     </div>
   )
@@ -58,17 +44,19 @@ function User({ user, about }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let user = context.params?.user
-  let res = await fetch(`https://reddit.com/u/${user}/about.json`)
+  let res = await fetch(`https://reddit.com/u/${user}/about.json?raw_json=1`)
   let data = await res.json()
 
   let about = {
     title: data.data.subreddit.title,
     // name: data.data.name,
-    description: data.data.subreddit.description,
-    public_description: data.data.subreddit.public_description,
-    icon_img: data.data.icon_img,
-    snoovatar_img: data.data.snoovatar_img,
-    banner_img: data.data.subreddit.banner_img,
+    // description: data.data.subreddit.description,
+    karma: data.data.total_karma,
+    created: data.data.created,
+    description: data.data.subreddit.public_description,
+    icon: data.data.icon_img?.replace(/\?.*/, ""),
+    avatar: data.data.snoovatar_img,
+    banner: data.data.subreddit.banner_img?.replace(/\?.*/, ""),
   }
   return { props: { user, about } }
 }

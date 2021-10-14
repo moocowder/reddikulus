@@ -8,6 +8,7 @@ import { useEffect } from "react"
 import { FiMessageSquare } from "react-icons/fi"
 import { FaRegClock } from "react-icons/fa"
 import { IoLogoReddit } from "react-icons/io"
+import format from "../utils/format"
 
 type props = {
   ups: number
@@ -76,10 +77,10 @@ props) {
         return rtf.format(Math.round(-elapsed / (units[u] || 0)), u)
   }
 
-  function format(number: number) {
-    if (number <= 999) return number
-    return (Math.round(number / 100) / 10).toFixed(1) + " k"
-  }
+  // function format(number: number) {
+  //   if (number <= 999) return number
+  //   return (Math.round(number / 100) / 10).toFixed(1) + " k"
+  // }
 
   return (
     <div

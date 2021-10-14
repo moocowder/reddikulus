@@ -3,6 +3,7 @@ import { CgCloseO } from "react-icons/cg"
 import { BiFullscreen } from "react-icons/bi"
 import { GrCircleQuestion } from "react-icons/gr"
 import { FiDownload } from "react-icons/fi"
+import { FaKeyboard } from "react-icons/fa"
 import { AiOutlineQuestionCircle } from "react-icons/ai"
 import { FiMaximize, FiMinimize } from "react-icons/fi"
 import { useEffect, useState } from "react"
@@ -33,28 +34,32 @@ function Options({ close, maximize, minimize, download }: Props) {
       <li onClick={() => close()}>
         <CgCloseO />
       </li>
+
+      {fullscreen ? (
+        <li
+          onClick={() => {
+            setFullscreen(false)
+            minimize()
+          }}
+        >
+          <FiMinimize />
+        </li>
+      ) : (
+        <li
+          onClick={() => {
+            setFullscreen(true)
+            maximize()
+          }}
+        >
+          <FiMaximize />
+        </li>
+      )}
+
       <li>
-        {fullscreen ? (
-          <FiMinimize
-            onClick={() => {
-              setFullscreen(false)
-              minimize()
-            }}
-          />
-        ) : (
-          <FiMaximize
-            onClick={() => {
-              setFullscreen(true)
-              maximize()
-            }}
-          />
-        )}
+        <FaKeyboard />
       </li>
-      <li>
-        <AiOutlineQuestionCircle />
-      </li>
-      <li>
-        <FiDownload onClick={() => download()} />
+      <li onClick={() => download()}>
+        <FiDownload />
       </li>
     </ul>
   )

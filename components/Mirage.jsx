@@ -43,7 +43,7 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
     >
       <span className={styles.duration}>{format(duration)}</span>
 
-      <div style={{ position: "absolute" }}>
+      <div style={{ position: "absolute", width: "100%", height: "100%" }}>
         <FaPlay className={`${styles.icon} `} />
         {/* <CgPlayButtonO className={`${styles.icon} `} /> */}
         <Imagine thumbnail={thumbnail} original={poster} />

@@ -3,7 +3,7 @@ export default async (req, res) => {
 
   let r = await fetch(
     // `https://reddit.com/u/${user}.json?sort=${sort}&after=${after}`
-    `https://api.reddit.com/user/${user}/submitted?sort=${sort}&after=${after}`
+    `https://api.reddit.com/user/${user}/submitted?sort=${sort}&after=${after}&raw_json=1`
   )
   let data = await r.json()
   res.status(200).json(data.data)

@@ -1,5 +1,5 @@
 import styles from "../styles/brick.module.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Infos from "./Infos"
 import { Post, Image, Video, Gallery } from "../schema/post"
 import Imagine from "./imagine"
@@ -27,6 +27,12 @@ function Brick({
 }: Props) {
   const [visible, setVisible] = useState(false)
 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     alert("red light")
+  //     setVisible(false)
+  //   }, 10000)
+  // }, [])
   let observer: IntersectionObserver
   function rendered(node: HTMLDivElement) {
     if (observer) observer.disconnect()
@@ -47,7 +53,7 @@ function Brick({
   return (
     <div>
       <div
-        className={styles.brick}
+        className={`${styles.brick} `}
         style={{
           width,
           height,
@@ -74,7 +80,10 @@ function Brick({
           />
         )}
         {post.media.type === "gallery" && visible && (
-          <Album thumbnails={post.media.thumbnails} />
+          <Album
+            thumbnails={post.media.thumbnails}
+            originals={post.media.urls}
+          />
         )}
       </div>
     </div>
