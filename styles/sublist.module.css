@@ -2,17 +2,26 @@
   /* border: 1px solid red; */
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: start;
   gap: 20px;
   padding: 1rem;
   border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: 5px;
-  border-bottom: 1px solid var(--sorbe);
   /* background-color: rgb(37, 37, 37); */
 }
 
 .sub {
   /* border: 1px solid green; */
+  width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sub:hover {
+  color: var(--sorbe);
+}
+
+.mock {
   width: 300px;
   display: flex;
   align-items: center;

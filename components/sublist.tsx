@@ -2,74 +2,65 @@ import { useCallback, useEffect, useRef, useState, useContext } from "react"
 import axios from "axios"
 import Badge from "../components/badge"
 import styles from "../styles/sublist.module.css"
+import useLoadSubs from "../hooks/useLoadSubs"
+import format from "../utils/format"
+import Link from "next/link"
 
 interface Props {
   query: string
 }
 
-type Sub = {
-  display_name: string
-  header_img: string
-  icon: string
-  // public_description: string
-  primary_color: string
-  key_color: string
-  subscribers: number
-  banner_background_color: string
-}
-
 function Sublist({ query }: Props) {
-  const [subs, setSubs] = useState<Sub[]>([])
-
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: `https://www.reddit.com/subreddits/search.json`,
-      params: { q: query, include_over_18: "on", limit: 12 },
-    })
-      .then((r) => {
-        let poo = r.data.data.children.map((c: any) => {
-          return {
-            display_name: c.data.display_name,
-            // header_img: string,
-            // public_description: string
-            icon: c.data.community_icon.replace(/\?.*/, "") || c.data.icon_img,
-            subscribers: c.data.subscribers,
-            primary_color: c.data.primary_color,
-            key_color: c.data.key_color,
-            banner_background_color: c.data.banner_background_color,
-          }
-        })
-        console.log(poo)
-        setSubs(poo)
-      })
-      .catch((e) => {
-        console.log("erreur : ", e)
-      })
-  }, [query])
-
+  // const [subs, setSubs] = useState<Sub[]>([])
+  const [after, setAfter] = useState("")
+  const { data, loading, error } = useLoadSubs(query, after)
   return (
-    <ul className={styles.sublist}>
-      {subs.map((s) => (
-        <li className={styles.sub}>
-          {s.icon ? (
-            <img style={{ width: "50px" }} src={s.icon} alt="" />
-          ) : (
-            <Badge
-              side={50}
-              color={
-                s.primary_color || s.key_color || s.banner_background_color
-              }
-              text={s.display_name}
-            />
-          )}
-          <div className={styles.infos}>
-            <p>{s.display_name}</p>
-            <p>{s.subscribers}</p>
-          </div>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <ul className={styles.sublist}>
+        {data?.subs.map((s) => (
+          <li className={styles.sub}>
+            {s.icon ? (
+              <img style={{ width: "50px" }} src={s.icon} alt="" />
+            ) : (
+              <p>hi</p>
+              // <Badge
+              //   side={50}
+              //   color={
+              //     "#ff0066"
+              //     // s.primary_color || s.key_color || s.banner_background_color
+              //   }
+              //   text={s.name}
+              // />
+            )}
+            <div className={styles.infos}>
+              <p>
+                <Link href={`/r/${s.name}`}>{s.name}</Link>
+              </p>
+              <p>{format(s.subscribers)}</p>
+            </div>
+          </li>
+        ))}
+        {loading &&
+          Array.from(Array(8).keys()).map((i: number) => (
+            <li className={styles.mock}>
+              <img
+                style={{ width: "50px" }}
+                src="https://styles.redditmedia.com/t5_2qoih/styles/communityIcon_03md6wdoo3g31.png"
+                alt=""
+              />
+              <div>
+                <p>name</p>
+                <p>subs</p>
+              </div>
+            </li>
+          ))}
+      </ul>
+      {data.after && (
+        <button style={{ margin: "auto" }} onClick={() => setAfter(data.after)}>
+          see more
+        </button>
+      )}
+    </div>
   )
 }
 export default Sublist

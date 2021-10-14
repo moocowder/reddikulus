@@ -81,12 +81,13 @@ function filter(children: Child[]) {
     if (p.data.is_gallery && p.data.media_metadata) {
       Object.keys(p.data.media_metadata).map((k) => {
         let pic = p.data.media_metadata[k]
-        if (!pic.s) alert(p.data.permalink)
+        if (!pic.s) alert("pic.s " + p.data.permalink)
 
         // ext = p.data.media_metadata[k].m.replace("image/", ".")
         // urls.push("https://i.redd.it/" + p.data.media_metadata[k].id + ext)
-        if (!pic.s.u) alert(p.data.permalink)
+        if (!pic.s.u) alert("pic.s.u " + p.data.permalink)
         urls.push(pic.s.u.replace(/&amp;/g, "&"))
+        if (!pic.p[0]) alert("pic.p[0] " + p.data.permalink)
         thumbnails.push(pic.p[0].u.replace(/&amp;/g, "&"))
         if (!p.data.ratio) p.data.ratio = pic.s.x / pic.s.y
 
