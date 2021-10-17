@@ -37,6 +37,9 @@ function Media({ media, direction }) {
           fullscreen={true}
         />
       )}
+      {media.type === "gif" && (
+        <Cinema src={media.url} thumbnail={media.thumbnail} duration={1} />
+      )}
     </div>
   )
 }

@@ -37,7 +37,8 @@
 }
 
 .selected {
-  box-shadow: 0 0 8px 0px #ff0066;
+  box-shadow: 0 0 8px 0px #ff0066ab;
+  background: #ff006617;
   /* background: #ff0066; */
   /* transform: scale(1.05); */
   transition: 0.1s;

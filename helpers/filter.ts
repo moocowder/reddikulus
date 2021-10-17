@@ -1,14 +1,14 @@
-import { Post, Image, Video, Gallery } from "../schema/post"
+import { Post, Image, Video, Gallery, Gif } from "../schema/post"
 
-type Page = {
-  after: string
-  children: Child[]
-}
+// type Page = {
+//   after: string
+//   children: Child[]
+// }
 
-type Child = {
-  kind: string
-  data: Data
-}
+// type Child = {
+//   kind: string
+//   data: Data
+// }
 
 type Data = {
   title: string
@@ -23,9 +23,10 @@ type Data = {
 }
 
 function filter(children: Child[]) {
-  let post: Post<Image | Video | Gallery>
+  let media: Image | Video | Gallery | Gif
+  let post: Post<Image | Video | Gallery | Gif>
 
-  let posts: Post<Image | Video | Gallery>[]
+  let posts: Post<Image | Video | Gallery | Gif>[]
   let img
   let urls: string[] = []
   let thumbnails: string[] = []
@@ -116,7 +117,7 @@ function filter(children: Child[]) {
     // post.author = "fobardoo"
     post = {
       // ...post,
-      kind: p.kind,
+      // kind: p.kind,
       title: p.data.title,
       author: p.data.author,
       sub: p.data.subreddit,

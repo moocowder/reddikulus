@@ -1,13 +1,13 @@
 import styles from "../styles/brick.module.css"
 import { useEffect, useState } from "react"
 import Infos from "./Infos"
-import { Post, Image, Video, Gallery } from "../schema/post"
+import { Post, Image, Video, Gallery, Gif } from "../schema/post"
 import Imagine from "./imagine"
 import Mirage from "./Mirage"
 import Album from "./album"
 
 type Props = {
-  post: Post<any>
+  post: Post<Image | Video | Gallery | Gif>
   setSelected: Function
   position: { top: number; left: number }
   width: number
@@ -83,6 +83,15 @@ function Brick({
           <Album
             thumbnails={post.media.thumbnails}
             originals={post.media.urls}
+          />
+        )}
+        {post.media.type === "gif" && visible && (
+          <Mirage
+            thumbnail={post.media.thumbnail}
+            poster={post.media.poster || ""}
+            peek={post.media.peek || ""}
+            duration={1}
+            gif={true}
           />
         )}
       </div>

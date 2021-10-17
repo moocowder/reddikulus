@@ -16,6 +16,9 @@ function Gallery({ urls, thumbnails }: Props) {
   let [progress, setProgress] = useState(0)
   let [loaded, setLoaded] = useState(false)
   let [run, setRun] = useState(true)
+  const [h, setH] = useState(300)
+  const gap = 20
+  const frameH = 120
 
   const [filmDisplay, setFilmDisplay, cancelFilm] = useTimedState(true)
   // const [run, setRun, cancelRun] = useTimedState()
@@ -24,9 +27,12 @@ function Gallery({ urls, thumbnails }: Props) {
   // let filmTimeout = useRef()
   useEffect(() => {
     if (!run) return
+    // if (!index) return
     timeout = setTimeout(() => {
-      next()
+      // next()
+      moveTo(index + 1)
     }, 4000)
+
     return () => clearTimeout(timeout)
   }, [index])
 
@@ -52,8 +58,18 @@ function Gallery({ urls, thumbnails }: Props) {
   //   if (!run) clearTimeout(timeout)
   // }, [run])
 
-  function next() {
-    setIndex(index === urls.length - 1 ? 0 : index + 1)
+  // function next() {
+  //   setIndex(index === urls.length - 1 ? 0 : index + 1)
+  // }
+
+  function moveTo(i: number) {
+    if (i === urls.length) {
+      setH(300)
+      setIndex(0)
+    } else {
+      setH(h + (index - i) * (frameH + gap))
+      setIndex(i)
+    }
   }
   // useEffect(() => {
   //   console.log(progress)
@@ -95,7 +111,8 @@ function Gallery({ urls, thumbnails }: Props) {
             className={styles.icon}
             onClick={(e) => {
               e.stopPropagation()
-              next()
+              // next()
+              moveTo(index + 1)
               setRun(true)
             }}
           >
@@ -109,7 +126,11 @@ function Gallery({ urls, thumbnails }: Props) {
         onMouseEnter={() => handleMouseEnter()}
         thumbnails={thumbnails}
         index={index}
-        setIndex={setIndex}
+        // setIndex={setIndex}
+        moveTo={(i) => moveTo(i)}
+        h={h}
+        gap={gap}
+        frameH={frameH}
       />
 
       {/* <span className={styles.number}>

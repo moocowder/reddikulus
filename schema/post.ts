@@ -1,5 +1,5 @@
 type Post<M> = {
-  kind: string
+  // kind: string
   title: string
   author: string
   sub: string
@@ -14,7 +14,7 @@ type Post<M> = {
 }
 
 type Media = {
-  type: "image" | "video" | "gallery"
+  // type: "image" | "video" | "gallery"
   ratio: number
   // thumbnail?: undefined
   // poster?: undefined
@@ -27,11 +27,13 @@ type Media = {
 }
 
 interface Image extends Media {
+  type: "image"
   url: string
   thumbnail: string
 }
 
 interface Video extends Media {
+  type: "video"
   poster: string
   thumbnail: string
   peek: string
@@ -41,9 +43,17 @@ interface Video extends Media {
 }
 
 interface Gallery extends Media {
+  type: "gallery"
   thumbnails: string[]
   urls: string[]
-  ratios: number[]
+  // ratios: number[]
 }
 
-export type { Post, Image, Video, Gallery }
+interface Gif extends Media {
+  type: "gif"
+  thumbnail: string
+  poster: string
+  peek: string
+  url: string
+}
+export type { Post, Image, Video, Gallery, Gif, Media }

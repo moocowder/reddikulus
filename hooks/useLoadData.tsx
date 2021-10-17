@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Post } from "../schema/post"
 import Data from "../schema/data"
 import filter from "../helpers/filter"
+import process from "../helpers/process"
 
 export default function useLoadData(
   api: string,
@@ -65,7 +66,10 @@ export default function useLoadData(
           )
       )
       let d = await r.json()
-      let ps = filter(d.children)
+      // let ps = filter(d.children)
+      let ps = d.children
+        .map((d: any) => process(d.data))
+        .filter((r: any) => r !== null)
       // d = {after: d.after}
       return { posts: ps, after: d.after }
     } catch (e) {

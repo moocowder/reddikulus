@@ -5,24 +5,32 @@ function Film({
   thumbnails,
   // ratios,
   index,
-  setIndex,
+  // setIndex,
+  moveTo,
+  h,
+  gap,
+  frameH,
   onMouseEnter,
   opacity,
 }: {
   thumbnails: string[]
   index: number
-  setIndex: Function
+  // setIndex: Function
+  moveTo: (i: number) => void
+  h: number
+  gap: number
+  frameH: number
   onMouseEnter: Function
   opacity: boolean
 }) {
-  const [h, setH] = useState(300)
-  const gap = 20
-  const frameH = 120
+  // const [h, setH] = useState(300)
+  // const gap = 20
+  // const frameH = 120
 
-  function moveTo(i: number) {
-    setIndex(i)
-    setH(h + (index - i) * (frameH + gap))
-  }
+  // function moveTo(i: number) {
+  //   setIndex(i)
+  //   setH(h + (index - i) * (frameH + gap))
+  // }
 
   return (
     <div

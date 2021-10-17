@@ -6,8 +6,14 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { useEffect } from "react"
 import { FiMessageSquare } from "react-icons/fi"
-import { FaRegClock } from "react-icons/fa"
+import {
+  FaRegClock,
+  FaRegCommentAlt,
+  FaRegComment,
+  FaComment,
+} from "react-icons/fa"
 import { IoLogoReddit } from "react-icons/io"
+import { FaRegUser } from "react-icons/fa"
 import format from "../utils/format"
 
 type props = {
@@ -92,43 +98,50 @@ props) {
       onMouseMove={(e) => e.stopPropagation()}
     >
       <div className={styles.top}>
-        <div className={styles.stat}>
-          <ImArrowUp />
-          {format(ups)}
-        </div>
+        {/* <span className={styles.stat}>
+          <ImArrowUp /> */}
+
+        {/* </span> */}
         <a
           href={"https://reddit.com" + permalink}
           target="_blank"
           className={styles.title}
         >
-          <b>{title}</b>
+          {<span className={styles.ups}>{format(ups)}</span>}
+          {title}
         </a>
       </div>
-      <div className={styles.top}>
+      <div className={styles.bottom}>
         {page !== "/r" && (
           <>
-            <img style={{ width: "50px" }} src={img} alt="" />
+            {/* <img style={{ width: "50px" }} src={img} alt="" /> */}
             <Link href={`/r/${sub}`}>
-              <span> r/{sub}</span>
+              <span className={styles.link}>
+                <span style={{ color: "var(--sorbe)" }}>r/</span>
+                {sub}
+              </span>
             </Link>
           </>
         )}
-        {page !== "/u" && (
-          <div className={styles.stat}>
-            <IoLogoReddit />
-            <Link href={`/u/${author}`}>
-              <span className={styles.author}> u/{author}</span>
-            </Link>
-          </div>
-        )}
+        <span className={styles.stat}>
+          <FaRegComment />
+          {format(comments)}
+        </span>
         <span className={styles.stat}>
           <FaRegClock />
           {relativeTime(date)}
         </span>
-        <span className={styles.stat}>
-          <FiMessageSquare />
-          {format(comments)}
-        </span>
+        {page !== "/u" && (
+          <div className={styles.stat}>
+            {/* <FaRegUser /> */}
+            <Link href={`/u/${author}`}>
+              <span className={styles.link}>
+                <span style={{ color: "var(--sorbe)" }}>u/</span>
+                {author}
+              </span>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

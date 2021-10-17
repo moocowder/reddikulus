@@ -1,0 +1,175 @@
+// import Media from "../components/media"
+import { Post, Image, Video, Gallery, Gif, Media } from "../schema/post"
+
+type Data = {
+  title: string
+  author: string
+  subreddit: string
+  ups: number
+  num_comments: number
+  permalink: string
+  domain: string
+  created_utc: number
+  over_18: boolean
+  crosspost_parent_list?: any
+  is_self: boolean
+  post_hint: string
+  secure_media: any
+  is_gallery?: boolean
+  media_metadata?: any
+  media: any
+  is_video: boolean
+  url: string
+  preview: any
+  created: number
+}
+
+// class MC implements Media {
+//   ratio: number
+//   constructor() {
+//     this.ratio = 0
+//   }
+// }
+function process(data: Data) {
+  //   console.log(data, "************************")
+  //   let media: Image | Video | Gallery | Gif
+  //   media = {
+  //     type: "gif",
+  //   }
+  //   let media: Media = new MC()
+  let post: Post<null | Gallery | Image | Video | Gif>
+  post = {
+    title: data.title,
+    author: data.author,
+    sub: data.subreddit,
+    ups: data.ups,
+    comments: data.num_comments,
+    permalink: data.permalink,
+    date: data.created,
+    media: null,
+  }
+
+  if (data.crosspost_parent_list) {
+    let cross = data.crosspost_parent_list[0]
+
+    data.is_self = cross?.is_self
+    data.post_hint = cross?.post_hint
+    data.secure_media = cross?.secure_media
+    if (cross?.is_gallery) {
+      data.is_gallery = true
+      data.media_metadata = cross?.media_metadata
+    }
+    if (cross?.is_video) {
+      // data.url =
+      //   cross?.media?.reddit_video.fallback_url
+      data.media = cross?.media
+      data.is_video = true
+    } else data.url = cross?.url
+  }
+
+  if (data.is_self) return null
+
+  if (
+    !data.is_gallery &&
+    data.post_hint !== "image" &&
+    data.post_hint !== "hosted:video"
+  )
+    return null
+
+  //   if (data.is_video) data.url = data.media.reddit_video.fallback_url
+  if (data.is_video) {
+    post.media = video(data)
+  }
+
+  if (data.is_gallery && data.media_metadata) {
+    post.media = gallery(data)
+  }
+
+  if (data.post_hint === "image") {
+    if ("mp4" in data.preview?.images[0].variants) post.media = gif(data)
+    else post.media = image(data)
+  }
+  return post
+}
+
+function gallery(data: Data): Gallery {
+  let pic
+  let g: Gallery = {
+    type: "gallery",
+    ratio: 0,
+    thumbnails: [],
+    urls: [],
+  }
+  Object.keys(data.media_metadata).map((k) => {
+    pic = data.media_metadata[k]
+    // if (!pic.s) alert("pic.s " + data.permalink)
+
+    // if (!pic.s.u) alert("pic.s.u " + data.permalink)
+    g.urls.push(pic.s.u.replace(/&amp;/g, "&"))
+    // if (!pic.p[0]) alert("pic.p[0] " + data.permalink)
+    g.thumbnails.push(pic.p[0].u.replace(/&amp;/g, "&"))
+
+    if (g.ratio === 0) g.ratio = pic.s.x / pic.s.y
+    // let newRatio = pic.s.x / pic.s.y
+    g.ratio = g.ratio < pic.s.x / pic.s.y ? g.ratio : pic.s.x / pic.s.y
+  })
+  return g
+}
+
+function video(data: Data): Video {
+  let img
+  let v: Video = {
+    type: "video",
+    ratio: 0,
+    duration: data.secure_media?.reddit_video?.duration,
+    peek: data.secure_media?.reddit_video?.scrubber_media_url,
+    poster: data.preview?.images[0].resolutions
+      .pop()
+      .url?.replace(/&amp;/g, "&"),
+    thumbnail: data.preview?.images[0].resolutions[0]?.url?.replace(
+      /&amp;/g,
+      "&"
+    ),
+    url: data.media.reddit_video.fallback_url,
+    timestamp: "",
+  }
+
+  img = data.preview?.images[0].source
+  v.ratio = img.width / img.height
+  return v
+}
+
+function image(data: Data): Image {
+  let img
+  let i: Image = {
+    ratio: 0,
+    type: "image",
+    url: data.url,
+    thumbnail: data.preview?.images[0].resolutions[0]?.url?.replace(
+      /&amp;/g,
+      "&"
+    ),
+  }
+  img = data.preview?.images[0].source
+  i.ratio = img.width / img.height
+  return i
+}
+
+function gif(data: Data): Gif {
+  let img
+  let g: Gif = {
+    type: "gif",
+    ratio: 0,
+    thumbnail: data.preview?.images[0].resolutions[0]?.url?.replace(
+      /&amp;/g,
+      "&"
+    ),
+    poster: data.preview?.images[0].source?.url,
+    peek: data.preview?.images[0].variants?.mp4?.resolutions[0]?.url,
+    url: data.preview?.images[0].variants?.mp4?.source?.url,
+  }
+  img = data.preview?.images[0].source
+  g.ratio = img.width / img.height
+  return g
+}
+export default process

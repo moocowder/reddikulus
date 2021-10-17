@@ -65,8 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         data.data.banner_background_image?.replace(/\?.*/, "") ||
         data.data.mobile_banner_image,
       icon:
-        data.data.icon_img ||
         data.data.community_icon?.replace(/\?.*/, "") ||
+        data.data.icon_img ||
         data.data.header_img,
       title: data.data.title,
       subscribers: data.data.subscribers,

@@ -26,11 +26,18 @@ function Album({
   //   }, [index, hover])
   useEffect(() => {
     if (!hover) return
+    timeout = setTimeout(() => {
+      setIndex(index === thumbnails.length - 1 ? 0 : index + 1)
+    }, 300)
+  }, [hover])
+
+  useEffect(() => {
+    if (!hover) return
     if (!loaded) return
     timeout = setTimeout(() => {
       setIndex(index === thumbnails.length - 1 ? 0 : index + 1)
     }, 1000)
-  }, [loaded, hover])
+  }, [loaded])
 
   useEffect(() => {
     setLoaded(false)

@@ -77,9 +77,6 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
             className={styles.login}
             href="https://www.reddit.com/api/v1/authorize?client_id=vskQlp48i50FcgXAenvHbA&response_type=code&state=astringofyourshoosing&redirect_uri=http://localhost:3000/login&duration=temporary&scope=identity read"
           >
-            {/* <GrReddit />
-            Login */}
-            {/* <BiLogInCircle /> */}
             Login
           </a>
         )}

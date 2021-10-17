@@ -14,8 +14,10 @@ interface Props {
 function About({ name, title, created, members, karma, text }: Props) {
   return (
     <div className={styles.infos}>
-      <h1>
-        <a href={`https://reddit.com/${name}`}>{name}</a>
+      <h1 className={styles.name}>
+        <a target="_blank" href={`https://reddit.com/${name}`}>
+          {name}
+        </a>
       </h1>
       <b>{title}</b>
       <div className={styles.stats}>

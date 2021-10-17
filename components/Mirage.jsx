@@ -6,7 +6,9 @@ import Imagine from "./imagine"
 import styles from "../styles/mirage.module.css"
 import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
 import { FaPlay } from "react-icons/fa"
-
+import { RiFileGifFill } from "react-icons/ri"
+import { AiOutlineGif, AiOutlineFileGif } from "react-icons/ai"
+import { BsLightningFill } from "react-icons/bs"
 // type Props = {
 //   thumbnail: string
 //   poster: string
@@ -14,7 +16,14 @@ import { FaPlay } from "react-icons/fa"
 //   url: string
 // }
 
-function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
+function Mirage({
+  thumbnail,
+  poster,
+  peek,
+  duration,
+  onClick = () => {},
+  gif = false,
+}) {
   const [hover, setHover] = useState(false)
   const [progress, setProgress] = useState(0)
 
@@ -22,7 +31,7 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
   useEffect(() => {
     if (!hover) return
 
-    vid.current.playbackRate = 3
+    vid.current.playbackRate = 1
   }, [hover])
 
   function format(s) {
@@ -41,10 +50,17 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <span className={styles.duration}>{format(duration)}</span>
+      {!gif && <span className={styles.duration}>{format(duration)}</span>}
 
       <div style={{ position: "absolute", width: "100%", height: "100%" }}>
-        <FaPlay className={`${styles.icon} `} />
+        {gif ? (
+          // <span className={`${styles.gif} `}>GIF</span>
+          <BsLightningFill className={`${styles.icon} `} />
+        ) : (
+          // <AiOutlineFileGif className={`${styles.icon} `} />
+          <FaPlay className={`${styles.icon} `} />
+        )}
+
         {/* <CgPlayButtonO className={`${styles.icon} `} /> */}
         <Imagine thumbnail={thumbnail} original={poster} />
         {/* <img style={{ position: "absolute" }} src={thumbnail} alt="" /> */}
@@ -65,10 +81,13 @@ function Mirage({ thumbnail, poster, peek, duration, onClick = () => {} }) {
             loop
           ></video>
           {/* <div className={styles.timer}> */}
-          <div
-            className={styles.bar}
-            style={{ width: `${progress * 100}%` }}
-          ></div>
+          {!gif && (
+            <div
+              className={styles.bar}
+              style={{ width: `${progress * 100}%` }}
+            ></div>
+          )}
+
           {/* </div> */}
         </div>
       )}
