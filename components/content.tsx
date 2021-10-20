@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Post } from "../schema/post"
 import Masonry from "./masonry"
 import Viewer from "./viewer"
@@ -21,6 +21,13 @@ function Content({
   const [post, setPost] = useState<Post<any> | null>()
 
   let { data, loading, error } = useLoadData(api, { ...params, sort, after })
+
+  useEffect(() => {
+    if (data.posts?.length === 0)
+      setTimeout(() => {
+        setAfter(data.after)
+      }, 1000)
+  }, [data])
 
   // useEffect(() => {
   //   console.log("000000000000000000000")

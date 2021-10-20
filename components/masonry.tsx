@@ -29,7 +29,7 @@ type Props = {
 
 function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   const [selected, setSelected] = useState<Post<any> | null>()
-  // const { width, height } = useWindowSize()
+  const { width, height } = useWindowSize()
   // const width = useWindow()
   console.log("renderring masonry")
   let rows: number[] = []
@@ -46,6 +46,10 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
     })
   }, [])
 
+  useEffect(() => {
+    setEnd(false)
+  }, [posts])
+
   function lastBrick() {
     if (loading) return
     if (hasMore) loadMore()
@@ -56,7 +60,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
   // useLayoutEffect(() => {
   //   width = window.innerWidth
   // }, [])
-  let { width } = useWindow()
+  // let { width } = useWindow()
   if (!width) return null
 
   n = Math.floor(width / (iw + gap))

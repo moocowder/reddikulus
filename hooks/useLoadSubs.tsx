@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 import { useState } from "react"
 import axios from "axios"
+import { useContext } from "react"
+import UserContext from "../contexts/userContext"
 
 interface Data {
   after: string
@@ -14,6 +16,7 @@ type Sub = {
 }
 
 function useLoadSubs(q: string, after: string) {
+  const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState<Data>({ after: "", subs: [] })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -43,7 +46,7 @@ function useLoadSubs(q: string, after: string) {
       let r = await axios({
         method: "GET",
         url: url,
-        params: { q, include_over_18: "on", limit: 12, after },
+        params: { q, include_over_18: user.nsfw, limit: 12, after },
       })
       let poo = r.data.data.children.map((c: any) => {
         return {

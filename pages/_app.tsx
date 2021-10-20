@@ -10,21 +10,23 @@ import { useRouter } from "next/router"
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User>({})
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user") || "{}"))
   }, [])
 
-  // useEffect(() => {
-  //   router.events.on("routeChangeStart", () => alert("start"))
-  //   router.events.on("routeChangeComplete", () => alert("end"))
-  //   // router.events.on("routeChangeError", handleStop)
-  // }, [router])
+  useEffect(() => {
+    router.events.on("routeChangeStart", () => setLoading(true))
+    router.events.on("routeChangeComplete", () => setLoading(false))
+    // router.events.on("routeChangeError", handleStop)
+  }, [router])
+
   return (
     <div>
       <UserContext.Provider value={[user, setUser]}>
-        {/* <span className="bar">hello</span> */}
+        {loading && <span className="bar"></span>}
         <Header open={open} setOpen={setOpen} />
         {open && <Panel setOpen={setOpen} />}
         <Component {...pageProps} />

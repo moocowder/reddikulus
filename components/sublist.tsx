@@ -18,7 +18,7 @@ function Sublist({ query }: Props) {
     <div>
       <ul className={styles.sublist}>
         {data?.subs.map((s) => (
-          <li className={styles.sub}>
+          <li key={s.name} className={styles.sub}>
             {s.icon ? (
               <img style={{ width: "50px" }} src={s.icon} alt="" />
             ) : (
@@ -42,7 +42,7 @@ function Sublist({ query }: Props) {
         ))}
         {loading &&
           Array.from(Array(8).keys()).map((i: number) => (
-            <li className={styles.mock}>
+            <li key={i} className={styles.mock}>
               <img
                 style={{ width: "50px" }}
                 src="https://styles.redditmedia.com/t5_2qoih/styles/communityIcon_03md6wdoo3g31.png"

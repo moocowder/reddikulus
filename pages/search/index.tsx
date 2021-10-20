@@ -13,7 +13,10 @@ function Search({ query }: { query: string }) {
       <Head>
         <title>{query}</title>
       </Head>
+      <h1>Resuslts for "{query}"</h1>
+      <h2>subreddits</h2>
       <Sublist query={query} />
+      <h2>posts</h2>
       <Content
         api="/api/search"
         params={{ q: query, sort: "relevance", nsfw: user.nsfw || "" }}

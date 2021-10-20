@@ -3,6 +3,7 @@ import Gallery from "../components/gallery"
 import styles from "../styles/media.module.css"
 import Imagine from "./imagine"
 import Zoom from "./zoom"
+import { CgSpinnerTwo } from "react-icons/cg"
 
 function Media({ media, direction }) {
   return (
@@ -40,6 +41,8 @@ function Media({ media, direction }) {
       {media.type === "gif" && (
         <Cinema src={media.url} thumbnail={media.thumbnail} duration={1} />
       )}
+
+      <CgSpinnerTwo className={styles.spinner} />
     </div>
   )
 }

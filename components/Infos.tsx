@@ -88,6 +88,28 @@ props) {
   //   return (Math.round(number / 100) / 10).toFixed(1) + " k"
   // }
 
+  function handleMouseDown(e: any) {
+    if (e.button === 0) {
+      e.preventDefault()
+      router.push("https://reddit.com" + permalink)
+    }
+    if (e.button === 2) {
+      // e.preventDefault()
+      // window.open("https://reddit.com" + permalink)
+      // router.push("https://reddit.com" + permalink)
+      e.stopPropagation()
+      // e.preventDefault()
+    }
+    // let url = "https://reddit.com" + permalink
+    // if (e.button === 1) window.open("https://reddit.com" + permalink, "_blank")
+    // if (e.button === 2) window.open(url, "_blank")?.focus()
+    // if (e.button === 2) alert(false)
+    // alert(e.button)
+    // if (e.button !== 1) return
+    // close()
+    // document.body.style.overflow = "auto"
+  }
+
   return (
     <div
       className={styles.infos}
@@ -115,12 +137,15 @@ props) {
         {page !== "/r" && (
           <>
             {/* <img style={{ width: "50px" }} src={img} alt="" /> */}
-            <Link href={`/r/${sub}`}>
-              <span className={styles.link}>
+            <a href={`/r/${sub}`}>
+              <span
+                className={styles.link}
+                onMouseDown={(e) => handleMouseDown(e)}
+              >
                 <span style={{ color: "var(--sorbe)" }}>r/</span>
                 {sub}
               </span>
-            </Link>
+            </a>
           </>
         )}
         <span className={styles.stat}>
@@ -135,7 +160,10 @@ props) {
           <div className={styles.stat}>
             {/* <FaRegUser /> */}
             <Link href={`/u/${author}`}>
-              <span className={styles.link}>
+              <span
+                className={styles.link}
+                onMouseDown={(e) => handleMouseDown(e)}
+              >
                 <span style={{ color: "var(--sorbe)" }}>u/</span>
                 {author}
               </span>

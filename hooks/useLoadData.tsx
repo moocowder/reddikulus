@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { Post } from "../schema/post"
 import Data from "../schema/data"
-import filter from "../helpers/filter"
 import process from "../helpers/process"
 
 export default function useLoadData(
@@ -11,6 +10,7 @@ export default function useLoadData(
   const [data, setData] = useState<Data>({ posts: [], after: "" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [token, setToken] = useState("")
 
   useEffect(() => {
     if (!params.after) return
@@ -41,6 +41,7 @@ export default function useLoadData(
 
     async function getPage() {
       let d = await loadPage()
+      // if (d.posts.length === 0)
       setData({ after: d.after, posts: d?.posts })
 
       // if (d?.posts.length === 0) {

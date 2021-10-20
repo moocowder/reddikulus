@@ -23,7 +23,11 @@ function Cover({ banner, icon, avatar, color }: Props) {
         >
           {banner && <img className={styles.banner} src={banner} alt="" />}
           {avatar && <img className={styles.avatar} src={avatar} alt="" />}
-          {!avatar && icon && <img className={styles.icon} src={icon} alt="" />}
+          {!avatar && icon && (
+            <div className={styles.icon}>
+              <img src={icon} alt="" />
+            </div>
+          )}
         </div>
       )}
     </>

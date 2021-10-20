@@ -23,12 +23,12 @@ type Props = {
 }
 
 function User({ user, about }: Props) {
+  if (!user) return <h1>user doesn't exist</h1>
   return (
     <div>
       <Head>
         <title>{user}</title>
       </Head>
-
       <Cover banner={about.banner} avatar={about.avatar} icon={about.icon} />
       <About
         name={"u/" + user}
@@ -49,6 +49,7 @@ function User({ user, about }: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let user = context.params?.user
   let res = await fetch(`https://reddit.com/u/${user}/about.json?raw_json=1`)
+  if (res.status === 404) return { props: { user: null, about: null } }
   let data = await res.json()
 
   let about = {

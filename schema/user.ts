@@ -1,5 +1,6 @@
 type User = {
-  token?: string
+  access_token?: string
+  refresh_token?: string
   name?: string
   icon?: string
   nsfw?: "on" | "off"

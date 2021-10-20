@@ -38,20 +38,23 @@ ul {
 
 .bar {
   /* position: -webkit-sticky; */
-  position: sticky;
-  top: 3rem;
-  width: 600px;
+  position: fixed;
+  top: 0;
+  width: 100vw;
   height: 2px;
   background: var(--sorbe);
-  /* animation: slide 5s linear infinite; */
-  z-index: 5;
+  animation: slide 2s linear infinite;
+  z-index: 1;
 }
 
 @keyframes slide {
-  from {
-    left: -400px;
+  0% {
+    left: -100vw;
   }
-  to {
+  70% {
+    left: 100vw;
+  }
+  100% {
     left: 100vw;
   }
 }

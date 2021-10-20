@@ -37,6 +37,20 @@
   animation: right 0.2s linear;
 }
 
+.spinner {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--sorbe);
+  /* font-size: 48px; */
+  /* animation: spin 5s linear infinite; */
+  background-color: transparent;
+  z-index: -1;
+}
+
 @keyframes left {
   from {
     transform: translate(-100%, 0);
@@ -52,5 +66,14 @@
   }
   to {
     transform: translate(0, 0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }

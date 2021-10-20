@@ -5,18 +5,25 @@ import { useRouter } from "next/router"
 import UserContext from "../contexts/userContext"
 import User from "../schema/user"
 
-function Login({ token }: { token: string }) {
+function Login({
+  access_token,
+  refresh_token,
+}: {
+  access_token: string
+  refresh_token: string
+}) {
   const router = useRouter()
   const [user, setUser] = useContext(UserContext)
 
   useEffect(() => {
     fetch("https://oauth.reddit.com/api/me", {
-      headers: { Authorization: "Bearer " + token },
+      headers: { Authorization: "Bearer " + access_token },
     })
       .then((r) => r.json())
       .then((d) => {
         let u: User = {
-          token: token,
+          access_token,
+          refresh_token,
           name: d.data.name,
           icon: d.data.icon_img.replace(/\?.*/, "") || d.data.snoovatar_img,
           nsfw: d.data.over_18 ? "on" : "off",
@@ -50,8 +57,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }),
   })
   let d = await res.json()
+  console.log("first request returned from server >>>>>>>:", d)
+  let res2 = await fetch(`https://www.reddit.com/api/v1/access_token`, {
+    method: "POST",
+    headers: {
+      contentType: "application/x-www-form-urlencoded",
+      Authorization:
+        "Basic dnNrUWxwNDhpNTBGY2dYQWVudkhiQTpLLU9MRXJPWkFaRzRWNkM2OEI0cU9FaVltRUxfSlE=",
+    },
+    body: new URLSearchParams({
+      // code,
+      grant_type: "refresh_token",
+      refresh_token: d.refresh_token,
+      // redirect_uri: "http://localhost:3000/login",
+    }),
+  })
 
-  return { props: { token: d.access_token } }
+  let d2 = await res2.json()
+  console.log("second request returned from server >>>>>>>:", d2)
+  return {
+    props: { access_token: d2.access_token, refresh_token: d.refresh_token },
+  }
 }
 
 export default Login

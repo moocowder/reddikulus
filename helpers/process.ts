@@ -55,6 +55,7 @@ function process(data: Data) {
     data.is_self = cross?.is_self
     data.post_hint = cross?.post_hint
     data.secure_media = cross?.secure_media
+    data.preview = cross?.preview
     if (cross?.is_gallery) {
       data.is_gallery = true
       data.media_metadata = cross?.media_metadata
@@ -62,6 +63,7 @@ function process(data: Data) {
     if (cross?.is_video) {
       // data.url =
       //   cross?.media?.reddit_video.fallback_url
+      // cross?.media ||
       data.media = cross?.media
       data.is_video = true
     } else data.url = cross?.url
@@ -102,12 +104,13 @@ function gallery(data: Data): Gallery {
   }
   Object.keys(data.media_metadata).map((k) => {
     pic = data.media_metadata[k]
+    if (!pic.s) return
     // if (!pic.s) alert("pic.s " + data.permalink)
 
     // if (!pic.s.u) alert("pic.s.u " + data.permalink)
-    g.urls.push(pic.s.u.replace(/&amp;/g, "&"))
+    g.urls.push(pic.s.u || pic.s.gif)
     // if (!pic.p[0]) alert("pic.p[0] " + data.permalink)
-    g.thumbnails.push(pic.p[0].u.replace(/&amp;/g, "&"))
+    g.thumbnails.push(pic.p[0].u)
 
     if (g.ratio === 0) g.ratio = pic.s.x / pic.s.y
     // let newRatio = pic.s.x / pic.s.y
@@ -135,6 +138,7 @@ function video(data: Data): Video {
   }
 
   img = data.preview?.images[0].source
+  if (!img) alert("no img : " + data.permalink)
   v.ratio = img.width / img.height
   return v
 }
@@ -160,10 +164,7 @@ function gif(data: Data): Gif {
   let g: Gif = {
     type: "gif",
     ratio: 0,
-    thumbnail: data.preview?.images[0].resolutions[0]?.url?.replace(
-      /&amp;/g,
-      "&"
-    ),
+    thumbnail: data.preview?.images[0].resolutions[0]?.url,
     poster: data.preview?.images[0].source?.url,
     peek: data.preview?.images[0].variants?.mp4?.resolutions[0]?.url,
     url: data.preview?.images[0].variants?.mp4?.source?.url,
