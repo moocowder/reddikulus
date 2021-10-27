@@ -14,9 +14,10 @@ function Sublist({ query }: Props) {
   // const [subs, setSubs] = useState<Sub[]>([])
   const [after, setAfter] = useState("")
   const { data, loading, error } = useLoadSubs(query, after)
+
   return (
-    <div>
-      <ul className={styles.sublist}>
+    <div className={styles.sublist}>
+      <ul className={styles.list}>
         {data?.subs.map((s) => (
           <li key={s.name} className={styles.sub}>
             {s.icon ? (

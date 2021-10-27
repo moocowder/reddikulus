@@ -18,9 +18,19 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
   const router = useRouter()
   const [user, setUser] = useContext(UserContext)
 
+  const id = "vskQlp48i50FcgXAenvHbA"
+  const url = "http://localhost:3000"
+  const callbackUrl = `https://www.reddit.com/api/v1/authorize?client_id=${id}&response_type=code&state=astringofyourshoosing&redirect_uri=${process.env.NEXT_PUBLIC_URL}/login&duration=permanent&scope=identity read`
   function logout() {
     setUser({})
     localStorage.removeItem("user")
+  }
+  function handleLogin() {
+    window.open(
+      callbackUrl,
+      "_blank",
+      "location=yes,height=570,width=520,scrollbars=yes,status=yes"
+    )
   }
 
   return (
@@ -75,7 +85,8 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
           <a
             title="Login"
             className={styles.login}
-            href="https://www.reddit.com/api/v1/authorize?client_id=vskQlp48i50FcgXAenvHbA&response_type=code&state=astringofyourshoosing&redirect_uri=http://localhost:3000/login&duration=permanent&scope=identity read"
+            onClick={handleLogin}
+            // href="https://www.reddit.com/api/v1/authorize?client_id=vskQlp48i50FcgXAenvHbA&response_type=code&state=astringofyourshoosing&redirect_uri=http://localhost:3000/login&duration=permanent&scope=identity read"
           >
             Login
           </a>

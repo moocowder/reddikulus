@@ -3,10 +3,8 @@ import styles from "../styles/film.module.css"
 
 function Film({
   thumbnails,
-  // ratios,
   index,
-  // setIndex,
-  moveTo,
+  setIndex,
   h,
   gap,
   frameH,
@@ -15,23 +13,13 @@ function Film({
 }: {
   thumbnails: string[]
   index: number
-  // setIndex: Function
-  moveTo: (i: number) => void
+  setIndex: Function
   h: number
   gap: number
   frameH: number
   onMouseEnter: Function
   opacity: boolean
 }) {
-  // const [h, setH] = useState(300)
-  // const gap = 20
-  // const frameH = 120
-
-  // function moveTo(i: number) {
-  //   setIndex(i)
-  //   setH(h + (index - i) * (frameH + gap))
-  // }
-
   return (
     <div
       className={styles.film}
@@ -40,11 +28,11 @@ function Film({
         // e.preventDefault()
         if (e.deltaY < 0) {
           if (index === 0) return
-          moveTo(index - 1)
+          setIndex(index - 1)
         }
         if (e.deltaY > 0) {
           if (index === thumbnails.length - 1) return
-          moveTo(index + 1)
+          setIndex(index + 1)
         }
       }}
       onClick={(e) => e.stopPropagation()}
@@ -59,9 +47,10 @@ function Film({
       >
         {thumbnails.map((t, i) => (
           <div className={styles.frame} style={{ height: `${frameH}px` }}>
+            {/* {index === i && <span>{index}</span>} */}
             <img
               className={`${styles.img} ${index === i && styles.selected}`}
-              onClick={() => moveTo(i)}
+              onClick={() => setIndex(i)}
               src={t}
             />
           </div>

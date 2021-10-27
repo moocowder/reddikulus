@@ -88,34 +88,19 @@ props) {
   //   return (Math.round(number / 100) / 10).toFixed(1) + " k"
   // }
 
-  function handleMouseDown(e: any) {
+  function handleMouseDown(e: any, link: string) {
     if (e.button === 0) {
       e.preventDefault()
-      router.push("https://reddit.com" + permalink)
+      router.push(link)
     }
-    if (e.button === 2) {
-      // e.preventDefault()
-      // window.open("https://reddit.com" + permalink)
-      // router.push("https://reddit.com" + permalink)
-      e.stopPropagation()
-      // e.preventDefault()
-    }
-    // let url = "https://reddit.com" + permalink
-    // if (e.button === 1) window.open("https://reddit.com" + permalink, "_blank")
-    // if (e.button === 2) window.open(url, "_blank")?.focus()
-    // if (e.button === 2) alert(false)
-    // alert(e.button)
-    // if (e.button !== 1) return
-    // close()
-    // document.body.style.overflow = "auto"
   }
 
   return (
     <div
       className={styles.infos}
       style={{ display: opacity === 1 ? "block" : "none" }}
-      onMouseDown={(e) => e.stopPropagation()}
-      onClick={(e) => e.stopPropagation()}
+      // onMouseDown={(e) => e.stopPropagation()}
+      // onClick={(e) => e.stopPropagation()}
       onMouseEnter={(e) => onMouseEnter(e)}
       onMouseMove={(e) => e.stopPropagation()}
     >
@@ -137,10 +122,10 @@ props) {
         {page !== "/r" && (
           <>
             {/* <img style={{ width: "50px" }} src={img} alt="" /> */}
-            <a href={`/r/${sub}`}>
+            <a href={`/r/${sub}`} onContextMenu={(e) => e.stopPropagation()}>
               <span
                 className={styles.link}
-                onMouseDown={(e) => handleMouseDown(e)}
+                onMouseDown={(e) => handleMouseDown(e, `/r/${sub}`)}
               >
                 <span style={{ color: "var(--sorbe)" }}>r/</span>
                 {sub}
@@ -159,15 +144,15 @@ props) {
         {page !== "/u" && (
           <div className={styles.stat}>
             {/* <FaRegUser /> */}
-            <Link href={`/u/${author}`}>
+            <a href={`/u/${author}`} onContextMenu={(e) => e.stopPropagation()}>
               <span
                 className={styles.link}
-                onMouseDown={(e) => handleMouseDown(e)}
+                onMouseDown={(e) => handleMouseDown(e, `/u/${author}`)}
               >
                 <span style={{ color: "var(--sorbe)" }}>u/</span>
                 {author}
               </span>
-            </Link>
+            </a>
           </div>
         )}
       </div>

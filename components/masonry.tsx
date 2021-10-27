@@ -116,7 +116,7 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
       </div>
       {end && (
         <h1
-          style={{ zIndex: 4, position: "fixed", bottom: "10px", left: "3px" }}
+          style={{ zIndex: 1, position: "fixed", bottom: "10px", left: "3px" }}
         >
           =========That's All folks=========
         </h1>

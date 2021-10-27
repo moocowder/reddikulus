@@ -31,7 +31,9 @@ function Login({
 
         localStorage.setItem("user", JSON.stringify(u))
         setUser(u)
-        router.push("/")
+        // router.push("/")
+        window.opener.location.reload()
+        window.close()
       })
       .catch((e) => console.log(e))
   }, [])

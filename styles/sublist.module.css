@@ -1,7 +1,12 @@
 .sublist {
+  border: 1px solid white;
+  margin: auto 3rem;
+}
+
+.list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   /* justify-items: center; */
   align-content: center;
   gap: 20px;

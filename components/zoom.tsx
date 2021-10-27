@@ -1,6 +1,10 @@
 import { useState } from "react"
 
-function Zoom(props: any) {
+interface Props {
+  setZoomed?: (b: boolean) => void
+  children: any
+}
+function Zoom({ setZoomed = () => {}, children }: Props) {
   let [translate, setTranslate] = useState({ x: 0, y: 0 })
   let [scale, setScale] = useState(1)
   let [start, setStart] = useState({ x: 0, y: 0 })
@@ -9,6 +13,7 @@ function Zoom(props: any) {
 
   function handleWheel(e: any) {
     e.preventDefault()
+    // e.stopPropagation()
     // setShow(0)
     setStart({ x: e.clientX, y: e.clientY })
 
@@ -21,10 +26,13 @@ function Zoom(props: any) {
 
     if (scale < a) {
       // props.setZoomed(false)
+      setZoomed(false)
       setScale(1)
       setTranslate({ x: 0, y: 0 })
     } else {
+      setZoomed(true)
       // props.setZoomed(true)
+      // e.stopPropagation()
       setZoomTranslate({ x: e.clientX - xs * scale, y: e.clientY - ys * scale })
       setTranslate({ x: e.clientX - xs * scale, y: e.clientY - ys * scale })
       setScale(scale)
@@ -68,7 +76,7 @@ function Zoom(props: any) {
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
         }}
       >
-        {props.children}
+        {children}
       </div>
     </div>
   )

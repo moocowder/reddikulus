@@ -40,6 +40,7 @@ interface Video extends Media {
   duration: number
   timestamp?: string
   url: string
+  dash: string
 }
 
 interface Gallery extends Media {

@@ -42,7 +42,7 @@ function Brick({
           setVisible(true)
           if (lastBrick) lastBrick()
         } else {
-          setVisible(false)
+          // setVisible(false)
         }
       },
       { threshold: 0 }
@@ -91,7 +91,7 @@ function Brick({
             poster={post.media.poster || ""}
             peek={post.media.peek || ""}
             duration={1}
-            gif={true}
+            isGif={true}
           />
         )}
       </div>

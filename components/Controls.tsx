@@ -12,6 +12,9 @@ interface Props {
   //   progress: number
   sound: any
   timer: number
+  qualities: string[]
+  quality: string
+  setQuality: (q: string) => void
 }
 
 function format(s: number) {
@@ -28,6 +31,9 @@ function Controls({
   seek,
   sound,
   timer,
+  qualities,
+  quality,
+  setQuality,
 }: Props) {
   const [progress, setProgress] = useState<number>(0)
 
@@ -44,23 +50,36 @@ function Controls({
       onMouseEnter={(e) => onMouseEnter(e)}
       onMouseMove={(e) => e.stopPropagation()}
     >
-      <span className={styles.info}>
-        {format(timer)} / {format(duration)}
-      </span>
-      {!sound.loading && (sound.src ? <GiSpeaker /> : <GiSpeakerOff />)}
+      {/* <span className={styles.info}> */}
+      {format(timer)} / {format(duration)}
+      {/* </span> */}
+      {sound ? <GiSpeaker /> : <GiSpeakerOff />}
+      {qualities?.map((q) => (
+        <span
+          onClick={(e) => {
+            e.stopPropagation()
+            setQuality(q)
+          }}
+          style={{ color: quality === q ? "var(--sorbe)" : "white" }}
+        >
+          {q}
+        </span>
+      ))}
       <div
         onClick={(e) => {
           e.stopPropagation()
           seek((e.clientX / window.innerWidth) * duration)
         }}
-        className={`${styles.timer} ${state === "loading" && styles.loading}`}
+        className={`${styles.timer}`}
       >
-        {/* <div className={styles.bar}> */}
         <div
-          className={styles.progress}
-          style={{ width: `${progress * 100}%` }}
-        ></div>
-        {/* </div> */}
+          className={`${styles.bar} ${state === "loading" && styles.loading}`}
+        >
+          <div
+            className={styles.progress}
+            style={{ width: `${progress * 100}%` }}
+          ></div>
+        </div>
       </div>
     </div>
   )

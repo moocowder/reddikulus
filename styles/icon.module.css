@@ -18,19 +18,27 @@
   font-size: 5rem;
 
   transition: 0.3s;
-  animation: fade 0.5s linear, expand 1s linear;
+
   /* z-index: 5; */
   /* animation: expand 0.3s linear, fade 0.3s linear; */
 }
 
+.anime {
+  animation: fade 0.1s linear, expand 0.1s linear;
+}
 .icon {
   position: absolute;
-  top: 50%;
+  /* top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
+  transform: translate(-50%, -50%); */
+  left: 20px;
+  bottom: 50px;
+  width: 100px;
+  height: 100px;
   border-radius: 100%;
+  border: 3px solid var(--sorbe);
+  /* padding: 50px; */
+  /* border-radius: 100%; */
   /* transition: opacity 2s; */
 
   /* opacity: 0; */
@@ -44,7 +52,7 @@
   /* transition: 0.5s; */
 }
 
-@keyframes expand {
+/* @keyframes expand {
   from {
     font-size: 5rem;
   }
@@ -60,4 +68,4 @@
   to {
     opacity: 0;
   }
-}
+} */

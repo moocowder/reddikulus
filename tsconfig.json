@@ -22,6 +22,6 @@
     "pages/masonic.jsx",
     "pages/r/[subreddit].tsx",
     "pages/index.tsx"
-, "components/Mirage.jsx", "hooks/useLoadData2.jsx"  ],
+, "components/Mirage.jsx", "hooks/useLoadData2.jsx", "components/Cinema.jsx"  ],
   "exclude": ["node_modules"]
 }

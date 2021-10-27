@@ -129,14 +129,11 @@ function video(data: Data): Video {
     poster: data.preview?.images[0].resolutions
       .pop()
       .url?.replace(/&amp;/g, "&"),
-    thumbnail: data.preview?.images[0].resolutions[0]?.url?.replace(
-      /&amp;/g,
-      "&"
-    ),
+    thumbnail: data.preview?.images[0].resolutions[0]?.url,
     url: data.media.reddit_video.fallback_url,
     timestamp: "",
+    dash: data.secure_media?.reddit_video?.dash_url,
   }
-
   img = data.preview?.images[0].source
   if (!img) alert("no img : " + data.permalink)
   v.ratio = img.width / img.height

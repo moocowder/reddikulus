@@ -26,6 +26,7 @@ function Imagine({ thumbnail, original = "", appeared = () => {} }: Props) {
         <img
           // importance="low"
           // onLoad={() => alert("loaded")}
+          onLoad={() => appeared()}
           className={`${styles.original}`}
           src={original}
         />

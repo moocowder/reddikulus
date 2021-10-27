@@ -17,16 +17,11 @@ function Album({
   let [loaded, setLoaded] = useState(false)
 
   let timeout: any
-  //   useEffect(() => {
-  //     if (!hover) return
-  //     timeout = setTimeout(() => {
-  //       setIndex(index === thumbnails.length - 1 ? 0 : index + 1)
-  //     }, 1000)
-  //     return () => clearTimeout(timeout)
-  //   }, [index, hover])
+
   useEffect(() => {
     if (!hover) return
     timeout = setTimeout(() => {
+      setLoaded(false)
       setIndex(index === thumbnails.length - 1 ? 0 : index + 1)
     }, 300)
   }, [hover])
@@ -35,13 +30,14 @@ function Album({
     if (!hover) return
     if (!loaded) return
     timeout = setTimeout(() => {
+      setLoaded(false)
       setIndex(index === thumbnails.length - 1 ? 0 : index + 1)
     }, 1000)
   }, [loaded])
 
-  useEffect(() => {
-    setLoaded(false)
-  }, [index])
+  // useEffect(() => {
+  //   setLoaded(false)
+  // }, [index])
 
   return (
     <div
@@ -53,26 +49,13 @@ function Album({
       }}
     >
       {!hover && <IoLayers className={`${styles.icon} `} />}
+
       <span className={styles.number}>
         {index + 1}/{thumbnails.length}
       </span>
-      {/* <Imagine thumbnail={thumbnails[index]} original={urls[index]} /> */}
+
       <img className={styles.background} src={thumbnails[index]} alt="" />
 
-      {/* <img
-        onLoad={() => setLoaded(true)}
-        // onLoadStart={() => alert("loading...")}
-        // onLoadCapture={() => {
-        //   alert("on load  capture")
-        // }}
-        // onLoadStartCapture={() => {
-        //   setLoaded(false)
-        // }}
-        // style={{ zIndex: 3 }}
-        className={styles.img}
-        src={thumbnails[index]}
-        alt=""
-      /> */}
       <Imagine
         thumbnail={thumbnails[index]}
         original={originals[index]}

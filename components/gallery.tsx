@@ -6,6 +6,9 @@ import Zoom from "./zoom"
 import { FaPlay, FaPause } from "react-icons/fa"
 import { useRef } from "react"
 import useTimedState from "../hooks/useTimedState"
+import useWindowSize from "../hooks/useWindowSize"
+import useEventListener from "../hooks/useEventListener"
+import Icon from "./icon"
 
 interface Props {
   urls: string[]
@@ -13,27 +16,65 @@ interface Props {
 }
 function Gallery({ urls, thumbnails }: Props) {
   let [index, setIndex] = useState(0)
-  let [progress, setProgress] = useState(0)
-  let [loaded, setLoaded] = useState(false)
   let [run, setRun] = useState(true)
-  const [h, setH] = useState(300)
+  let [center, setCenter] = useState(0)
+  const [zoomed, setZoomed] = useState(false)
+  const { height } = useWindowSize()
+
+  let timeout: any = useRef()
+
+  useEventListener("keydown", (e) => {
+    if (e.key === " ") {
+      if (run) pause()
+      else play()
+    }
+    if (e.key === "ArrowUp") {
+      setIndex(index - 1)
+    }
+    if (e.key === "ArrowDown") {
+      setIndex(index + 1)
+    }
+  })
+
   const gap = 20
   const frameH = 120
 
+  // const initH = (height - frameH) / 2
+  const [h, setH] = useState<number>(300)
+
   const [filmDisplay, setFilmDisplay, cancelFilm] = useTimedState(true)
+  const [iconDisplay, setIconDisplay] = useState(true)
+
   // const [run, setRun, cancelRun] = useTimedState()
 
-  let timeout: any
+  useEffect(() => {
+    setIndex(0)
+  }, [urls])
+
+  useEffect(() => {
+    if (!height) return
+    setH((height - frameH) / 2)
+    setCenter((height - frameH) / 2)
+  }, [height])
+
+  useEffect(() => {
+    setH(center)
+  }, [center])
   // let filmTimeout = useRef()
   useEffect(() => {
-    if (!run) return
+    if (index <= -1) setIndex(urls.length - 1)
+    if (index >= urls.length) setIndex(0)
+    // if (!run) return
     // if (!index) return
-    timeout = setTimeout(() => {
-      // next()
-      moveTo(index + 1)
-    }, 4000)
 
-    return () => clearTimeout(timeout)
+    setH(center - index * (frameH + gap))
+
+    if (!run) return
+    timeout.current = setTimeout(() => {
+      // next()
+      setIndex(index + 1)
+    }, 4000)
+    return () => clearTimeout(timeout.current)
   }, [index])
 
   useEffect(() => {
@@ -48,37 +89,22 @@ function Gallery({ urls, thumbnails }: Props) {
   function handleWheel(e: any) {
     e.preventDefault()
     setFilmDisplay(false)
+    setIconDisplay(false)
   }
 
   function handleMouseEnter() {
     cancelFilm()
   }
 
-  // useEffect(() => {
-  //   if (!run) clearTimeout(timeout)
-  // }, [run])
-
-  // function next() {
-  //   setIndex(index === urls.length - 1 ? 0 : index + 1)
-  // }
-
-  function moveTo(i: number) {
-    if (i === urls.length) {
-      setH(300)
-      setIndex(0)
-    } else {
-      setH(h + (index - i) * (frameH + gap))
-      setIndex(i)
-    }
+  function play() {
+    setIndex(index + 1)
+    setRun(true)
   }
-  // useEffect(() => {
-  //   console.log(progress)
-  //   if (progress >= 1) setProgress(0)
-  //   let timeout = setTimeout(() => {
-  //     setProgress(progress + 0.1)
-  //   }, 300)
-  //   return () => clearTimeout(timeout)
-  // }, [progress])
+
+  function pause() {
+    clearTimeout(timeout.current)
+    setRun(false)
+  }
 
   return (
     <div
@@ -92,52 +118,32 @@ function Gallery({ urls, thumbnails }: Props) {
         src={thumbnails[index]}
         alt=""
       />
-      <Zoom>
+      <Zoom setZoomed={setZoomed}>
         <Imagine thumbnail={thumbnails[index]} original={urls[index]} />
-        {run ? (
-          <div
-            className={styles.icon}
-            onClick={(e) => {
-              e.stopPropagation()
-              // pause()
-              clearTimeout(timeout)
-              setRun(false)
-            }}
-          >
-            <FaPause />
-          </div>
-        ) : (
-          <div
-            className={styles.icon}
-            onClick={(e) => {
-              e.stopPropagation()
-              // next()
-              moveTo(index + 1)
-              setRun(true)
-            }}
-          >
-            <FaPlay />
-          </div>
-        )}
       </Zoom>
+      {iconDisplay && (
+        <Icon state={run ? "running" : "paused"} play={play} pause={pause} />
+      )}
 
       <Film
         opacity={filmDisplay}
         onMouseEnter={() => handleMouseEnter()}
         thumbnails={thumbnails}
         index={index}
-        // setIndex={setIndex}
-        moveTo={(i) => moveTo(i)}
+        setIndex={setIndex}
         h={h}
         gap={gap}
         frameH={frameH}
       />
 
-      {/* <span className={styles.number}>
-        {index + 1} / {urls.length}
-      </span> */}
-
-      {run && <div key={urls[index]} className={styles.progress}></div>}
+      {!zoomed && (
+        <>
+          <span className={styles.number}>
+            {index + 1}/{urls.length}
+          </span>
+          {run && <div key={urls[index]} className={styles.progress}></div>}
+        </>
+      )}
     </div>
   )
 }

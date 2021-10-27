@@ -8,39 +8,40 @@ import {
   FaUndo,
 } from "react-icons/fa"
 import useTimedState from "../hooks/useTimedState"
+import { IoPlayOutline, IoPauseOutline } from "react-icons/io5"
 import { useEffect, useState } from "react"
 
 interface Props {
   state: "running" | "loading" | "paused" | "ended"
   play: Function
   pause: Function
+  onMouseEnter?: Function
 }
 
-function Icon({ state, play, pause }: Props) {
-  const [display, setDisplay, cancel] = useTimedState(false)
-
-  useEffect(() => {
-    if (state === "ended") return
-    cancel()
-    setDisplay(true, 500)
-  }, [state])
+function Icon({ state, play, pause, onMouseEnter }: Props) {
+  // const [display, setDisplay, cancel] = useTimedState(false)
+  // useEffect(() => {
+  //   if (state === "ended") return
+  //   setDisplay(false)
+  // }, [state])
 
   return (
     <div
-      onMouseMove={() => setDisplay(true, 1000)}
+      // onMouseMove={() => setDisplay(true, 1000)}
+      // onMouseLeave={() => setDisplay(false)}
+      // onMouseEnter={() => onMouseEnter()}
       className={styles.icon}
       onClick={(e) => {
         e.stopPropagation()
-        // setDisplay(true, 200)
-        // cancel()
+        // setDisplay(false)
         if (state === "ended" || state === "paused") play()
         else pause()
       }}
     >
-      <span style={{ opacity: display ? 1 : 0 }}>
+      <span>
         {state === "ended" && <FaUndoAlt />}
-        {state === "running" && <FaPause />}
-        {state === "paused" && <FaPlay />}
+        {state === "running" && <IoPauseOutline />}
+        {state === "paused" && <IoPlayOutline />}
       </span>
     </div>
   )

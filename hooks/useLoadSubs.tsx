@@ -32,6 +32,8 @@ function useLoadSubs(q: string, after: string) {
   }, [after])
 
   useEffect(() => {
+    // setData({ after: "", subs: [] })
+    after = ""
     async function getPage() {
       let d = await loadPage()
       setData({ after: d?.after, subs: d?.subs })
