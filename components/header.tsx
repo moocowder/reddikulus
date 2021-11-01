@@ -14,17 +14,25 @@ import { useRouter } from "next/router"
 import { BiLogOutCircle, BiLogInCircle } from "react-icons/bi"
 import { CgArrowTopRightO } from "react-icons/cg"
 
-function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
+function Header({
+  open,
+  setOpen,
+}: {
+  open: boolean
+  setOpen: (o: boolean) => void
+}) {
   const router = useRouter()
   const [user, setUser] = useContext(UserContext)
 
   const id = "vskQlp48i50FcgXAenvHbA"
   const url = "http://localhost:3000"
   const callbackUrl = `https://www.reddit.com/api/v1/authorize?client_id=${id}&response_type=code&state=astringofyourshoosing&redirect_uri=${process.env.NEXT_PUBLIC_URL}/login&duration=permanent&scope=identity read`
+
   function logout() {
     setUser({})
     localStorage.removeItem("user")
   }
+
   function handleLogin() {
     window.open(
       callbackUrl,
@@ -34,8 +42,8 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
   }
 
   return (
-    <div className={styles.container}>
-      <div>
+    <div className={styles.header}>
+      <div className={styles.left}>
         <div
           onClick={() => setOpen(!open)}
           className={styles.open}
@@ -44,19 +52,15 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
             color: open ? "white" : "",
           }}
         >
-          <IoMenu />
+          <HiTrendingUp />
         </div>
         <Link href="/">
-          <img
-            style={{ cursor: "pointer", height: "80%", width: "200px" }}
-            src="/reddikulus-logo.png"
-            alt=""
-          />
+          <img src="/reddikulus-logo.png" alt="" />
         </Link>
       </div>
       <Autocomplete />
-      <div>
-        <div className={styles.icons}>
+      <div className={styles.right}>
+        {/* <div className={styles.icons}>
           <div className={styles.open}>
             <BsFillHeartFill title="Support me!" />
           </div>
@@ -67,27 +71,24 @@ function Header({ open, setOpen }: { open: boolean; setOpen: Function }) {
               title="popular"
             />
           )}
-        </div>
+        </div> */}
         {JSON.stringify(user) !== "{}" ? (
           <div className={styles.session}>
             <div
               className={styles.user}
               onClick={() => router.push("/u/" + user.name)}
             >
+              {/* need a wrapper here */}
               <img src={user.icon} alt="" />
               <span>{user.name}</span>
             </div>
-            <div className={styles.login}>
-              <IoMdLogOut title="Logout" onClick={logout} />
+            <div className={styles.login} onClick={logout}>
+              {/* <IoMdLogOut title="Logout"  /> */}
+              Logout
             </div>
           </div>
         ) : (
-          <a
-            title="Login"
-            className={styles.login}
-            onClick={handleLogin}
-            // href="https://www.reddit.com/api/v1/authorize?client_id=vskQlp48i50FcgXAenvHbA&response_type=code&state=astringofyourshoosing&redirect_uri=http://localhost:3000/login&duration=permanent&scope=identity read"
-          >
+          <a title="Login" className={styles.login} onClick={handleLogin}>
             Login
           </a>
         )}

@@ -35,8 +35,8 @@
   bottom: 50px;
   width: 100px;
   height: 100px;
-  border-radius: 100%;
-  border: 3px solid var(--sorbe);
+  /* border-radius: 100%; */
+  /* border: 3px solid var(--sorbe); */
   /* padding: 50px; */
   /* border-radius: 100%; */
   /* transition: opacity 2s; */

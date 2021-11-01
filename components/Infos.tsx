@@ -43,8 +43,7 @@ function Infos({
   date,
   opacity,
   onMouseEnter = () => {},
-}: // onMouseEnter,
-props) {
+}: props) {
   const router = useRouter()
   const [page, setPage] = useState<"/r" | "/u" | "">("")
   const [img, setImg] = useState("")
@@ -83,12 +82,8 @@ props) {
         return rtf.format(Math.round(-elapsed / (units[u] || 0)), u)
   }
 
-  // function format(number: number) {
-  //   if (number <= 999) return number
-  //   return (Math.round(number / 100) / 10).toFixed(1) + " k"
-  // }
-
   function handleMouseDown(e: any, link: string) {
+    e.stopPropagation()
     if (e.button === 0) {
       e.preventDefault()
       router.push(link)
@@ -99,20 +94,17 @@ props) {
     <div
       className={styles.infos}
       style={{ display: opacity === 1 ? "block" : "none" }}
-      // onMouseDown={(e) => e.stopPropagation()}
-      // onClick={(e) => e.stopPropagation()}
       onMouseEnter={(e) => onMouseEnter(e)}
       onMouseMove={(e) => e.stopPropagation()}
     >
       <div className={styles.top}>
-        {/* <span className={styles.stat}>
-          <ImArrowUp /> */}
-
-        {/* </span> */}
         <a
           href={"https://reddit.com" + permalink}
           target="_blank"
           className={styles.title}
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+          onContextMenu={(e) => e.stopPropagation()}
         >
           {<span className={styles.ups}>{format(ups)}</span>}
           {title}
@@ -121,11 +113,16 @@ props) {
       <div className={styles.bottom}>
         {page !== "/r" && (
           <>
-            {/* <img style={{ width: "50px" }} src={img} alt="" /> */}
-            <a href={`/r/${sub}`} onContextMenu={(e) => e.stopPropagation()}>
+            <a href={`/r/${sub}`}>
               <span
                 className={styles.link}
-                onMouseDown={(e) => handleMouseDown(e, `/r/${sub}`)}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  router.push(`/r/${sub}`)
+                }}
+                onContextMenu={(e) => e.stopPropagation()}
               >
                 <span style={{ color: "var(--sorbe)" }}>r/</span>
                 {sub}
@@ -143,11 +140,16 @@ props) {
         </span>
         {page !== "/u" && (
           <div className={styles.stat}>
-            {/* <FaRegUser /> */}
-            <a href={`/u/${author}`} onContextMenu={(e) => e.stopPropagation()}>
+            <a href={`/u/${author}`}>
               <span
                 className={styles.link}
-                onMouseDown={(e) => handleMouseDown(e, `/u/${author}`)}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  router.push(`/u/${author}`)
+                }}
+                onContextMenu={(e) => e.stopPropagation()}
               >
                 <span style={{ color: "var(--sorbe)" }}>u/</span>
                 {author}

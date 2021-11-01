@@ -1,77 +1,71 @@
-.container input {
-  width: 400px;
+.autocomplete {
+  display: flex;
+  align-items: center;
+}
+
+.autocomplete input {
+  width: 500px;
   border: none;
-  /* width: 100%; */
-  /* width: 80%; */
-  /* height: 100%; */
-  padding: 0.5rem 2rem;
+  height: 40px;
+  padding-left: 45px;
   color: white;
   caret-color: var(--sorbe);
-
-  /* margin: auto; */
-  /* height: 2rem; */
-  /* background-color: var(--ocean-dark); */
-  /* background-color: #090014; */
-  /* background-color: rgba(128, 128, 128, 0.26); */
-  /* background-color: #200038; */
-  background-color: rgba(128, 128, 128, 0.1);
-  /* border: 2px solid white; */
+  font-size: 18px;
+  background-color: #170029;
   border-radius: 30px;
-  transition: 0.1s;
-  /* transition: 0.3s; */
+  transition: 0.3s;
+  border: 3px solid transparent;
 }
 
-.container input:focus {
-  border: 3px solid var(--sorbe);
-  /* box-shadow: 0 0 6px 0px var(--sorbe); */
-  /* border: 2px solid var(--sorbe); */
-  /* background-color: #e91e63; */
-  /* transition: 0.2s; */
+.autocomplete input:focus {
+  border: 2px solid var(--sorbe);
+  width: 400px;
+  transition: 0.3s;
 }
 
-.container input::placeholder {
-  color: rgba(128, 128, 128, 0.7);
+.autocomplete input:focus + svg {
+  color: var(--sorbe);
 }
-.container svg {
+
+.autocomplete input::placeholder {
   color: rgba(128, 128, 128, 0.7);
+  /* text-align: center; */
 }
-.container input:focus::placeholder {
+.autocomplete svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  line-height: 40px;
+  font-size: 22px;
+  /* border: 1px solid red; */
+  transform: translate(0, -50%);
+  color: rgba(128, 128, 128, 0.4);
+  transition: 0.3s;
+}
+.autocomplete input:focus::placeholder {
   color: transparent;
-  /* transition: 0.1s; */
-}
-.container input:not(:focus) + ul {
-  opacity: 0;
+  /* transition: 0.9s; */
 }
 
-.container img {
+.autocomplete img {
   width: 50px;
   border-radius: 5px;
 }
 
 .list {
-  /* position: fixed;
-  top: 0; */
   /* inset: 0px auto auto 0px; */
-  /* width: 100%; */
-  /* padding: 20px; */
   width: 400px;
-  /* transform: translate(-50%, 0); */
   position: absolute;
-  top: 3rem;
-  /* width: 100%; */
+  top: 50px;
   max-height: 80vh;
   overflow-y: scroll;
-  /* background-color: black; */
-  /* background: #090014; */
-  background: #1c002e;
+  /* background: #1c002e; */
+  background: #170029;
   display: flex;
   flex-wrap: wrap;
-  /* align-items: center; */
   justify-content: flex-start;
-  padding: auto;
-  /* flex-direction: column; */
-  /* gap: 0.5rem; */
-  z-index: 1;
+  /* padding: auto; */
+  z-index: 2;
 }
 
 .item {

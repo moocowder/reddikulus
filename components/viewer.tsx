@@ -100,9 +100,18 @@ const Viewer = ({ post, move, close }: Props) => {
   }
 
   function handleMouseDown(e: any) {
-    if (e.button !== 1) return
-    close()
-    document.body.style.overflow = "auto"
+    switch (e.button) {
+      // case 0:
+      //   prev()
+      //   break
+      case 1:
+        close()
+        document.body.style.overflow = "auto"
+        break
+      // case 2:
+      //   next(e)
+      //   break
+    }
   }
 
   function handleMouseEnter() {

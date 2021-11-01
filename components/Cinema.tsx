@@ -17,11 +17,10 @@ interface Props {
   thumbnail: string
   duration: number
   dash: string
-  isGif?: boolean
 }
 
 type State = "running" | "loading" | "paused" | "ended"
-function Cinema({ src, thumbnail, duration, dash, isGif = false }: Props) {
+function Cinema({ src, thumbnail, duration, dash }: Props) {
   const [state, setState] = useState<State>("loading")
   const [timer, setTimer] = useState<number>(0)
   // const [sound, setSound] = useState(false)
@@ -142,7 +141,6 @@ function Cinema({ src, thumbnail, duration, dash, isGif = false }: Props) {
           onCanPlay={() => play()}
           // poster={thumbnail}
           className={styles.video}
-          loop={isGif ? true : false}
         >
           {/* <source src={src.replace(/DASH_\d+/, "DASH_240")} type="video/mp4" /> */}
           <source
@@ -159,20 +157,19 @@ function Cinema({ src, thumbnail, duration, dash, isGif = false }: Props) {
         {(ctrlDisplay || state !== "running") && (
           <Icon state={state} play={play} pause={pause} onMouseEnter={cancel} />
         )}
-        {!isGif && (
-          <Controls
-            state={state}
-            show={ctrlDisplay}
-            onMouseEnter={cancel}
-            duration={duration}
-            seek={(t: number) => seek(t)}
-            sound={audioKey}
-            timer={timer}
-            qualities={videoKeys}
-            quality={quality}
-            setQuality={setQuality}
-          />
-        )}
+
+        <Controls
+          state={state}
+          show={ctrlDisplay}
+          onMouseEnter={cancel}
+          duration={duration}
+          seek={(t: number) => seek(t)}
+          sound={audioKey}
+          timer={timer}
+          qualities={videoKeys}
+          quality={quality}
+          setQuality={setQuality}
+        />
       </Zoom>
     </div>
   )

@@ -46,7 +46,7 @@
   transform: translate(-50%, -50%);
   color: var(--sorbe);
   /* font-size: 48px; */
-  animation: spin 5s linear infinite;
+  animation: spin 1s linear infinite;
   background-color: transparent;
   z-index: -1;
 }

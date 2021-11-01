@@ -1,0 +1,7 @@
+.menu {
+  position: fixed;
+  top: 50px;
+  height: calc(100vh - 50px);
+  display: flex;
+  z-index: 2;
+}

@@ -29,7 +29,7 @@ function Icon({ state, play, pause, onMouseEnter }: Props) {
     <div
       // onMouseMove={() => setDisplay(true, 1000)}
       // onMouseLeave={() => setDisplay(false)}
-      // onMouseEnter={() => onMouseEnter()}
+      // onMouseEnter={() => setDisplay(true)}
       className={styles.icon}
       onClick={(e) => {
         e.stopPropagation()
@@ -40,8 +40,8 @@ function Icon({ state, play, pause, onMouseEnter }: Props) {
     >
       <span>
         {state === "ended" && <FaUndoAlt />}
-        {state === "running" && <IoPauseOutline />}
-        {state === "paused" && <IoPlayOutline />}
+        {state === "running" && <FaPause />}
+        {state === "paused" && <FaPlay />}
       </span>
     </div>
   )

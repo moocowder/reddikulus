@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
 import Link from "next/link"
 import styles from "../styles/autocomplete.module.css"
@@ -12,13 +12,8 @@ import { IoMdReturnLeft } from "react-icons/io"
 import { AiOutlineEnter } from "react-icons/ai"
 import Badge from "./badge"
 import format from "../utils/format"
+import useEventListener from "../hooks/useEventListener"
 
-type Sub = {
-  name: string
-  icon: string
-  community_icon: string
-  numSubscribers: string
-}
 interface Item {
   name: string
   icon: string
@@ -32,7 +27,7 @@ function Autocomplete() {
   const router = useRouter()
   const [user, setUser] = useContext(UserContext)
   let [query, setQuery] = useState("")
-  const [opacity, setOpacity] = useState<1 | 0>(0)
+  const [display, setDisplay] = useState<boolean>(false)
   let [subs, setSubs] = useState<Item[]>([])
   let [users, setUsers] = useState<Item[]>([])
   let us: Item[] = []
@@ -40,7 +35,21 @@ function Autocomplete() {
 
   const url = "https://www.reddit.com/api/subreddit_autocomplete.json"
 
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEventListener("click", (e: any) => {
+    if (ref.current == null || ref.current.contains(e.target)) return
+    // cb(e)
+    // setOpen(false)
+    setDisplay(false)
+  })
+
   useEffect(() => {
+    if (query === "") {
+      setUsers([])
+      setSubs([])
+      return
+    }
     let cancel: any
     axios({
       method: "GET",
@@ -59,9 +68,7 @@ function Autocomplete() {
             ss.push(s)
           }
         })
-        // console.log(r.data.subreddits)
-        // setSubs(r.data.subreddits)
-        // setItems([...subs, ...users])
+
         setUsers(us)
         setSubs(ss)
       })
@@ -73,15 +80,15 @@ function Autocomplete() {
   }, [query])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.autocomplete} ref={ref}>
       <div style={{ position: "relative" }}>
         <input
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
           }}
-          onFocus={() => setOpacity(1)}
-          onBlur={() => setOpacity(0)}
+          onFocus={() => setDisplay(true)}
+          // onBlur={() => setDisplay(false)}
           placeholder="search for anything..."
           onKeyPress={(e) => {
             if (e.key === "Enter") {
@@ -91,74 +98,67 @@ function Autocomplete() {
           }}
           type="text"
         />
-        <IoMdReturnLeft
-          style={{
-            position: "absolute",
-            left: "10px",
-            top: "10px",
-            color: "var(--sorbe)",
-            opacity: query ? 1 : 0,
-          }}
-        />
 
-        <BiSearch
-          style={{
-            position: "absolute",
-            left: "10px",
-            top: "8px",
-            // color: "grey",
-            opacity: query ? 0 : 1,
-          }}
-        />
+        {query ? <IoMdReturnLeft /> : <BiSearch />}
       </div>
-      <ul className={styles.list} style={{ opacity }}>
-        {subs?.map((i) => (
-          <li
-            key={i.name}
-            className={styles.item}
-            onClick={() => {
-              setQuery("")
-              router.push(`/${i.name}`)
-            }}
-          >
-            {i.communityIcon || i.icon ? (
-              <div className={styles.wrapper}>
-                <img src={i.communityIcon || i.icon} alt="" />
+      {display && (
+        <ul className={styles.list}>
+          {subs?.map((i) => (
+            <li
+              key={i.name}
+              className={styles.item}
+              onClick={() => {
+                setQuery("")
+                router.push(`/${i.name}`)
+              }}
+            >
+              {i.communityIcon || i.icon ? (
+                <div className={styles.wrapper}>
+                  <img src={i.communityIcon || i.icon} alt="" />
+                </div>
+              ) : (
+                <Badge
+                  side={50}
+                  text={i.name.substr(2)}
+                  color={i.primaryColor}
+                />
+              )}
+              <div className={styles.infos}>
+                <b>{i.name}</b>
+                {i.numSubscribers && <span>{format(i.numSubscribers)}</span>}
               </div>
-            ) : (
-              <Badge side={50} text={i.name} color={i.primaryColor} />
-            )}
-            <div className={styles.infos}>
-              <b>{i.name}</b>
-              {i.numSubscribers && <span>{format(i.numSubscribers)}</span>}
-            </div>
-          </li>
-        ))}
-        {subs?.length !== 0 && users.length !== 0 && (
-          <li className={styles.separator}></li>
-        )}
-        {users?.map((u) => (
-          <li
-            key={u.name}
-            className={styles.item}
-            onClick={() => {
-              setQuery("")
-              router.push(`/${u.name}`)
-            }}
-          >
-            {u.communityIcon || u.icon ? (
-              <div className={styles.wrapper}>
-                <img src={u.communityIcon || u.icon} alt="" />
+            </li>
+          ))}
+          {subs?.length !== 0 && users.length !== 0 && (
+            <li className={styles.separator}></li>
+          )}
+          {users?.map((u) => (
+            <li
+              key={u.name}
+              className={styles.item}
+              onClick={() => {
+                setQuery("")
+                router.push(`/${u.name}`)
+              }}
+            >
+              {u.communityIcon || u.icon ? (
+                <div className={styles.wrapper}>
+                  <img src={u.communityIcon || u.icon} alt="" />
+                </div>
+              ) : (
+                <Badge
+                  side={50}
+                  text={u.name.substr(2)}
+                  color={u.primaryColor}
+                />
+              )}
+              <div className={styles.infos}>
+                <b>{u.name}</b>
               </div>
-            ) : (
-              <Badge side={50} text={u.name} color={u.primaryColor} />
-            )}
-            <div className={styles.infos}>
-              <b>{u.name}</b>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
