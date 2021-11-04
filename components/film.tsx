@@ -1,6 +1,16 @@
 import { useState } from "react"
 import styles from "../styles/film.module.css"
 
+interface Props {
+  thumbnails: string[]
+  index: number
+  setIndex: Function
+  h: number
+  gap: number
+  frameH: number
+  onMouseEnter: Function
+}
+
 function Film({
   thumbnails,
   index,
@@ -9,17 +19,7 @@ function Film({
   gap,
   frameH,
   onMouseEnter,
-  opacity,
-}: {
-  thumbnails: string[]
-  index: number
-  setIndex: Function
-  h: number
-  gap: number
-  frameH: number
-  onMouseEnter: Function
-  opacity: boolean
-}) {
+}: Props) {
   return (
     <div
       className={styles.film}
@@ -37,8 +37,6 @@ function Film({
       }}
       onClick={(e) => e.stopPropagation()}
       onMouseEnter={() => onMouseEnter()}
-      style={{ opacity: opacity ? 1 : 0 }}
-      //cuz if u keep moving we gonna have to close u in 3s again
       onMouseMove={(e) => e.stopPropagation()}
     >
       <div
@@ -47,7 +45,7 @@ function Film({
       >
         {thumbnails.map((t, i) => (
           <div className={styles.frame} style={{ height: `${frameH}px` }}>
-            {/* {index === i && <span>{index}</span>} */}
+            {index === i && <span className={styles.number}>{index + 1}</span>}
             <img
               className={`${styles.img} ${index === i && styles.selected}`}
               onClick={() => setIndex(i)}

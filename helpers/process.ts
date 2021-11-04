@@ -39,13 +39,15 @@ function process(data: Data) {
   //   let media: Media = new MC()
   let post: Post<null | Gallery | Image | Video | Gif>
   post = {
-    title: data.title,
-    author: data.author,
-    sub: data.subreddit,
-    ups: data.ups,
-    comments: data.num_comments,
-    permalink: data.permalink,
-    date: data.created,
+    infos: {
+      title: data.title,
+      author: data.author,
+      sub: data.subreddit,
+      ups: data.ups,
+      comments: data.num_comments,
+      permalink: data.permalink,
+      date: data.created,
+    },
     media: null,
   }
 

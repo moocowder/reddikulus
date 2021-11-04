@@ -27,7 +27,7 @@ function User({ user, about }: Props) {
   return (
     <div>
       <Head>
-        <title>{user}</title>
+        <title>u/{user}</title>
       </Head>
       <Cover banner={about.banner} avatar={about.avatar} icon={about.icon} />
       <About
@@ -39,8 +39,8 @@ function User({ user, about }: Props) {
       />
       <Content
         api="/api/user"
-        params={{ user, sort: "new" }}
-        sorts={["new", "hot", "top"]}
+        params={{ user }}
+        sorts={{ words: ["new", "hot", "top"], default: "new" }}
       />
     </div>
   )

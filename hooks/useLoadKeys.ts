@@ -59,6 +59,7 @@ function useLoadKeys(dash: string) {
   }, [dash])
 
   // console.log(keys)
+  // alert(keys.video)
   return keys
 }
 export default useLoadKeys

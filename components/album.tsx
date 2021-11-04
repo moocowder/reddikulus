@@ -5,13 +5,13 @@ import { FiLayers } from "react-icons/fi"
 import { IoLayers } from "react-icons/io5"
 import { IoIosAlbums } from "react-icons/io"
 import Imagine from "./imagine"
-function Album({
-  thumbnails,
-  originals,
-}: {
+
+interface Props {
   thumbnails: string[]
   originals: string[]
-}) {
+}
+
+function Album({ thumbnails, originals }: Props) {
   let [index, setIndex] = useState(0)
   let [hover, setHover] = useState(false)
   let [loaded, setLoaded] = useState(false)
@@ -35,13 +35,15 @@ function Album({
     }, 1000)
   }, [loaded])
 
-  // useEffect(() => {
-  //   setLoaded(false)
-  // }, [index])
+  function current(index: number) {
+    if (loaded) return index + 1
+    else if (index === 0) return thumbnails.length
+    else return index
+  }
 
   return (
     <div
-      className={styles.wrapper}
+      className={styles.album}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => {
         clearTimeout(timeout)
@@ -51,7 +53,7 @@ function Album({
       {!hover && <IoLayers className={`${styles.icon} `} />}
 
       <span className={styles.number}>
-        {index + 1}/{thumbnails.length}
+        {current(index)}/{thumbnails.length}
       </span>
 
       <img className={styles.background} src={thumbnails[index]} alt="" />

@@ -4,8 +4,8 @@ function Popular() {
   return (
     <Content
       api="/api/posts"
-      params={{ sub: "popular", sort: "hot" }}
-      sorts={["hot", "new", "top", "rising"]}
+      params={{ sub: "popular" }}
+      sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
     />
   )
 }

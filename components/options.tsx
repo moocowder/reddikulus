@@ -14,22 +14,25 @@ interface Props {
   maximize: Function
   minimize: Function
   download: Function
+  onMouseEnter: Function
 }
-function Options({ close, maximize, minimize, download }: Props) {
-  const [fullscreen, setFullscreen] = useState(false)
-  const [display, setDisplay, cancel] = useTimedState(true)
 
-  useEffect(() => {
-    setDisplay(true, 2000)
-  }, [])
+function Options({ close, maximize, minimize, download, onMouseEnter }: Props) {
+  const [fullscreen, setFullscreen] = useState(false)
+  // const [display, setDisplay, cancel] = useTimedState(true)
+
+  // useEffect(() => {
+  //   setDisplay(true, 2000)
+  // }, [])
 
   return (
     <ul
-      style={{ opacity: display ? 1 : 0 }}
+      // style={{ opacity: display ? 1 : 0 }}
       className={styles.options}
       onClick={(e) => e.stopPropagation()}
-      onMouseEnter={() => setDisplay(true)}
-      onMouseLeave={() => setDisplay(false)}
+      onMouseEnter={() => onMouseEnter()}
+      onMouseMove={(e) => e.stopPropagation()}
+      // onMouseLeave={() => setDisplay(false)}
     >
       <li onClick={() => close()}>
         <CgCloseO />

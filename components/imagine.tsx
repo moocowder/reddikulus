@@ -24,17 +24,14 @@ function Imagine({ thumbnail, original = "", appeared = () => {} }: Props) {
     <>
       {original && loaded ? (
         <img
-          // importance="low"
-          // onLoad={() => alert("loaded")}
           onLoad={() => appeared()}
-          className={`${styles.original}`}
+          className={`${styles.pic}`}
           src={original}
         />
       ) : (
         <img
-          // importance="hight"
           onLoad={() => appeared()}
-          className={`${styles.thumbnail}`}
+          className={`${styles.pic}`}
           src={thumbnail}
         />
       )}

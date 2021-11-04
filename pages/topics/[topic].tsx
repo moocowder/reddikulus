@@ -21,8 +21,8 @@ function Topic({ topic, sub }: { topic: string; sub: string }) {
       <h1>Category : "{topic}"</h1>
       <Content
         api="/api/posts"
-        params={{ sub, sort: "hot" }}
-        sorts={["hot", "new", "top", "rising"]}
+        params={{ sub }}
+        sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
       />
     </div>
   )

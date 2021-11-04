@@ -1,5 +1,4 @@
 .infos {
-  /* border: 1px solid red; */
   position: fixed;
   top: 0;
   left: 0;
@@ -12,37 +11,33 @@
     rgba(0, 0, 0, 0.6) 0%,
     rgba(0, 0, 0, 0) 100%
   );
-  /* background: rgba(0, 0, 0, 0.3); */
-  /* box-shadow: 0 0 24px 5px rgba(0, 0, 0, 0.3); */
   display: flex;
   flex-direction: column;
-  /* text-shadow: 0 0 20px black, 0 0 20px black; */
   text-shadow: 0 0 5px black, 0 0 10px black, 0 0 10px black;
-
-  z-index: 5;
-  transition: 0.3s;
-  /* display: block; */
+  /* z-index: 5; */
+  z-index: 3;
+  /* transition: 0.3s; */
 }
 
 .top {
   font-weight: bold;
-  /* display: flex;
-  gap: 0.5rem; */
 }
 
 .bottom {
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
   font-size: 16px;
   font-weight: 500;
 }
+
 .stat {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 3px;
 }
+
 .stat > * {
-  flex-grow: 0;
+  /* flex-grow: 0; */
 }
 
 .stat > svg {
@@ -53,27 +48,10 @@
   color: var(--sorbe);
   transition: 0.4s;
 }
-.title {
-  display: inline-block;
-  /* position: relative; */
-  /* color: white; */
-
-  /* z-index: 2; */
-  /* position: fixed; */
-  /* text-shadow: "0 0 8px 1px black"; */
-}
 
 .ups {
   color: var(--sorbe);
-  margin-right: 5px;
-}
-
-.author {
-  /* color: pink; */
-  /* z-index: 2; */
-  /* position: fixed; */
-  /* top: 60px; */
-  /* text-shadow: "0 0 8px 1px black"; */
+  margin-right: 10px;
 }
 
 .link:hover {

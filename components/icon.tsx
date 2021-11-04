@@ -15,34 +15,24 @@ interface Props {
   state: "running" | "loading" | "paused" | "ended"
   play: Function
   pause: Function
-  onMouseEnter?: Function
+  onMouseEnter: Function
 }
 
 function Icon({ state, play, pause, onMouseEnter }: Props) {
-  // const [display, setDisplay, cancel] = useTimedState(false)
-  // useEffect(() => {
-  //   if (state === "ended") return
-  //   setDisplay(false)
-  // }, [state])
-
   return (
     <div
-      // onMouseMove={() => setDisplay(true, 1000)}
-      // onMouseLeave={() => setDisplay(false)}
-      // onMouseEnter={() => setDisplay(true)}
+      onMouseEnter={() => onMouseEnter()}
+      onMouseMove={(e) => e.stopPropagation()}
       className={styles.icon}
       onClick={(e) => {
         e.stopPropagation()
-        // setDisplay(false)
         if (state === "ended" || state === "paused") play()
         else pause()
       }}
     >
-      <span>
-        {state === "ended" && <FaUndoAlt />}
-        {state === "running" && <FaPause />}
-        {state === "paused" && <FaPlay />}
-      </span>
+      {state === "ended" && <FaUndoAlt />}
+      {state === "running" && <FaPause />}
+      {state === "paused" && <FaPlay />}
     </div>
   )
 }

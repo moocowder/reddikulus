@@ -1,37 +1,131 @@
 .sublist {
-  border: 1px solid white;
-  margin: auto 3rem;
+  /* border: 1px solid white; */
+  /* margin: auto 3rem; */
+  /* width: 100vw; */
 }
 
 .list {
-  display: flex;
+  /* margin: 200px; */
+  /* width: 80%; */
+
+  /* margin: auto 20px; */
+  display: inline-flex;
+  /* min-width: 100%; */
+  /* width: fit-content; */
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
+  /* justify-content: flex-start; */
   /* justify-items: center; */
-  align-content: center;
+  /* align-content: space-between; */
   gap: 20px;
-  padding: 1rem;
-  border: 3px solid red;
-  border-radius: 5px;
+  /* flex-shrink: initial; */
+  /* padding: 1rem; */
+  /* border: 3px solid red; */
+  /* border-radius: 5px; */
+  /* margin-left: auto; */
   /* margin: auto;
   width: 100%; */
   /* background-color: rgb(37, 37, 37); */
 }
 
 .sub {
-  border: 1px solid green;
-  width: 300px;
+  background: #170029;
+  border-radius: 5px;
+  /* flex-grow: 1; */
+  cursor: pointer;
+  padding: 10px;
+  /* border: 1px solid green; */
+  width: 280px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  transition: 0.3s;
 }
+/* .sub > * {
+  border: 1px solid yellow;
+} */
 .sub:hover {
   color: var(--sorbe);
+  transform: scale(1.05);
+  /* box-shadow: 0 0 2px 1px #b30083; */
+  /* border: 1px solid #b30083; */
+
+  transition: 0.3s;
 }
+
+/* .sub:hover > .wrapper {
+  border: 1px solid var(--sorbe);
+} */
 
 .mock {
   width: 300px;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
+}
+
+.wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.wrapper > img {
+  width: 100%;
+  height: 100%;
+  display: cover;
+}
+
+/* .sub:hover {
+  transform: scale(1.05);
+} */
+/* .sub:hover .wrapper {
+  width: 55px;
+  height: 55px;
+  transition: 0.3s;
+} */
+.more {
+  text-align: center;
+}
+
+.circle {
+  background-color: grey;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  animation: loading 1s linear infinite alternate;
+}
+.rectangles {
+  flex: 1;
+  height: 100%;
+  padding: 5px;
+  /* border: 1px solid red; */
+}
+
+.rectangles > :first-child {
+  width: 150px;
+  height: 20px;
+  border-radius: 2px;
+  background-color: grey;
+  margin: 5px;
+  animation: loading 1s linear infinite alternate;
+}
+.rectangles > :last-child {
+  width: 50px;
+  height: 20px;
+  background-color: grey;
+  margin: 5px;
+  animation: loading 1s linear infinite alternate;
+}
+
+@keyframes loading {
+  from {
+    background: #ffffff0e;
+  }
+  to {
+    background: #ffffff26;
+  }
 }

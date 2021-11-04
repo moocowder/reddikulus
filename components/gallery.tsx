@@ -14,12 +14,14 @@ interface Props {
   urls: string[]
   thumbnails: string[]
 }
+
 function Gallery({ urls, thumbnails }: Props) {
   let [index, setIndex] = useState(0)
   let [run, setRun] = useState(true)
   let [center, setCenter] = useState(0)
   const [zoomed, setZoomed] = useState(false)
   const { height } = useWindowSize()
+  const [wheeled, setWheeled, cancelWheeled] = useTimedState(false)
 
   let timeout: any = useRef()
 
@@ -43,13 +45,17 @@ function Gallery({ urls, thumbnails }: Props) {
   const [h, setH] = useState<number>(300)
 
   const [filmDisplay, setFilmDisplay, cancelFilm] = useTimedState(true)
-  const [iconDisplay, setIconDisplay] = useState(true)
+  const [iconDisplay, setIconDisplay, cancelIcon] = useTimedState(true)
 
   // const [run, setRun, cancelRun] = useTimedState()
 
   useEffect(() => {
     setIndex(0)
   }, [urls])
+
+  useEffect(() => {
+    if (zoomed) pause()
+  }, [zoomed])
 
   useEffect(() => {
     if (!height) return
@@ -60,45 +66,41 @@ function Gallery({ urls, thumbnails }: Props) {
   useEffect(() => {
     setH(center)
   }, [center])
-  // let filmTimeout = useRef()
+
   useEffect(() => {
     if (index <= -1) setIndex(urls.length - 1)
     if (index >= urls.length) setIndex(0)
-    // if (!run) return
-    // if (!index) return
 
     setH(center - index * (frameH + gap))
 
     if (!run) return
+    // alert("prepringnext")
     timeout.current = setTimeout(() => {
-      // next()
       setIndex(index + 1)
     }, 4000)
     return () => clearTimeout(timeout.current)
   }, [index])
 
   useEffect(() => {
-    setFilmDisplay(true, 3000)
+    setFilmDisplay(true, false, 3000)
+    setIconDisplay(true, false, 1000)
   }, [urls])
 
   function handleMouseMove(e: any) {
     e.preventDefault()
-    setFilmDisplay(true, 3000)
+    setFilmDisplay(true, false, 3000)
+    setIconDisplay(true, false, 1000)
   }
 
-  function handleWheel(e: any) {
-    e.preventDefault()
-    setFilmDisplay(false)
-    setIconDisplay(false)
-  }
-
-  function handleMouseEnter() {
-    cancelFilm()
-  }
+  // function handleWheel(e: any) {
+  //   // e.preventDefault()
+  //   // setFilmDisplay(false)
+  //   // setIconDisplay(false)
+  // }
 
   function play() {
-    setIndex(index + 1)
     setRun(true)
+    setIndex(index + 1)
   }
 
   function pause() {
@@ -106,38 +108,48 @@ function Gallery({ urls, thumbnails }: Props) {
     setRun(false)
   }
 
+  function handleWheel(e: any) {
+    if (!zoomed && !wheeled && e.deltaY > 0) {
+      if (run) pause()
+      else play()
+      setWheeled(true, false, 300)
+    }
+  }
+
   return (
     <div
-      className={styles.wrapper}
+      className={styles.gallery}
       onMouseMove={(e) => handleMouseMove(e)}
       onWheel={(e) => handleWheel(e)}
     >
-      <img
-        style={{ zIndex: -1 }}
-        className={styles.background}
-        src={thumbnails[index]}
-        alt=""
-      />
+      <img className={styles.background} src={thumbnails[index]} alt="" />
       <Zoom setZoomed={setZoomed}>
         <Imagine thumbnail={thumbnails[index]} original={urls[index]} />
       </Zoom>
-      {iconDisplay && (
-        <Icon state={run ? "running" : "paused"} play={play} pause={pause} />
-      )}
-
-      <Film
-        opacity={filmDisplay}
-        onMouseEnter={() => handleMouseEnter()}
-        thumbnails={thumbnails}
-        index={index}
-        setIndex={setIndex}
-        h={h}
-        gap={gap}
-        frameH={frameH}
-      />
 
       {!zoomed && (
         <>
+          {filmDisplay && (
+            <Film
+              // opacity={filmDisplay}
+              onMouseEnter={() => cancelFilm()}
+              thumbnails={thumbnails}
+              index={index}
+              setIndex={setIndex}
+              h={h}
+              gap={gap}
+              frameH={frameH}
+            />
+          )}
+
+          {iconDisplay && (
+            <Icon
+              state={run ? "running" : "paused"}
+              play={play}
+              pause={pause}
+              onMouseEnter={() => setIconDisplay(true)}
+            />
+          )}
           <span className={styles.number}>
             {index + 1}/{urls.length}
           </span>

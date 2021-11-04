@@ -24,16 +24,18 @@ interface Props {
   post: Post<any>
   move: { next: Function; prev: Function }
   close: Function
+  setInfos: Function
 }
-const Viewer = ({ post, move, close }: Props) => {
-  const [display, setDisplay, cancel] = useTimedState(true)
+
+const Viewer = ({ post, move, close, setInfos }: Props) => {
+  // const [display, setDisplay, cancel] = useTimedState<boolean>(true)
+  const [optDisplay, setOptDisplay, cancelOpt] = useTimedState<boolean>(false)
   const [direction, setDirection] = useState<1 | -1 | null>(null)
 
   useEventListener("keydown", (e: any) => {
     switch (e.key) {
       case "Escape":
         close()
-        document.body.style.overflow = "auto"
         break
       case "ArrowRight":
         next(e)
@@ -43,12 +45,17 @@ const Viewer = ({ post, move, close }: Props) => {
         break
     }
   })
-  // const [optDisplay, setOptDisplay, optCancel] = useTimedState(true)
   let viewerRef = useRef<HTMLDivElement>(null!)
 
   useEffect(() => {
-    setDisplay(true, 3000)
+    // setDisplay(true, false, 3000)
+    setInfos(post.infos, false, 3000)
   }, [post])
+
+  // useEffect(() => {
+  //   if (display) setInfos(post.infos)
+  //   else setInfos(null)
+  // }, [display])
 
   function maximize() {
     if (viewerRef.current.requestFullscreen) {
@@ -79,13 +86,16 @@ const Viewer = ({ post, move, close }: Props) => {
   }
 
   function handleMouseMove() {
-    // e.preventDefault()
-    setDisplay(true, 3000)
+    // setDisplay(true, false, 3000)
+    setInfos(post.infos, null, 3000)
+    setOptDisplay(true, false, 500)
   }
 
   function handleWheel(e: any) {
     e.preventDefault()
-    setDisplay(false)
+    // setDisplay(false)
+    setInfos(null)
+    setOptDisplay(false)
   }
 
   function next(e: any) {
@@ -100,23 +110,14 @@ const Viewer = ({ post, move, close }: Props) => {
   }
 
   function handleMouseDown(e: any) {
-    switch (e.button) {
-      // case 0:
-      //   prev()
-      //   break
-      case 1:
-        close()
-        document.body.style.overflow = "auto"
-        break
-      // case 2:
-      //   next(e)
-      //   break
+    if (e.button === 1) {
+      close()
     }
   }
 
-  function handleMouseEnter() {
-    cancel()
-  }
+  // function handleMouseEnter() {
+  //   cancel()
+  // }
 
   return (
     <div
@@ -127,29 +128,18 @@ const Viewer = ({ post, move, close }: Props) => {
       onMouseDown={(e) => handleMouseDown(e)}
       onWheel={(e) => handleWheel(e)}
       ref={viewerRef}
-      style={{ cursor: display ? "" : "none" }}
+      // style={{ cursor: display ? "" : "none" }}
     >
-      <Infos
-        onMouseEnter={() => handleMouseEnter()}
-        opacity={display ? 1 : 0}
-        ups={post.ups}
-        title={post.title}
-        permalink={post.permalink}
-        sub={post.sub}
-        author={post.author}
-        comments={post.comments}
-        date={post.date}
-      />
-
       <Media media={post.media} direction={direction} />
-      {/* {optDisplay && ( */}
-      <Options
-        close={close}
-        maximize={maximize}
-        minimize={minimize}
-        download={download}
-      />
-      {/* )} */}
+      {optDisplay && (
+        <Options
+          close={close}
+          maximize={maximize}
+          minimize={minimize}
+          download={download}
+          onMouseEnter={() => cancelOpt()}
+        />
+      )}
     </div>
   )
 }

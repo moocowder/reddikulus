@@ -23,9 +23,8 @@ export default function Home() {
             params={{
               access_token,
               refresh_token: refresh_token || "",
-              sort: "best",
             }}
-            sorts={["best", "new", "top", "rising"]}
+            sorts={{ words: ["best", "new", "top", "rising"], default: "best" }}
           />
         </>
       ) : (
@@ -33,15 +32,10 @@ export default function Home() {
           <h1>Popular posts</h1>
           <Content
             api="/api/posts"
-            params={{ sub: "popular", sort: "hot" }}
-            sorts={["hot", "new", "top", "rising"]}
+            params={{ sub: "popular" }}
+            sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
           />
         </>
-        // <Content
-        //   api="/api/feed"
-        //   params={{ token: "expiredtokendoesntwork", sort: "best" }}
-        //   sorts={["best", "new", "top", "rising"]}
-        // />
       )}
     </div>
   )

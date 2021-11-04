@@ -25,10 +25,18 @@ type Props = {
   loadMore: () => void
   loading: boolean
   hasMore: string
+  setInfos: Function
 }
 
-function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
-  const [selected, setSelected] = useState<Post<any> | null>()
+function Masonry({
+  posts,
+  onBrickClick,
+  loadMore,
+  loading,
+  hasMore,
+  setInfos,
+}: Props) {
+  // const [selected, setSelected] = useState<Post<any> | null>()
   const { width, height } = useWindowSize()
   // const width = useWindow()
   console.log("renderring masonry")
@@ -89,23 +97,12 @@ function Masonry({ posts, onBrickClick, loadMore, loading, hasMore }: Props) {
           // border: "1px solid white",
         }}
       >
-        {selected && (
-          <Infos
-            opacity={1}
-            ups={selected.ups}
-            title={selected.title}
-            permalink={selected.permalink}
-            sub={selected.sub}
-            author={selected.author}
-            comments={selected.comments}
-            date={selected.date}
-          />
-        )}
         {posts?.map((p, i) => (
           <Brick
             key={i}
             post={p}
-            setSelected={setSelected}
+            // setSelected={setSelected}
+            setInfos={setInfos}
             width={iw}
             height={iw / p.media.ratio}
             position={getPos(p)}

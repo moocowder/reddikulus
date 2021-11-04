@@ -2,7 +2,6 @@
   position: relative;
   height: 300px;
   border: none;
-  /* border-bottom: 5px solid var(--sorbe); */
 }
 
 .banner {
@@ -18,7 +17,6 @@
   border-radius: 100%;
   border: 5px solid #090014;
   background: #090014;
-  /* border: 5px solid var(--sorbe); */
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 20%);

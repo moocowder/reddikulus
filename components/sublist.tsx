@@ -21,7 +21,9 @@ function Sublist({ query }: Props) {
         {data?.subs.map((s) => (
           <li key={s.name} className={styles.sub}>
             {s.icon ? (
-              <img style={{ width: "50px" }} src={s.icon} alt="" />
+              <div className={styles.wrapper}>
+                <img src={s.icon} alt="" />
+              </div>
             ) : (
               <p>hi</p>
               // <Badge
@@ -33,31 +35,27 @@ function Sublist({ query }: Props) {
               //   text={s.name}
               // />
             )}
-            <div className={styles.infos}>
-              <p>
-                <Link href={`/r/${s.name}`}>{s.name}</Link>
-              </p>
-              <p>{format(s.subscribers)}</p>
-            </div>
+            <Link href={`/r/${s.name}`}>
+              <div className={styles.infos}>
+                <b>{s.name}</b>
+                <p>{format(s.subscribers)}</p>
+              </div>
+            </Link>
           </li>
         ))}
         {loading &&
-          Array.from(Array(8).keys()).map((i: number) => (
-            <li key={i} className={styles.mock}>
-              <img
-                style={{ width: "50px" }}
-                src="https://styles.redditmedia.com/t5_2qoih/styles/communityIcon_03md6wdoo3g31.png"
-                alt=""
-              />
-              <div>
-                <p>name</p>
-                <p>subs</p>
+          Array.from(Array(12).keys()).map((i: number) => (
+            <li key={i} className={styles.sub}>
+              <div className={styles.circle}></div>
+              <div className={styles.rectangles}>
+                <div></div>
+                <div></div>
               </div>
             </li>
           ))}
       </ul>
       {data.after && (
-        <button style={{ margin: "auto" }} onClick={() => setAfter(data.after)}>
+        <button className={styles.more} onClick={() => setAfter(data.after)}>
           see more
         </button>
       )}

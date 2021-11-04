@@ -14,31 +14,29 @@ interface Props {
 function About({ name, title, created, members, karma, text }: Props) {
   return (
     <div className={styles.infos}>
-      <h1 className={styles.name}>
-        <a target="_blank" href={`https://reddit.com/${name}`}>
-          {name}
-        </a>
-      </h1>
-      <b>{title}</b>
+      <a
+        className={styles.name}
+        target="_blank"
+        href={`https://reddit.com/${name}`}
+      >
+        {name}
+      </a>
+      <b className={styles.title}>{title}</b>
       <div className={styles.stats}>
         {members && (
           <span>
             <FaUsers />
-            &nbsp;
             {format(members)}
           </span>
         )}
         {karma && (
           <span>
             <FaStar />
-            &nbsp;
             {format(karma)}
           </span>
         )}
-        &nbsp;&nbsp;&nbsp;
         <span>
           <FaBirthdayCake />
-          &nbsp;
           {date(created)}
         </span>
       </div>

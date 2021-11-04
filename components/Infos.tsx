@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { useEffect } from "react"
 import { FiMessageSquare } from "react-icons/fi"
+import { Infos as InfosType } from "../schema/post"
 import {
   FaRegClock,
   FaRegCommentAlt,
@@ -17,15 +18,17 @@ import { FaRegUser } from "react-icons/fa"
 import format from "../utils/format"
 
 type props = {
-  ups: number
-  title: string
-  permalink: string
-  sub?: string
-  author?: string
-  comments: number
-  date: number
-  opacity: number
+  // ups: number
+  // title: string
+  // permalink: string
+  // sub?: string
+  // author?: string
+  // comments: number
+  // date: number
+  infos: InfosType
   onMouseEnter?: Function
+  onWheel: Function
+  page: "r/" | "u/" | ""
 }
 
 type Units = {
@@ -33,69 +36,67 @@ type Units = {
   //   [key in "year" | "month" | "day" | "hour" | "minute" | "second"]?: number
 }
 
+function relativeTime(d1: number, d2 = +new Date()) {
+  d2 = Number(d2.toString().substr(0, 10))
+
+  // in seconds
+  let units: Units = {
+    year: 24 * 60 * 60 * 365,
+    month: (24 * 60 * 60 * 365) / 12,
+    day: 24 * 60 * 60,
+    hour: 60 * 60,
+    minute: 60,
+    second: 1,
+  }
+
+  let rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" })
+
+  let elapsed: number = d2 - d1
+
+  let u: Intl.RelativeTimeFormatUnit
+
+  for (u in units)
+    if (elapsed > (units[u] || 0) || u == "second")
+      return rtf.format(Math.round(-elapsed / (units[u] || 0)), u)
+}
+
 function Infos({
-  ups,
-  title,
-  permalink,
-  sub,
-  author,
-  comments,
-  date,
-  opacity,
+  infos: { ups, title, permalink, sub, author, date, comments },
   onMouseEnter = () => {},
+  onWheel,
+  page,
 }: props) {
   const router = useRouter()
-  const [page, setPage] = useState<"/r" | "/u" | "">("")
-  const [img, setImg] = useState("")
+  // const [page, setPage] = useState<"/r" | "/u" | "">("")
 
   // useEffect(() => {
   //   let p = router.pathname.substr(0, 2)
-  //   if (p !== "/r") {
-  //     fetch(`/api/icon?sub=` + sub)
-  //       .then((r) => r.json())
-  //       .then((d) => setImg(d.img))
-  //   }
   //   if (p === "/r" || p === "/u") setPage(p)
   // }, [])
 
-  function relativeTime(d1: number, d2 = +new Date()) {
-    d2 = Number(d2.toString().substr(0, 10))
-
-    // in seconds
-    let units: Units = {
-      year: 24 * 60 * 60 * 365,
-      month: (24 * 60 * 60 * 365) / 12,
-      day: 24 * 60 * 60,
-      hour: 60 * 60,
-      minute: 60,
-      second: 1,
-    }
-
-    let rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" })
-
-    let elapsed: number = d2 - d1
-
-    let u: Intl.RelativeTimeFormatUnit
-
-    for (u in units)
-      if (elapsed > (units[u] || 0) || u == "second")
-        return rtf.format(Math.round(-elapsed / (units[u] || 0)), u)
+  function link(l: string) {
+    return (
+      <span
+        className={styles.link}
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation()
+          e.preventDefault()
+          router.push(l)
+        }}
+        onContextMenu={(e) => e.stopPropagation()}
+      >
+        <span style={{ color: "var(--sorbe)" }}>{l.substr(1, 2)}</span>
+        {l.substr(3)}
+      </span>
+    )
   }
-
-  function handleMouseDown(e: any, link: string) {
-    e.stopPropagation()
-    if (e.button === 0) {
-      e.preventDefault()
-      router.push(link)
-    }
-  }
-
   return (
     <div
       className={styles.infos}
-      style={{ display: opacity === 1 ? "block" : "none" }}
       onMouseEnter={(e) => onMouseEnter(e)}
       onMouseMove={(e) => e.stopPropagation()}
+      onWheel={() => onWheel()}
     >
       <div className={styles.top}>
         <a
@@ -111,25 +112,7 @@ function Infos({
         </a>
       </div>
       <div className={styles.bottom}>
-        {page !== "/r" && (
-          <>
-            <a href={`/r/${sub}`}>
-              <span
-                className={styles.link}
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  router.push(`/r/${sub}`)
-                }}
-                onContextMenu={(e) => e.stopPropagation()}
-              >
-                <span style={{ color: "var(--sorbe)" }}>r/</span>
-                {sub}
-              </span>
-            </a>
-          </>
-        )}
+        {page !== "r/" && <a href={`/r/${sub}`}>{link(`/r/${sub}`)}</a>}
         <span className={styles.stat}>
           <FaRegComment />
           {format(comments)}
@@ -138,25 +121,7 @@ function Infos({
           <FaRegClock />
           {relativeTime(date)}
         </span>
-        {page !== "/u" && (
-          <div className={styles.stat}>
-            <a href={`/u/${author}`}>
-              <span
-                className={styles.link}
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  router.push(`/u/${author}`)
-                }}
-                onContextMenu={(e) => e.stopPropagation()}
-              >
-                <span style={{ color: "var(--sorbe)" }}>u/</span>
-                {author}
-              </span>
-            </a>
-          </div>
-        )}
+        {page !== "u/" && <a href={`/u/${author}`}>{link(`/u/${author}`)}</a>}
       </div>
     </div>
   )

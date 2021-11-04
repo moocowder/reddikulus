@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react"
 import { Post } from "../schema/post"
+import { Infos as InfosType } from "../schema/post"
+
 import Masonry from "./masonry"
 import Viewer from "./viewer"
 import useLoadData from "../hooks/useLoadData"
 import Sort from "./Sort"
 import Word from "../schema/sorts"
 import styles from "../styles/content.module.css"
+import Infos from "../components/Infos"
+import useTimedState from "../hooks/useTimedState"
 
-function Content({
-  api,
-  params,
-  sorts,
-}: {
+interface Props {
   api: string
   params: { [key: string]: string }
-  sorts: Word[]
-}) {
+  sorts: { words: Word[]; default: Word }
+}
+
+function Content({ api, params, sorts }: Props) {
   let [after, setAfter] = useState("")
-  const [sort, setSort] = useState<string>(params.sort)
+  const [sort, setSort] = useState<Word>(sorts.default)
   const [post, setPost] = useState<Post<any> | null>()
+  const [infos, setInfos, cancel] = useTimedState<InfosType | null>(null)
 
   let { data, loading, error } = useLoadData(api, { ...params, sort, after })
 
@@ -30,18 +33,15 @@ function Content({
   }, [data])
 
   // useEffect(() => {
-  //   console.log("000000000000000000000")
-  //   setAfter("")
-  // }, [params.sub, params.user, params.q, params.sort])
+  //   if (post) {
+  //     setInfos(post?.infos)
+  //     console.log("**********************************************", post?.infos)
+  //   }
+  // }, [post])
 
   // useEffect(() => {
-  //   if (data.after === "") {
-  //     console.log("@@@@@@@@@@@@@@@@@@@@")
-
-  //     setAfter("")
-  //   }
-  // }, [data])
-
+  //   alert(infos)
+  // }, [infos])
   let move = {
     next: () => {
       if (!post) return
@@ -65,19 +65,51 @@ function Content({
 
   function handleBrickClick(i: number) {
     document.body.style.overflow = "hidden"
+    setInfos(data.posts[i].infos)
     setPost(data.posts[i])
+  }
+
+  function showInfos(i: InfosType | null) {
+    if (post) return
+    setInfos(i)
   }
 
   return (
     <div>
-      <Sort words={sorts} sort={sort} setSort={setSort} />
-      {post && <Viewer post={post} close={() => setPost(null)} move={move} />}
+      {infos && (
+        <Infos
+          infos={infos}
+          page={
+            params.sub && params.sub !== "popular"
+              ? "r/"
+              : params.user
+              ? "u/"
+              : ""
+          }
+          onMouseEnter={() => cancel()}
+          onWheel={() => setInfos(null)}
+        />
+      )}
+      <Sort words={sorts.words} sort={sort} setSort={setSort} />
+      {post && (
+        <Viewer
+          post={post}
+          close={() => {
+            setPost(null)
+            setInfos(null)
+            document.body.style.overflow = "auto"
+          }}
+          move={move}
+          setInfos={setInfos}
+        />
+      )}
       <Masonry
         posts={data.posts}
         onBrickClick={handleBrickClick}
         loadMore={() => setAfter(data.after)}
         loading={loading}
         hasMore={data.after}
+        setInfos={setInfos}
       />
       {loading && <span className={styles.bar}></span>}
       {error && (

@@ -1,29 +1,10 @@
 type Post<M> = {
-  // kind: string
-  title: string
-  author: string
-  sub: string
-  permalink: string
-  // domain: string
-  ups: number
-  comments: number
-  date: number
-  // over_18: boolean
-  // media: Image | Video | Gallery
+  infos: Infos
   media: M
 }
 
 type Media = {
-  // type: "image" | "video" | "gallery"
   ratio: number
-  // thumbnail?: undefined
-  // poster?: undefined
-  // url?: undefined
-  // thumbnails?: undefined[]
-  // urls?: undefined[]
-  // peek?: undefined
-  // duration?: undefined
-  // timestamp?: undefined
 }
 
 interface Image extends Media {
@@ -57,4 +38,14 @@ interface Gif extends Media {
   peek: string
   url: string
 }
-export type { Post, Image, Video, Gallery, Gif, Media }
+
+interface Infos {
+  title: string
+  author: string
+  sub: string
+  permalink: string
+  ups: number
+  comments: number
+  date: number
+}
+export type { Post, Image, Video, Gallery, Gif, Media, Infos }

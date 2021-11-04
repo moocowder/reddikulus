@@ -11,6 +11,8 @@
   /* background-color: black; */
   background: #090014;
   /* animation: swipe 0.1s linear; */
+  /* animation: appear 0.2s; */
+  /* animation-timing-function: ease-in-out; */
 }
 
 .background {
@@ -60,6 +62,17 @@
     rgba(255, 249, 0, 0.2) 100%
   );
 } */
+
+@keyframes appear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 @keyframes swipe {
   from {

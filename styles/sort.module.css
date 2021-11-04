@@ -1,15 +1,16 @@
 .sort {
   display: flex;
-  gap: 1rem;
+  gap: 20px;
   justify-content: flex-end;
   /* border: 1px solid red; */
+  margin-right: 30px;
 }
 
 .word {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 5px;
   font-weight: 500;
   background: #ffffff26;
   border-radius: 30px;

@@ -32,7 +32,7 @@ function Subreddit({ sub, about }: Props) {
   return (
     <div>
       <Head>
-        <title>{sub}</title>
+        <title>r/{sub}</title>
       </Head>
       <Cover banner={about.banner} icon={about.icon} color={about.color} />
       <About
@@ -44,8 +44,8 @@ function Subreddit({ sub, about }: Props) {
       />
       <Content
         api="/api/posts"
-        params={{ sub, sort: "hot" }}
-        sorts={["hot", "new", "top", "rising"]}
+        params={{ sub }}
+        sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
       />
     </div>
   )

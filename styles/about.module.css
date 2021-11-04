@@ -1,12 +1,37 @@
 .infos {
   text-align: center;
-  margin-top: 3rem;
-  /* font-size: 24px; */
+  margin: 50px;
 }
 
 .name {
+  /* border: 1px solid green; */
+  color: var(--sorbe);
+  font-size: 64px;
+  font-weight: bold;
   transition: 0.3s;
 }
+
 .name:hover {
-  color: var(--sorbe);
+  color: #dd13aa;
+  transition: 0.3s;
+}
+
+.title {
+  display: block;
+  margin-bottom: 10px;
+  /* border: 1px solid red; */
+}
+
+.stats {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  /* border: 1px solid wheat; */
+}
+
+.stats > * {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }

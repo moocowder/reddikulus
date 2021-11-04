@@ -10,15 +10,13 @@ interface Props {
 function Cover({ banner, icon, avatar, color }: Props) {
   return (
     <>
-      {(icon || avatar) && (
+      {(icon || avatar || banner) && (
         <div
           className={styles.wrapper}
           style={{
             background: !banner
               ? `linear-gradient(180deg,${color},#00000000)`
               : "",
-            // background: !banner ? `linear-gradient(180deg,#ff0066,#ff0066)` : "",
-            // background: !banner ? color : "",
           }}
         >
           {banner && <img className={styles.banner} src={banner} alt="" />}

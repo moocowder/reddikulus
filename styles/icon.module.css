@@ -1,71 +1,18 @@
-.icon svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  /* font-size: 5rem; */
-  transform: translate(-50%, -50%);
-  /* top: 90;
-    left: 0; */
-  /* color: #740055; */
-  /* color: rgb(46, 46, 38); */
-  /* color: hsl(348, 96%, 42%); */
-  /* color: #ff006f; */
-
-  color: #ff006f;
-  filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.5));
-  /* margin: 4rem; */
-  /* padding: 3rem; */
-  font-size: 5rem;
-
-  transition: 0.3s;
-
-  /* z-index: 5; */
-  /* animation: expand 0.3s linear, fade 0.3s linear; */
-}
-
-.anime {
-  animation: fade 0.1s linear, expand 0.1s linear;
-}
 .icon {
   position: absolute;
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
   left: 20px;
   bottom: 50px;
   width: 100px;
   height: 100px;
-  /* border-radius: 100%; */
-  /* border: 3px solid var(--sorbe); */
-  /* padding: 50px; */
-  /* border-radius: 100%; */
-  /* transition: opacity 2s; */
-
-  /* opacity: 0; */
-  /* transition: 0.5s; */
-  /* z-index: 3; */
+  color: #ff006f;
 }
 
 .icon:hover {
   cursor: pointer;
-  /* opacity: 1; */
-  /* transition: 0.5s; */
 }
 
-/* @keyframes expand {
-  from {
-    font-size: 5rem;
-  }
-  to {
-    font-size: 7rem;
-  }
+.icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.5));
 }
-
-@keyframes fade {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-} */

@@ -1,48 +1,24 @@
-.wrapper {
+.gallery {
   position: relative;
   width: inherit;
   height: inherit;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
-}
-
-.number {
-  position: absolute;
-  /* color: white; */
-  /* background-color: hsla(345, 98%, 50%, 0.4); */
-  /* border-radius: 20px; */
-  /* padding-left: 5px;
-  padding-right: 5px; */
-  bottom: 5px;
-  left: 5px;
-  font-weight: bold;
-  font-style: italic;
-  /* z-index: 34; */
-}
-
-.media {
-  /* width: inherit;
-  height: inherit; */
-  max-width: 100%;
-  max-height: 100%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  /* z-index: 3; */
-  position: absolute;
-  margin: auto;
 }
 
 .background {
   position: fixed;
   object-fit: cover;
-
   filter: blur(15px) brightness(40%);
   margin: -30px;
   width: calc(100% + 60px);
   height: calc(100% + 60px);
-  z-index: 1;
+}
+
+.number {
+  position: absolute;
+  bottom: 10px;
+  left: 25px;
+  font-weight: bold;
+  font-style: italic;
 }
 
 .progress {
@@ -51,55 +27,15 @@
   left: 0;
   height: 5px;
   background-color: var(--sorbe);
-  animation-name: example;
-  animation: example 4s linear;
+  animation: slide 4s linear;
   z-index: 1;
 }
 
-@keyframes go {
-  from {
-    width: 0px;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes example {
+@keyframes slide {
   from {
     width: 0%;
   }
   to {
     width: 100%;
   }
-}
-
-.icon svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 5rem;
-  transform: translate(-50%, -50%);
-  color: #ff006f;
-  filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.5));
-  transition: 0.3s;
-}
-
-.icon {
-  position: absolute;
-  opacity: 0;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  border-radius: 100%;
-  transition: 0.5s;
-  z-index: 3;
-}
-
-.icon:hover {
-  cursor: pointer;
-  opacity: 1;
-  transition: 0.5s;
 }

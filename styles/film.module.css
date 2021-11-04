@@ -1,18 +1,12 @@
 .film {
   position: fixed;
+  /* border: 1px solid red; */
   top: 0;
   right: 0;
-  width: 8rem;
+  width: 200px;
   height: 100vh;
-  padding-left: 1rem;
-  /* border: 1px solid cyan; */
-
-  /* justify-content: space-around; */
-
-  /* overflow-y: scroll; */
+  padding: 0 5px;
   z-index: 1;
-  /* box-shadow: 0 -5px 20px 0 rgba(0, 0, 0, 0.5); */
-  /* background-color: rgba(0, 0, 0, 0.2); */
   background: linear-gradient(
     -90deg,
     rgba(0, 0, 0, 0.6) 0%,
@@ -28,37 +22,32 @@
   align-items: center;
   justify-content: center;
   align-content: center;
-  /* gap: 20px; */
   transition: 0.3s;
 }
+
+.frame {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+}
+
 .img {
   border-radius: 3px;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  /* border: 1px solid cyan; */
-
-  /* height: 100px; */
-  /* z-index: 44; */
 }
 
 .selected {
-  /* box-shadow: 0 0 8px 0px #ff0066ab;
-  background: #ff006617; */
-  /* background: #ff0066; */
-  /* transform: scale(1.05); */
-  /* background: linear-gradient(
-    -90deg,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 1) 100%
-  ); */
-  filter: drop-shadow(0px 0px 8px rgba(255, 0, 0, 1));
+  filter: drop-shadow(0px 0px 2px var(--sorbe))
+    drop-shadow(0px 0px 2px var(--sorbe));
   transition: 0.1s;
 }
 
-.frame {
-  cursor: pointer;
-  /* border: 1px solid orange; */
-  width: 100%;
-  /* height: 120px; */
+.number {
+  position: absolute;
+  right: 5px;
+  text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black;
+  font-weight: bold;
+  z-index: 1;
 }

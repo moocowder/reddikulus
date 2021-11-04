@@ -13,27 +13,19 @@ type Props = {
   thumbnail: string
   poster: string
   peek: string
-  duration: number
-  onClick: () => void
-  isGif: boolean
+  duration?: number
+  // isGif?: boolean
 }
 
-function Mirage({
-  thumbnail,
-  poster,
-  peek,
-  duration,
-  onClick = () => {},
-  isGif = false,
-}: Props) {
+function Mirage({ thumbnail, poster, peek, duration }: Props) {
   const [hover, setHover] = useState(false)
   const [progress, setProgress] = useState(0)
 
-  let vid = useRef<HTMLVideoElement>()
+  let vid = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     if (!hover) return
-    if (vid.current?.playbackRate) vid.current.playbackRate = 1
+    if (vid.current?.playbackRate) vid.current.playbackRate = duration ? 3 : 1
   }, [hover])
 
   function format(s: number) {
@@ -45,51 +37,39 @@ function Mirage({
 
   return (
     <div
-      // style={{ border: "5px solid white" }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {!isGif && <span className={styles.duration}>{format(duration)}</span>}
+      {duration && <span className={styles.duration}>{format(duration)}</span>}
 
-      <div style={{ position: "absolute", width: "100%", height: "100%" }}>
-        {isGif ? (
-          // <span className={`${styles.gif} `}>GIF</span>
-          <BsLightningFill className={`${styles.icon} `} />
-        ) : (
-          // <AiOutlineFileGif className={`${styles.icon} `} />
+      <div className={styles.poster}>
+        {duration ? (
           <FaPlay className={`${styles.icon} `} />
+        ) : (
+          <BsLightningFill className={`${styles.icon} `} />
         )}
 
-        {/* <CgPlayButtonO className={`${styles.icon} `} /> */}
         <Imagine thumbnail={thumbnail} original={poster} />
-        {/* <img style={{ position: "absolute" }} src={thumbnail} alt="" /> */}
       </div>
 
       {hover && (
         <div className={styles.peek}>
           <video
             ref={vid}
-            // style={{ width: "100%", height: "100%", position: "absolute" }}
             autoPlay
             src={peek}
-            onClick={() => {
-              onClick()
-            }}
             onTimeUpdate={() => {
-              if (vid.current) setProgress(vid.current.currentTime / duration)
+              if (duration && vid.current)
+                setProgress(vid.current.currentTime / duration)
             }}
-            // controls
             loop
           ></video>
-          {/* <div className={styles.timer}> */}
-          {!isGif && (
+          {duration && (
             <div
               className={styles.bar}
               style={{ width: `${progress * 100}%` }}
             ></div>
           )}
-
-          {/* </div> */}
         </div>
       )}
     </div>

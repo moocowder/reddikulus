@@ -10,27 +10,60 @@ import {
   Video,
   Gallery as GalleryType,
 } from "../schema/post"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Gif from "../components/gif"
+import useTimedState from "../hooks/useTimedState"
 
 interface Props {
   media: GifType | Video | Image | GalleryType
-  direction: 1 | -1
+  direction: 1 | -1 | null
 }
 
 function Media({ media, direction }: Props) {
   const [loading, setLoading] = useState(true)
-
+  const [pos, setPos] = useState("0px")
+  const ref = useRef<HTMLDivElement>(null)
+  // const [show, setShow] = useState(true)
+  const [show, setShow, cancel] = useTimedState(false)
   useEffect(() => {
     setLoading(true)
+    // setPos("100vw")
+    setShow(false)
   }, [media])
 
+  // useEffect(() => {
+  //   if (!show) setShow(true)
+  // }, [show])
+  // useEffect(() => {
+  //   if (pos === "100vw" || pos === "-100vw") setPos("0px")
+  //   // if(pos === '-100vw')
+  // }, [pos])
+
+  // useEffect(() => {
+  //   if (ref.current?.style.left === "100vw") setShow(true)
+  // }, [ref.current?.style.left])
+  useEffect(() => {
+    console.log(ref.current?.getClientRects()[0])
+    if (ref.current?.getClientRects()[0].left !== 0) setShow(true)
+    // console.log(ref.current?.getClientRects()[0].left)
+
+    // setTimeout(() => {
+    // if (!show && ) setShow(true)
+    // }, 5)
+  }, [ref.current?.getClientRects()[0].left])
+  // if (!show) return null
   return (
     <div
-      key={media.url}
-      className={`${styles.wrapper} ${direction === 1 && styles.right} ${
-        direction === -1 && styles.left
-      }`}
+      ref={ref}
+      // key={Math.random()}
+      // key={media.url}
+      // className={`${styles.media} ${direction === 1 && styles.right} ${
+      //   direction === -1 && styles.left
+      // }`}
+      className={styles.media}
+      // translate={}
+      // style={{ left: show ? "100vh" : "0px" }}
+      // style={{ left: show ? "0" : "100vw", transition: show ? "0.5s" : "none" }}
     >
       {media.type === "video" && (
         <Cinema
@@ -38,7 +71,7 @@ function Media({ media, direction }: Props) {
           thumbnail={media.thumbnail}
           duration={media.duration}
           dash={media.dash}
-        ></Cinema>
+        />
       )}
       {media.type === "image" && (
         <>
@@ -56,12 +89,6 @@ function Media({ media, direction }: Props) {
         <Gallery urls={media.urls} thumbnails={media.thumbnails} />
       )}
       {media.type === "gif" && (
-        // <Cinema
-        //   src={media.url}
-        //   thumbnail={media.thumbnail}
-        //   duration={1}
-        //   isGif={true}
-        // />
         <Gif thumbnail={media.thumbnail} url={media.url} />
       )}
 

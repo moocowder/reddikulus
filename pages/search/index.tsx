@@ -19,8 +19,11 @@ function Search({ query }: { query: string }) {
       <h2>posts</h2>
       <Content
         api="/api/search"
-        params={{ q: query, sort: "relevance", nsfw: user.nsfw || "" }}
-        sorts={["relevance", "hot", "new", "top", "comments"]}
+        params={{ q: query, nsfw: user.nsfw || "" }}
+        sorts={{
+          words: ["relevance", "hot", "new", "top", "comments"],
+          default: "relevance",
+        }}
       />
     </div>
   )

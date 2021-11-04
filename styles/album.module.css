@@ -1,32 +1,16 @@
-.wrapper {
+.album {
   position: relative;
   width: inherit;
   height: inherit;
-  /* display: flex;
-    flex-direction: column;
-    align-items: center; */
 }
 
 .number {
-  /* position: absolute;
-  background-color: hsla(345, 98%, 50%, 0.4);
-  border-radius: 20px;
-  padding-left: 5px;
-  padding-right: 5px;
-  right: 5px;
-  bottom: 5px;
-  z-index: 1; */
-
   position: absolute;
   bottom: 5px;
   left: 5px;
   font-weight: bold;
   font-style: italic;
-  /* background-color: hsla(345, 98%, 50%, 0.4); */
-  /* background-color: var(--sorbe); */
   text-shadow: 0 0 4px black;
-  padding: 2px;
-  border-radius: 5px;
   font-size: 15px;
   z-index: 1;
 }
@@ -40,37 +24,18 @@
 
 .icon {
   position: absolute;
-  /* top: 50%;
-  left: 50%; */
   top: 2px;
   right: 2px;
-  font-size: 2rem;
-  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5));
-  /* text-shadow: 0 0 22px black, 0 0 22px black;
-  background-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 22px 0 rgba(0, 0, 0, 0.2); */
-  /* transform: translate(-50%, -50%); */
-  /* color: hsla(348, 96%, 42%, 0.6); */
+  font-size: 38px;
+  filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 1));
   color: var(--sorbe);
-  /* z-index: 1; */
-  /* top: 90;
-    left: 0; */
-  /* color: #740055; */
-  /* color: var(--cherry); */
-  /* transition: 0.3s; */
-  /* z-index: 5; */
 }
 
 .background {
-  /* position: fixed; */
   position: absolute;
   object-fit: cover;
   height: 100%;
   width: 100%;
   filter: blur(15px) brightness(40%);
-  /* margin: -30px;
-  width: calc(100% + 60px);
-  height: calc(100% + 60px); */
-  z-index: -2;
-  /* z-index: 0; */
+  z-index: -1;
 }

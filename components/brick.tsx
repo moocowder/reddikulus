@@ -8,7 +8,8 @@ import Album from "./album"
 
 type Props = {
   post: Post<Image | Video | Gallery | Gif>
-  setSelected: Function
+  // setSelected: Function
+  setInfos: Function
   position: { top: number; left: number }
   width: number
   height: number
@@ -18,7 +19,8 @@ type Props = {
 
 function Brick({
   post,
-  setSelected,
+  // setSelected,
+  setInfos,
   position,
   width,
   height,
@@ -27,12 +29,6 @@ function Brick({
 }: Props) {
   const [visible, setVisible] = useState(false)
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     alert("red light")
-  //     setVisible(false)
-  //   }, 10000)
-  // }, [])
   let observer: IntersectionObserver
   function rendered(node: HTMLDivElement) {
     if (observer) observer.disconnect()
@@ -61,10 +57,8 @@ function Brick({
           left: position.left,
           // animation: "loading 3s linear infinite",
         }}
-        // onMouseEnter={() => setSelected(true)}
-        onMouseEnter={() => setSelected(post)}
-        // onMouseLeave={() => setSelected(false)}
-        onMouseLeave={() => setSelected(null)}
+        onMouseEnter={() => setInfos(post.infos)}
+        onMouseLeave={(e) => setInfos(null)}
         ref={rendered}
         onClick={() => onClick()}
       >
@@ -74,8 +68,8 @@ function Brick({
         {post.media.type === "video" && visible && (
           <Mirage
             thumbnail={post.media.thumbnail}
-            poster={post.media.poster || ""}
-            peek={post.media.peek || ""}
+            poster={post.media.poster}
+            peek={post.media.peek}
             duration={post.media.duration}
           />
         )}
@@ -88,10 +82,8 @@ function Brick({
         {post.media.type === "gif" && visible && (
           <Mirage
             thumbnail={post.media.thumbnail}
-            poster={post.media.poster || ""}
-            peek={post.media.peek || ""}
-            duration={1}
-            isGif={true}
+            poster={post.media.poster}
+            peek={post.media.peek}
           />
         )}
       </div>
