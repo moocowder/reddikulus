@@ -11,6 +11,7 @@
   /* transform: translate(0, 0);
   transition: transform 1s; */
   /* animation: appear 0.3s linear; */
+  /* animation: right 0.4s linear; */
 }
 .media > * {
   /* max-width: 100%;
@@ -39,7 +40,9 @@
 .right {
   animation: right 0.2s linear;
 }
-
+.yassar {
+  animation: left 0.2s linear;
+}
 .spinner {
   width: 100px;
   height: 100px;

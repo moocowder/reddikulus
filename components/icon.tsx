@@ -31,7 +31,7 @@ function Icon({ state, play, pause, onMouseEnter }: Props) {
       }}
     >
       {state === "ended" && <FaUndoAlt />}
-      {state === "running" && <FaPause />}
+      {(state === "running" || state === "loading") && <FaPause />}
       {state === "paused" && <FaPlay />}
     </div>
   )

@@ -25,12 +25,27 @@ function Media({ media, direction }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   // const [show, setShow] = useState(true)
   const [show, setShow, cancel] = useTimedState(false)
+  // const [d, setD] = useState(1)
+  // let d : 1 | -1 | null = null
+  const [anime, setAnime] = useState<1 | -1 | null>(null)
+  const [alter, setAlter] = useState<boolean>(true)
   useEffect(() => {
     setLoading(true)
+    // setAnime(null)
+    setAlter(!alter)
+    console.log(alter)
+    // setAnime(direction)
     // setPos("100vw")
-    setShow(false)
+    // setShow(false)
+    // setD(d * -1)
   }, [media])
 
+  // useEffect(() => {
+  //   alert(anime)
+  //   if (anime === null) {
+  //     setAnime(1)
+  //   }
+  // }, [anime])
   // useEffect(() => {
   //   if (!show) setShow(true)
   // }, [show])
@@ -55,12 +70,14 @@ function Media({ media, direction }: Props) {
   return (
     <div
       ref={ref}
+      // onMouseDown={() => setD(d * -1)}
       // key={Math.random()}
       // key={media.url}
-      // className={`${styles.media} ${direction === 1 && styles.right} ${
-      //   direction === -1 && styles.left
-      // }`}
-      className={styles.media}
+      className={`${styles.media} ${anime === 1 && styles.right} ${
+        direction === -1 && alter && styles.left
+      } ${direction === -1 && !alter && styles.yassar}`}
+      // onAnimationStart={() => alert("animation")}
+      // className={styles.media}
       // translate={}
       // style={{ left: show ? "100vh" : "0px" }}
       // style={{ left: show ? "0" : "100vw", transition: show ? "0.5s" : "none" }}

@@ -11,14 +11,22 @@ import useTimedState from "../hooks/useTimedState"
 
 interface Props {
   close: Function
-  maximize: Function
-  minimize: Function
+  // maximize: Function
+  // minimize: Function
+  fullscreen: boolean
+  setFullscreen: Function
   download: Function
   onMouseEnter: Function
 }
 
-function Options({ close, maximize, minimize, download, onMouseEnter }: Props) {
-  const [fullscreen, setFullscreen] = useState(false)
+function Options({
+  close,
+  fullscreen,
+  setFullscreen,
+  download,
+  onMouseEnter,
+}: Props) {
+  // const [fullscreen, setFullscreen] = useState(false)
   // const [display, setDisplay, cancel] = useTimedState(true)
 
   // useEffect(() => {
@@ -42,7 +50,7 @@ function Options({ close, maximize, minimize, download, onMouseEnter }: Props) {
         <li
           onClick={() => {
             setFullscreen(false)
-            minimize()
+            // minimize()
           }}
         >
           <FiMinimize />
@@ -51,7 +59,7 @@ function Options({ close, maximize, minimize, download, onMouseEnter }: Props) {
         <li
           onClick={() => {
             setFullscreen(true)
-            maximize()
+            // maximize()
           }}
         >
           <FiMaximize />

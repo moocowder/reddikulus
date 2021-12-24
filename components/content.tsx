@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Post } from "../schema/post"
 import { Infos as InfosType } from "../schema/post"
 
@@ -10,6 +10,7 @@ import Word from "../schema/sorts"
 import styles from "../styles/content.module.css"
 import Infos from "../components/Infos"
 import useTimedState from "../hooks/useTimedState"
+import useEventListener from "../hooks/useEventListener"
 
 interface Props {
   api: string
@@ -22,8 +23,11 @@ function Content({ api, params, sorts }: Props) {
   const [sort, setSort] = useState<Word>(sorts.default)
   const [post, setPost] = useState<Post<any> | null>()
   const [infos, setInfos, cancel] = useTimedState<InfosType | null>(null)
+  const [fullscreen, setFullscreen] = useState(false)
 
   let { data, loading, error } = useLoadData(api, { ...params, sort, after })
+
+  let ref = useRef<HTMLDivElement>(null!)
 
   useEffect(() => {
     if (data.posts?.length === 0)
@@ -31,6 +35,14 @@ function Content({ api, params, sorts }: Props) {
         setAfter(data.after)
       }, 1000)
   }, [data])
+
+  useEventListener("keydown", (e: any) => {
+    if (e.key === "Escape") alert("escaping!!")
+  })
+  // useEffect(() => {
+  //   if (fullscreen) maximize()
+  //   if (window.innerHeight === screen.height) minimize()
+  // }, [fullscreen])
 
   // useEffect(() => {
   //   if (post) {
@@ -75,7 +87,7 @@ function Content({ api, params, sorts }: Props) {
   }
 
   return (
-    <div>
+    <div ref={ref}>
       {infos && (
         <Infos
           infos={infos}
@@ -96,12 +108,29 @@ function Content({ api, params, sorts }: Props) {
           post={post}
           close={() => {
             setPost(null)
-            setInfos(null)
+            // setInfos(null)
             document.body.style.overflow = "auto"
           }}
           move={move}
           setInfos={setInfos}
-        />
+          fullscreen={fullscreen}
+          setFullscreen={setFullscreen}
+        >
+          {infos && (
+            <Infos
+              infos={infos}
+              page={
+                params.sub && params.sub !== "popular"
+                  ? "r/"
+                  : params.user
+                  ? "u/"
+                  : ""
+              }
+              onMouseEnter={() => cancel()}
+              onWheel={() => setInfos(null)}
+            />
+          )}
+        </Viewer>
       )}
       <Masonry
         posts={data.posts}

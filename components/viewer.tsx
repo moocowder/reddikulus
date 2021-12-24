@@ -25,9 +25,20 @@ interface Props {
   move: { next: Function; prev: Function }
   close: Function
   setInfos: Function
+  fullscreen: boolean
+  setFullscreen: Function
+  children: any
 }
 
-const Viewer = ({ post, move, close, setInfos }: Props) => {
+const Viewer = ({
+  post,
+  move,
+  close,
+  setInfos,
+  fullscreen,
+  setFullscreen,
+  children,
+}: Props) => {
   // const [display, setDisplay, cancel] = useTimedState<boolean>(true)
   const [optDisplay, setOptDisplay, cancelOpt] = useTimedState<boolean>(false)
   const [direction, setDirection] = useState<1 | -1 | null>(null)
@@ -35,6 +46,10 @@ const Viewer = ({ post, move, close, setInfos }: Props) => {
   useEventListener("keydown", (e: any) => {
     switch (e.key) {
       case "Escape":
+        alert("yay")
+        e.preventDefault()
+        // setFullscreen(false)
+        // minimize()
         close()
         break
       case "ArrowRight":
@@ -45,12 +60,25 @@ const Viewer = ({ post, move, close, setInfos }: Props) => {
         break
     }
   })
+  useEventListener("mozfullscreenchange", () => {
+    alert("changed")
+  })
   let viewerRef = useRef<HTMLDivElement>(null!)
 
   useEffect(() => {
     // setDisplay(true, false, 3000)
-    setInfos(post.infos, false, 3000)
+    setInfos(post.infos, false, 5000)
   }, [post])
+
+  useEffect(() => {
+    if (fullscreen) maximize()
+    else if (
+      document.webkitIsFullScreen ||
+      document.mozFullScreen ||
+      document.msFullscreenElement
+    )
+      minimize()
+  }, [fullscreen])
 
   // useEffect(() => {
   //   if (display) setInfos(post.infos)
@@ -70,6 +98,7 @@ const Viewer = ({ post, move, close, setInfos }: Props) => {
   }
 
   function minimize() {
+    alert("exiting")
     if (document.exitFullscreen) {
       document.exitFullscreen()
     } else if (document.webkitExitFullscreen) {
@@ -87,7 +116,7 @@ const Viewer = ({ post, move, close, setInfos }: Props) => {
 
   function handleMouseMove() {
     // setDisplay(true, false, 3000)
-    setInfos(post.infos, null, 3000)
+    setInfos(post.infos, null, 5000)
     setOptDisplay(true, false, 500)
   }
 
@@ -130,16 +159,25 @@ const Viewer = ({ post, move, close, setInfos }: Props) => {
       ref={viewerRef}
       // style={{ cursor: display ? "" : "none" }}
     >
+      {children}
       <Media media={post.media} direction={direction} />
-      {optDisplay && (
-        <Options
-          close={close}
-          maximize={maximize}
-          minimize={minimize}
-          download={download}
-          onMouseEnter={() => cancelOpt()}
-        />
-      )}
+      {/* {optDisplay && ( */}
+      <Options
+        close={close}
+        // maximize={() => {
+        //   setFullscreen(true)
+        //   maximize()
+        // }}
+        // minimize={() => {
+        //   setFullscreen(false)
+        //   minimize()
+        // }}
+        fullscreen={fullscreen}
+        setFullscreen={setFullscreen}
+        download={download}
+        onMouseEnter={() => cancelOpt()}
+      />
+      {/* )} */}
     </div>
   )
 }

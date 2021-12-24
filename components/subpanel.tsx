@@ -3,10 +3,12 @@ import { useRef } from "react"
 import { useEffect, useState } from "react"
 import styles from "../styles/subpanel.module.css"
 import { useRouter } from "next/router"
+import Badge from "./badge"
 
 type Sub = {
   name: string
   icon: string
+  color: string
 }
 
 interface Props {
@@ -92,7 +94,7 @@ function Subpanel({ topic, setOpen }: Props) {
                 alt=""
               />
             ) : (
-              <div style={{ background: "orange" }}>kk</div>
+              <Badge side={50} text={"mmm"} color={s.color} />
             )}
           </div>
           <span className={styles.text}>{s.name}</span>

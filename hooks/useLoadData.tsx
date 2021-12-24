@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Post } from "../schema/post"
 import Data from "../schema/data"
 import process from "../helpers/process"
+import request from "../utils/request"
 
 export default function useLoadData(
   api: string,
@@ -59,20 +60,24 @@ export default function useLoadData(
     setError(false)
 
     try {
-      let r = await fetch(
-        `${api}?` +
-          Object.keys(params).reduce(
-            (a, v) => a + v + "=" + params[v] + "&&",
-            ""
-          )
-      )
-      let d = await r.json()
-      // let ps = filter(d.children)
-      let ps = d.children
+      // let r = await fetch(
+      //   `${api}?` +
+      //     Object.keys(params).reduce(
+      //       (a, v) => a + v + "=" + params[v] + "&&",
+      //       ""
+      //     )
+      // )
+      // let d = await r.json()
+      let d
+      if (api === "/api/posts")
+        d = await request(`r/${params.sub}/${params.sort}`, params)
+      else d = await request(api, params)
+
+      let ps = d.data.children
         .map((d: any) => process(d.data))
         .filter((r: any) => r !== null)
-      // d = {after: d.after}
-      return { posts: ps, after: d.after }
+
+      return { posts: ps, after: d.data.after }
     } catch (e) {
       console.log(">>>>>>>>>>>>>>", e)
       setError(true)

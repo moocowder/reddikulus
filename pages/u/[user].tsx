@@ -38,8 +38,8 @@ function User({ user, about }: Props) {
         text={about.description}
       />
       <Content
-        api="/api/user"
-        params={{ user }}
+        api={`user/${user}`}
+        params={{}}
         sorts={{ words: ["new", "hot", "top"], default: "new" }}
       />
     </div>

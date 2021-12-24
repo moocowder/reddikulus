@@ -26,6 +26,9 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
   const [audioSrc, setAudioSrc] = useState("")
   const { audio: audioKey, video: videoKeys } = useLoadKeys(dash)
   const [quality, setQuality] = useState<string>("")
+  const [volume, setVolume] = useState<number>(1)
+  const [muted, setMuted] = useState<boolean>(false)
+  const [speed, setSpeed] = useState<number>(1)
 
   let media = useRef<HTMLVideoElement>(null)
   let audio = useRef<HTMLAudioElement>(null)
@@ -41,6 +44,23 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
     }
   })
 
+  useEffect(() => {
+    if (media.current) media.current.playbackRate = speed
+    if (audio.current) audio.current.playbackRate = speed
+  }, [speed])
+
+  useEffect(() => {
+    if (!audio.current) return
+    if (volume === 0) setMuted(true)
+    else {
+      setMuted(false)
+      audio.current.volume = volume
+    }
+  }, [volume])
+
+  useEffect(() => {
+    if (audio.current) audio.current.muted = muted
+  }, [muted])
   // useEffect(()=>{},[qualiti])
   useEffect(() => {
     if (!audioKey) return
@@ -99,8 +119,13 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
 
   // function setVolume(v: number) {
   //   if (!audio.current) return
-  //   if (v === 0) audio.current.muted = true
-  //   else audio.current.muted = false
+  //   if (v === 0) audio.current.muted = !audio.current.muted
+  //   else audio.current.volume = v
+  // }
+
+  // function mute() {
+  //   if (!audio.current) return
+  //   audio.current.muted = true
   // }
 
   return (
@@ -142,7 +167,14 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
         </video>
 
         {audioSrc && (
-          <audio ref={audio} key={"a" + audioSrc}>
+          <audio
+            ref={audio}
+            key={"a" + audioSrc}
+            // onWaiting={() => {
+            //   media.current?.pause()
+            //   setState("loading")
+            // }}
+          >
             <source src={audioSrc} type="audio/mp4" />
           </audio>
         )}
@@ -166,9 +198,12 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
               qualities={videoKeys}
               quality={quality}
               setQuality={setQuality}
-              // volume={audio.current?.volume || 0}
-              // muted={audio.current?.muted || false}
-              // setVolume={setVolume}
+              volume={volume}
+              setVolume={setVolume}
+              muted={muted}
+              setMuted={setMuted}
+              speed={speed}
+              setSpeed={setSpeed}
             />
           </>
         )}

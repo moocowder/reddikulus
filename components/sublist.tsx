@@ -5,6 +5,7 @@ import styles from "../styles/sublist.module.css"
 import useLoadSubs from "../hooks/useLoadSubs"
 import format from "../utils/format"
 import Link from "next/link"
+import router from "next/router"
 
 interface Props {
   query: string
@@ -18,30 +19,28 @@ function Sublist({ query }: Props) {
   return (
     <div className={styles.sublist}>
       <ul className={styles.list}>
-        {data?.subs.map((s) => (
-          <li key={s.name} className={styles.sub}>
+        {data?.subs?.map((s) => (
+          <a
+            href={`/r/${s.name}`}
+            key={s.name}
+            className={styles.sub}
+            onClick={(e) => {
+              e.preventDefault()
+              router.push(`/r/${s.name}`)
+            }}
+          >
             {s.icon ? (
               <div className={styles.wrapper}>
                 <img src={s.icon} alt="" />
               </div>
             ) : (
-              <p>hi</p>
-              // <Badge
-              //   side={50}
-              //   color={
-              //     "#ff0066"
-              //     // s.primary_color || s.key_color || s.banner_background_color
-              //   }
-              //   text={s.name}
-              // />
+              <Badge side={50} color={s.color} text={s.name} />
             )}
-            <Link href={`/r/${s.name}`}>
-              <div className={styles.infos}>
-                <b>{s.name}</b>
-                <p>{format(s.subscribers)}</p>
-              </div>
-            </Link>
-          </li>
+            <div className={styles.infos}>
+              <b>{s.name}</b>
+              <p>{format(s.subscribers)}</p>
+            </div>
+          </a>
         ))}
         {loading &&
           Array.from(Array(12).keys()).map((i: number) => (

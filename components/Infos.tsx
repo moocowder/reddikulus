@@ -86,11 +86,12 @@ function Infos({
         }}
         onContextMenu={(e) => e.stopPropagation()}
       >
-        <span style={{ color: "var(--sorbe)" }}>{l.substr(1, 2)}</span>
+        <b style={{ color: "var(--sorbe)" }}>{l.substr(1, 2)}</b>
         {l.substr(3)}
       </span>
     )
   }
+
   return (
     <div
       className={styles.infos}

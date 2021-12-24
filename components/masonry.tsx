@@ -44,7 +44,7 @@ function Masonry({
   const gap = 30
   let [iw, setIw] = useState(300)
   const [end, setEnd] = useState(false)
-
+  const [ch, setCh] = useState(0)
   // const iw = 350
 
   useEffect(() => {
@@ -77,20 +77,28 @@ function Masonry({
 
   function getPos(p: Post<any>) {
     let minI = rows.indexOf(Math.min.apply(null, rows))
+
     let h = rows[minI]
     rows[minI] += iw / p.media.ratio + gap
+
+    // if (rows[minI] > rows.indexOf(Math.max.apply(null, rows))) setCh(rows[minI])
+
     return {
       left: minI * iw + gap * minI,
       top: h,
     }
   }
 
+  //get width
+  //calculate n , setN(5)
+  //getpost : x=  , y=minH  , update minh setminH()
   return (
     <div>
       <div
         className={styles.masonry}
         style={{
-          // border: "1px solid red",
+          border: "1px solid red",
+          // height: ch,
           marginLeft: (width - (iw + gap) * n + gap) / 2,
           // width: "99vw",
           marginTop: "3rem",

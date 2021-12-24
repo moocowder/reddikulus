@@ -14,6 +14,7 @@ function Badge({ text, color, side }: Props) {
         backgroundColor: color || "#ff0066",
         textAlign: "center",
         borderRadius: "100%",
+        color: "white",
       }}
     >
       <b
@@ -21,7 +22,8 @@ function Badge({ text, color, side }: Props) {
           lineHeight: side + "px",
         }}
       >
-        {text.charAt(0).toUpperCase() + text.substr(1, 2).toLowerCase()}
+        {/* {text.charAt(0).toUpperCase() + text.substr(1, 2).toLowerCase()} */}
+        r/
       </b>
     </div>
   )

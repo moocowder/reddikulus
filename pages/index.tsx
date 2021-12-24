@@ -29,7 +29,7 @@ export default function Home() {
         </>
       ) : (
         <>
-          <h1>Popular posts</h1>
+          <h1 className="title">Popular posts</h1>
           <Content
             api="/api/posts"
             params={{ sub: "popular" }}

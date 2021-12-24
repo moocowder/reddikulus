@@ -38,62 +38,63 @@ function process(data: Data) {
   //   }
   //   let media: Media = new MC()
   let post: Post<null | Gallery | Image | Video | Gif>
-  post = {
-    infos: {
-      title: data.title,
-      author: data.author,
-      sub: data.subreddit,
-      ups: data.ups,
-      comments: data.num_comments,
-      permalink: data.permalink,
-      date: data.created,
-    },
-    media: null,
-  }
-
-  if (data.crosspost_parent_list) {
-    let cross = data.crosspost_parent_list[0]
-
-    data.is_self = cross?.is_self
-    data.post_hint = cross?.post_hint
-    data.secure_media = cross?.secure_media
-    data.preview = cross?.preview
-    if (cross?.is_gallery) {
-      data.is_gallery = true
-      data.media_metadata = cross?.media_metadata
+  try {
+    post = {
+      infos: {
+        title: data.title,
+        author: data.author,
+        sub: data.subreddit,
+        ups: data.ups,
+        comments: data.num_comments,
+        permalink: data.permalink,
+        date: data.created,
+      },
+      media: null,
     }
-    if (cross?.is_video) {
-      // data.url =
-      //   cross?.media?.reddit_video.fallback_url
-      // cross?.media ||
-      data.media = cross?.media
-      data.is_video = true
-    } else data.url = cross?.url
-  }
 
-  if (data.is_self) return null
+    if (data.crosspost_parent_list) {
+      let cross = data.crosspost_parent_list[0]
 
-  if (
-    !data.is_gallery &&
-    data.post_hint !== "image" &&
-    data.post_hint !== "hosted:video"
-  )
+      data.is_self = cross?.is_self
+      data.post_hint = cross?.post_hint
+      data.secure_media = cross?.secure_media
+      data.preview = cross?.preview
+      if (cross?.is_gallery) {
+        data.is_gallery = true
+        data.media_metadata = cross?.media_metadata
+      }
+      if (cross?.is_video) {
+        // data.url =
+        //   cross?.media?.reddit_video.fallback_url
+        // cross?.media ||
+        data.media = cross?.media
+        data.is_video = true
+      } else data.url = cross?.url
+    }
+
+    if (data.is_self) return null
+
+    if (
+      !data.is_gallery &&
+      data.post_hint !== "image" &&
+      data.post_hint !== "hosted:video"
+    )
+      return null
+    //   if (data.is_video) data.url = data.media.reddit_video.fallback_url
+    if (data.post_hint === "image") {
+      if ("mp4" in data.preview?.images[0].variants) post.media = gif(data)
+      else post.media = image(data)
+    } else if (data.is_video) post.media = video(data)
+    else if (data.is_gallery && data.media_metadata) post.media = gallery(data)
+    else {
+      alert("media is null " + post.infos.permalink)
+      return null
+    }
+    return post
+  } catch (e) {
+    alert(e)
     return null
-
-  //   if (data.is_video) data.url = data.media.reddit_video.fallback_url
-  if (data.is_video) {
-    post.media = video(data)
   }
-
-  if (data.is_gallery && data.media_metadata) {
-    post.media = gallery(data)
-  }
-
-  if (data.post_hint === "image") {
-    if ("mp4" in data.preview?.images[0].variants) post.media = gif(data)
-    else post.media = image(data)
-  }
-  return post
 }
 
 function gallery(data: Data): Gallery {

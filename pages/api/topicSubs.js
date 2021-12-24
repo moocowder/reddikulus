@@ -15,7 +15,7 @@ export default async (req, res) => {
       .find((t) => t.topic === topic)
       .subs.slice(page * size, page * size + size)
       .map((s) => {
-        return { name: s.name, icon: s.icon }
+        return { name: s.name, icon: s.icon, color: "blue" }
       })
   )
 }

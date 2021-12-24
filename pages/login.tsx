@@ -16,6 +16,7 @@ function Login({
   const [user, setUser] = useContext(UserContext)
 
   useEffect(() => {
+    console.log(access_token)
     fetch("https://oauth.reddit.com/api/me", {
       headers: { Authorization: "Bearer " + access_token },
     })

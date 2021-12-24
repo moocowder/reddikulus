@@ -7,6 +7,8 @@ import format from "../../utils/format"
 import date from "../../utils/date"
 import Cover from "../../components/cover"
 import About from "../../components/about"
+import api from "../../utils/request"
+import { useRouter } from "next/router"
 
 type About = {
   banner: string
@@ -25,9 +27,19 @@ type Props = {
 }
 
 function Subreddit({ sub, about }: Props) {
+  // const router = useRouter()
+
+  // useEffect(() => {
+  //   async function call() {
+  //     let data = await api(`r/${router.query.subreddit}/about`, {
+  //       raw_json: "1",
+  //     })
+  //   }
+
+  //   call()
+  // }, [])
+
   if (!about) return <h1>subreddit "{sub}" doesn't exist.</h1>
-  if (!about.allow_media)
-    return <h1>This sub doesn't contain any images or videos</h1>
 
   return (
     <div>
@@ -42,11 +54,15 @@ function Subreddit({ sub, about }: Props) {
         members={about.subscribers}
         text={about.public_description}
       />
-      <Content
-        api="/api/posts"
-        params={{ sub }}
-        sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
-      />
+      {about.allow_media ? (
+        <Content
+          api="/api/posts"
+          params={{ sub }}
+          sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
+        />
+      ) : (
+        <h3>This sub doesn't contain any images or videos</h3>
+      )}
     </div>
   )
 }

@@ -25,6 +25,15 @@
   line-height: 30px;
   /* border: 1px solid red; */
 }
+.sound,
+.quality {
+  cursor: pointer;
+}
+
+.sound:hover > svg,
+.quality:hover > svg {
+  color: #ff0066;
+}
 .top svg {
   /* line-height: 30px; */
   height: 100%;
@@ -44,6 +53,58 @@
   border-radius: 5px;
   text-align: center;
   background: #250040;
+}
+
+.dashboard {
+  transform: translate(-10px, 0);
+  position: absolute;
+  width: 80px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  /* gap: 5px; */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  background: #250040;
+}
+
+.dashboard > li {
+  border-radius: 3px;
+}
+
+.slider {
+  /* border: 10px solid #250040; */
+  transform: translate(15px, 0);
+  background: #250040;
+  position: absolute;
+  /* width: 30px; */
+  /* height: 140px; */
+  bottom: 40px;
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  /* display: flex;
+  flex-direction: column; */
+  /* gap: 5px; */
+  /* padding: 10px; */
+  border-radius: 5px;
+  /* text-align: center; */
+}
+.slider > span {
+  height: 100px;
+  width: 10px;
+  border-radius: 2px;
+  background: #80808030;
+  display: flex;
+  align-items: flex-end;
+  /* justify-content: end;
+  flex-direction: column; */
+}
+.slider > span > span {
+  /* height: 50%; */
+  width: 100%;
+  background: var(--sorbe);
 }
 .palette > * {
   cursor: pointer;

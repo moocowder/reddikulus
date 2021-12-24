@@ -1,4 +1,4 @@
-import { useRouter } from "next/router"
+import router, { useRouter } from "next/router"
 import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
 import Link from "next/link"
@@ -21,6 +21,7 @@ interface Item {
   numSubscribers?: number
   media: boolean
   primaryColor: string
+  allow_media: boolean
 }
 
 function Autocomplete() {
@@ -44,6 +45,10 @@ function Autocomplete() {
     setDisplay(false)
   })
 
+  useEventListener("keydown", (e) => {
+    if (e.key === "Escape") setDisplay(false)
+  })
+
   useEffect(() => {
     if (query === "") {
       setUsers([])
@@ -64,6 +69,7 @@ function Autocomplete() {
             s.numSubscribers = null
             us.push(s)
           } else {
+            if (!s.allowedPostTypes.images && !s.allowedPostTypes.videos) return
             s.name = "r/" + s.name
             ss.push(s)
           }
@@ -88,7 +94,7 @@ function Autocomplete() {
             setQuery(e.target.value)
           }}
           onFocus={() => setDisplay(true)}
-          // onBlur={() => setDisplay(false)}
+          // onBlur={(e) => e.preventDefault()}
           placeholder="search for anything..."
           onKeyPress={(e) => {
             if (e.key === "Enter") {
@@ -96,6 +102,7 @@ function Autocomplete() {
               router.push(`/search?q=${query}`)
             }
           }}
+          style={{ width: display ? "400px" : "" }}
           type="text"
         />
 
@@ -104,58 +111,13 @@ function Autocomplete() {
       {display && (
         <ul className={styles.list}>
           {subs?.map((i) => (
-            <li
-              key={i.name}
-              className={styles.item}
-              onClick={() => {
-                setQuery("")
-                router.push(`/${i.name}`)
-              }}
-            >
-              {i.communityIcon || i.icon ? (
-                <div className={styles.wrapper}>
-                  <img src={i.communityIcon || i.icon} alt="" />
-                </div>
-              ) : (
-                <Badge
-                  side={50}
-                  text={i.name.substr(2)}
-                  color={i.primaryColor}
-                />
-              )}
-              <div className={styles.infos}>
-                <b>{i.name}</b>
-                {i.numSubscribers && <span>{format(i.numSubscribers)}</span>}
-              </div>
-            </li>
+            <Item item={i} setQuery={setQuery} />
           ))}
           {subs?.length !== 0 && users.length !== 0 && (
             <li className={styles.separator}></li>
           )}
-          {users?.map((u) => (
-            <li
-              key={u.name}
-              className={styles.item}
-              onClick={() => {
-                setQuery("")
-                router.push(`/${u.name}`)
-              }}
-            >
-              {u.communityIcon || u.icon ? (
-                <div className={styles.wrapper}>
-                  <img src={u.communityIcon || u.icon} alt="" />
-                </div>
-              ) : (
-                <Badge
-                  side={50}
-                  text={u.name.substr(2)}
-                  color={u.primaryColor}
-                />
-              )}
-              <div className={styles.infos}>
-                <b>{u.name}</b>
-              </div>
-            </li>
+          {users?.map((i) => (
+            <Item item={i} setQuery={setQuery} />
           ))}
         </ul>
       )}
@@ -163,4 +125,31 @@ function Autocomplete() {
   )
 }
 
+function Item({ item, setQuery }: { item: Item; setQuery: Function }) {
+  let router = useRouter()
+  return (
+    <a
+      // key={i.name}
+      href={`/${item.name}`}
+      className={styles.item}
+      onClick={(e) => {
+        e.preventDefault()
+        setQuery("")
+        router.push(`/${item.name}`)
+      }}
+    >
+      {item.communityIcon || item.icon ? (
+        <div className={styles.wrapper}>
+          <img src={item.communityIcon || item.icon} alt="" />
+        </div>
+      ) : (
+        <Badge side={50} text={item.name.substr(2)} color={item.primaryColor} />
+      )}
+      <div className={styles.infos}>
+        <b>{item.name}</b>
+        {item.numSubscribers && <span>{format(item.numSubscribers)}</span>}
+      </div>
+    </a>
+  )
+}
 export default Autocomplete

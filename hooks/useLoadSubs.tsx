@@ -13,6 +13,7 @@ type Sub = {
   name: string
   icon: string
   subscribers: number
+  color: string
 }
 
 function useLoadSubs(q: string, after: string) {
@@ -48,15 +49,28 @@ function useLoadSubs(q: string, after: string) {
       let r = await axios({
         method: "GET",
         url: url,
-        params: { q, include_over_18: user.nsfw, limit: 12, after },
+        params: { q, include_over_18: user.nsfw, limit: 7, after },
       })
-      let poo = r.data.data.children.map((c: any) => {
-        return {
-          name: c.data.display_name,
-          icon: c.data.community_icon.replace(/\?.*/, "") || c.data.icon_img,
-          subscribers: c.data.subscribers,
-        }
-      })
+      let poo = r.data.data.children
+        // .filter((c: any) => {
+        //   return (
+        //     c.data.allow_galleries ||
+        //     c.data.allow_videogifs ||
+        //     c.data.allow_videos ||
+        //     c.data.allow_images
+        //   )
+        // })
+        .map((c: any) => {
+          return {
+            name: c.data.display_name,
+            icon: c.data.community_icon.replace(/\?.*/, "") || c.data.icon_img,
+            subscribers: c.data.subscribers,
+            color:
+              c.data.primary_color ||
+              c.data.key_color ||
+              c.data.banner_background_color,
+          }
+        })
 
       return { after: r.data.data.after, subs: poo }
     } catch (e) {
