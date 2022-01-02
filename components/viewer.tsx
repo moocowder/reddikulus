@@ -41,7 +41,7 @@ const Viewer = ({
 }: Props) => {
   // const [display, setDisplay, cancel] = useTimedState<boolean>(true)
   const [optDisplay, setOptDisplay, cancelOpt] = useTimedState<boolean>(false)
-  const [direction, setDirection] = useState<1 | -1 | null>(null)
+  // const [direction, setDirection] = useState<1 | -1 | null>(null)
 
   useEventListener("keydown", (e: any) => {
     switch (e.key) {
@@ -70,15 +70,15 @@ const Viewer = ({
     setInfos(post.infos, false, 5000)
   }, [post])
 
-  useEffect(() => {
-    if (fullscreen) maximize()
-    else if (
-      document.webkitIsFullScreen ||
-      document.mozFullScreen ||
-      document.msFullscreenElement
-    )
-      minimize()
-  }, [fullscreen])
+  // useEffect(() => {
+  //   if (fullscreen) maximize()
+  //   else if (
+  //     document.webkitIsFullScreen ||
+  //     document.mozFullScreen ||
+  //     document.msFullscreenElement
+  //   )
+  //     minimize()
+  // }, [fullscreen])
 
   // useEffect(() => {
   //   if (display) setInfos(post.infos)
@@ -129,12 +129,12 @@ const Viewer = ({
 
   function next(e: any) {
     e.preventDefault()
-    setDirection(1)
+    // setDirection(1)
     move.next()
   }
 
   function prev() {
-    setDirection(-1)
+    // setDirection(-1)
     move.prev()
   }
 
@@ -160,7 +160,7 @@ const Viewer = ({
       // style={{ cursor: display ? "" : "none" }}
     >
       {children}
-      <Media media={post.media} direction={direction} />
+      <Media media={post.media} />
       {/* {optDisplay && ( */}
       <Options
         close={close}

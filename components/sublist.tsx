@@ -37,8 +37,8 @@ function Sublist({ query }: Props) {
               <Badge side={50} color={s.color} text={s.name} />
             )}
             <div className={styles.infos}>
-              <b>{s.name}</b>
-              <p>{format(s.subscribers)}</p>
+              <p>{s.name}</p>
+              <small>{format(s.subscribers)}</small>
             </div>
           </a>
         ))}

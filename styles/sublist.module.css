@@ -35,11 +35,12 @@
   cursor: pointer;
   padding: 10px;
   /* border: 1px solid green; */
-  width: 280px;
+  /* width: 280px; */
   display: flex;
   align-items: center;
   gap: 15px;
   transition: 0.3s;
+  /* box-shadow: 0 0 2px 0px #b30083; */
 }
 /* .sub > * {
   border: 1px solid yellow;
@@ -49,13 +50,14 @@
   transform: scale(1.05);
   /* box-shadow: 0 0 2px 1px #b30083; */
   /* border: 1px solid #b30083; */
+  box-shadow: 0 0 8px 0px #b300835e;
 
   transition: 0.3s;
 }
 
-/* .sub:hover > .wrapper {
-  border: 1px solid var(--sorbe);
-} */
+.sub:hover > .wrapper {
+  box-shadow: 0 0 12px 0px #b300835e;
+}
 
 .mock {
   width: 300px;

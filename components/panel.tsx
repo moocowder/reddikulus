@@ -5,21 +5,14 @@ import { FaTimes, FaPlay } from "react-icons/fa"
 import { useRouter } from "next/router"
 
 interface Props {
+  topics: string[]
   topic: string | null
   setTopic: Function
   setOpen: Function
 }
 
-function Panel({ topic, setTopic, setOpen }: Props) {
-  const [topics, setTopics] = useState<string[]>([])
+function Panel({ topics, topic, setTopic, setOpen }: Props) {
   const router = useRouter()
-
-  useEffect(() => {
-    fetch("/api/topics")
-      .then((r) => r.json())
-      .then((d) => setTopics(d))
-      .catch((e) => console.log(e))
-  }, [])
 
   function handleItemClick(e: any, url: string) {
     e.preventDefault()

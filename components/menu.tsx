@@ -8,7 +8,14 @@ import { useRef } from "react"
 import useEventListener from "../hooks/useEventListener"
 import Panel from "./panel"
 
+type Entry = {
+  topic: string
+  subs: [{ name: string; icon: string }]
+}
+
 function Menu({ setOpen }: { setOpen: Function }) {
+  const [entries, setEntries] = useState<Entry[]>([])
+  const [topics, setTopics] = useState<string[]>([])
   const [topic, setTopic] = useState<string | null>(null)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -21,10 +28,33 @@ function Menu({ setOpen }: { setOpen: Function }) {
     setOpen(false)
   })
 
+  useEffect(() => {
+    fetch("https://raw.githubusercontent.com/maathi/topics/master/data.json")
+      .then((r) => r.json())
+      .then((d) => setEntries(d))
+      .catch((e) => console.log(e))
+  }, [])
+
+  useEffect(() => {
+    if (!entries) return
+    setTopics(entries.map((d) => d.topic))
+  }, [entries])
+
   return (
     <div ref={ref} className={styles.menu}>
-      <Panel topic={topic} setTopic={setTopic} setOpen={setOpen} />
-      {topic && <Subpanel topic={topic} setOpen={setOpen} />}
+      <Panel
+        topics={topics}
+        topic={topic}
+        setTopic={setTopic}
+        setOpen={setOpen}
+      />
+      {topic && (
+        <Subpanel
+          key={topic}
+          subs={entries.find((e) => e.topic === topic)?.subs || []}
+          setOpen={setOpen}
+        />
+      )}
     </div>
   )
 }

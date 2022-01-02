@@ -49,7 +49,7 @@ function useLoadSubs(q: string, after: string) {
       let r = await axios({
         method: "GET",
         url: url,
-        params: { q, include_over_18: user.nsfw, limit: 7, after },
+        params: { q, include_over_18: user.nsfw, limit: 16, after },
       })
       let poo = r.data.data.children
         // .filter((c: any) => {
