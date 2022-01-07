@@ -50,6 +50,7 @@ function useLoadKeys(dash: string) {
           "/MPD//AdaptationSet[@contentType='video']//BaseURL"
         )
 
+        if (videoKeys.length === 0) videoKeys.push("none")
         setKeys({ audio: audioKey[0] || null, video: videoKeys })
       })
       .catch((e) => {

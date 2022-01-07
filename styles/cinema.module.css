@@ -26,3 +26,18 @@
   height: calc(100% + 60px);
   /* z-index: 1; */
 }
+
+.timer {
+  /* background-color: yellow; */
+  cursor: pointer;
+  left: 0;
+  bottom: 0;
+  height: 10px;
+  /* width: 100vw; */
+  z-index: 2;
+  transition: 0.3s;
+}
+
+.timer:hover .bar {
+  height: 10px;
+}

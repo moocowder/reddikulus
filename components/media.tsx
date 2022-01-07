@@ -36,6 +36,8 @@ function Media({ media }: Props) {
           thumbnail={media.thumbnail}
           duration={media.duration}
           dash={media.dash}
+          peek={media.peek}
+          ratio={media.ratio}
         />
       )}
       {media.type === "image" && (

@@ -11,18 +11,22 @@ import useLoadSound from "../hooks/useLoadSound"
 import useTimedState from "../hooks/useTimedState"
 import useEventListener from "../hooks/useEventListener"
 import useLoadKeys from "../hooks/useLoadKeys"
+import Bar from "./bar"
 
 interface Props {
   src: string
   thumbnail: string
   duration: number
   dash: string
+  peek: string
+  ratio: number
 }
 
 type State = "running" | "loading" | "paused" | "ended"
-function Cinema({ src, thumbnail, duration, dash }: Props) {
+function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   const [state, setState] = useState<State>("loading")
   const [timer, setTimer] = useState<number>(0)
+  const [buffer, setBuffer] = useState(0)
   const [audioSrc, setAudioSrc] = useState("")
   const { audio: audioKey, video: videoKeys } = useLoadKeys(dash)
   const [quality, setQuality] = useState<string>("")
@@ -151,6 +155,10 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
           }}
           onEnded={() => setState("ended")}
           onTimeUpdate={(e: any) => setTimer(e.target.currentTime)}
+          onProgress={(e: any) => {
+            if (e.target.buffered.length)
+              setBuffer(e.target.buffered.end(e.target.buffered.length - 1))
+          }}
           onWaiting={() => {
             audio.current?.pause()
             setState("loading")
@@ -161,7 +169,7 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
         >
           {/* <source src={src.replace(/DASH_\d+/, "DASH_240")} type="video/mp4" /> */}
           <source
-            src={quality ? src.replace(/DASH_.*/, quality) : src}
+            src={quality !== "none" ? src.replace(/DASH_.*/, quality) : src}
             type="video/mp4"
           />
         </video>
@@ -188,11 +196,8 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
               onMouseEnter={cancel}
             />
             <Controls
-              state={state}
-              // show={ctrlDisplay}
               onMouseEnter={cancel}
               duration={duration}
-              seek={(t: number) => seek(t)}
               sound={audioKey}
               timer={timer}
               qualities={videoKeys}
@@ -207,6 +212,19 @@ function Cinema({ src, thumbnail, duration, dash }: Props) {
             />
           </>
         )}
+
+        <Bar
+          loading={state === "loading"}
+          progress={timer / duration}
+          buffer={buffer / duration}
+          // onClick={(p: number) => {
+          //   seek(p * duration)
+          // }}
+          duration={duration}
+          seek={seek}
+          peek={peek}
+          ratio={ratio}
+        />
       </Zoom>
     </div>
   )

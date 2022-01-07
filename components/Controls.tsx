@@ -4,14 +4,14 @@ import styles from "../styles/controls.module.css"
 import { GiSpeakerOff, GiSpeaker } from "react-icons/gi"
 import { MdHighQuality } from "react-icons/md"
 import { IoSpeedometerSharp } from "react-icons/io5"
+import { BiVolumeFull, BiVolumeMute } from "react-icons/bi"
+import { VscDashboard } from "react-icons/vsc"
+import { RiDashboard2Line } from "react-icons/ri"
+import Bar from "./bar"
 
 interface Props {
-  state: "running" | "loading" | "paused" | "ended"
-  // show: boolean
   onMouseEnter: Function
   duration: number
-  seek: Function
-  //   progress: number
   sound: any
   timer: number
   qualities: string[]
@@ -32,10 +32,8 @@ function format(s: number) {
 }
 
 function Controls({
-  state,
   onMouseEnter,
   duration,
-  seek,
   sound,
   timer,
   qualities,
@@ -48,15 +46,10 @@ function Controls({
   speed,
   setSpeed,
 }: Props) {
-  const [progress, setProgress] = useState<number>(0)
-  const [palette, setPalette] = useState(false)
-  const [volumePalette, setVolumePalette] = useState(false)
-  const [dashboard, setDashboard] = useState(false)
-  const speeds: number[] = [0.25, 0.5, 1, 1.5, 1.75, 2]
-
-  useEffect(() => {
-    setProgress(timer / duration)
-  }, [timer])
+  // const [palette, setPalette] = useState(false)
+  // const [volumePalette, setVolumePalette] = useState(false)
+  // const [dashboard, setDashboard] = useState(false)
+  // const speeds: number[] = [0.25, 0.5, 1, 1.5, 1.75, 2]
 
   return (
     <div
@@ -65,75 +58,58 @@ function Controls({
       onMouseMove={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <div className={styles.top}>
-        <span className={styles.time}>
-          {format(timer)}/{format(duration)}
-        </span>
-
+      {sound && (
         <Sound
-          sound={sound}
+          // sound={sound}
           volume={volume}
           setVolume={setVolume}
           muted={muted}
           setMuted={setMuted}
-          volumePalette={volumePalette}
-          setVolumePalette={setVolumePalette}
+          // volumePalette={volumePalette}
+          // setVolumePalette={setVolumePalette}
         />
-        {qualities.length !== 0 && (
-          <Qualities
-            qualities={qualities}
-            quality={quality}
-            setQuality={setQuality}
-            palette={palette}
-            setPalette={setPalette}
-          />
-        )}
-        <Dashboard
-          speeds={speeds}
-          speed={speed}
-          setSpeed={setSpeed}
-          dashboard={dashboard}
-          setDashboard={setDashboard}
-        />
-      </div>
+      )}
 
-      <div
-        className={`${styles.timer}`}
-        onClick={(e) => {
-          e.stopPropagation()
-          seek((e.clientX / window.innerWidth) * duration)
-        }}
-      >
-        <div
-          className={`${styles.bar} ${state === "loading" && styles.loading}`}
-        >
-          <div
-            className={styles.progress}
-            style={{ width: `${progress * 100}%` }}
-          ></div>
-        </div>
-      </div>
+      {qualities.length !== 0 && (
+        <Qualities
+          qualities={qualities}
+          quality={quality}
+          setQuality={setQuality}
+          // palette={palette}
+          // setPalette={setPalette}
+        />
+      )}
+
+      <Dashboard
+        // speeds={speeds}
+        speed={speed}
+        setSpeed={setSpeed}
+        // dashboard={dashboard}
+        // setDashboard={setDashboard}
+      />
+      <span className={styles.time}>
+        {format(timer)}/{format(duration)}
+      </span>
     </div>
   )
 }
 
 function Sound({
-  sound,
   volume,
   setVolume,
   muted,
   setMuted,
-  volumePalette,
-  setVolumePalette,
-}: {
+}: // volumePalette,
+// setVolumePalette,
+{
   volume: number
   setVolume: Function
-  sound: boolean
   muted: boolean
   setMuted: Function
-  volumePalette: boolean
-  setVolumePalette: Function
+  // volumePalette: boolean
+  // setVolumePalette: Function
 }) {
+  const [palette, setPalette] = useState(false)
   function clamp(n: number) {
     return n > 100 ? 100 : n < 0 ? 0 : n
   }
@@ -141,59 +117,56 @@ function Sound({
   return (
     <span
       className={styles.sound}
-      onMouseLeave={() => setVolumePalette(false)}
-      onMouseEnter={() => setVolumePalette(true)}
+      onMouseLeave={() => setPalette(false)}
+      onMouseEnter={() => setPalette(true)}
     >
-      {sound ? (
-        <>
-          {muted ? (
-            <GiSpeakerOff
-              style={{ color: muted ? "var(--sorbe)" : "" }}
-              onClick={(e) => setMuted(false)}
-            />
-          ) : (
-            <GiSpeaker onClick={(e) => setMuted(true)} />
-          )}
-          {volumePalette && (
-            <span
-              className={styles.slider}
-              onClick={(e) =>
-                setVolume(clamp(window.innerHeight - e.clientY - 50) / 100)
-              }
-            >
-              <span>
-                <span style={{ height: `${volume * 100}%` }}></span>
-              </span>
-            </span>
-          )}
-        </>
+      {muted ? (
+        <BiVolumeMute
+          style={{ color: muted ? "var(--sorbe)" : "" }}
+          onClick={(e) => setMuted(false)}
+        />
       ) : (
-        <GiSpeakerOff style={{ color: "grey" }} />
+        <BiVolumeFull onClick={(e) => setMuted(true)} />
+      )}
+      {palette && (
+        <span
+          className={styles.slider}
+          onClick={(e) =>
+            setVolume(clamp(window.innerHeight - e.clientY - 50) / 100)
+          }
+        >
+          <span>
+            <span style={{ height: `${volume * 100}%` }}></span>
+          </span>
+        </span>
       )}
     </span>
   )
 }
 
 function Dashboard({
-  speeds,
+  // speeds,
   speed,
   setSpeed,
-  dashboard,
-  setDashboard,
-}: {
-  speeds: number[]
+}: // dashboard,
+// setDashboard,
+{
+  // speeds: number[]
   speed: number
   setSpeed: Function
-  dashboard: boolean
-  setDashboard: Function
+  // dashboard: boolean
+  // setDashboard: Function
 }) {
+  const [dashboard, setDashboard] = useState(false)
+  const speeds: number[] = [0.25, 0.5, 1, 1.5, 1.75, 2]
+
   return (
     <div
-      className={styles.quality}
+      className={styles.speed}
       onMouseLeave={() => setDashboard(false)}
       onClick={(e) => e.stopPropagation()}
     >
-      <IoSpeedometerSharp onMouseEnter={() => setDashboard(true)} />
+      <VscDashboard onMouseEnter={() => setDashboard(true)} />
       {dashboard && (
         <ul className={styles.dashboard}>
           {speeds?.map((s) => (
@@ -217,15 +190,16 @@ function Qualities({
   qualities,
   quality,
   setQuality,
-  palette,
-  setPalette,
-}: {
+}: // palette,
+// setPalette,
+{
   qualities: string[]
   quality: string
   setQuality: Function
-  palette: boolean
-  setPalette: Function
+  // palette: boolean
+  // setPalette: Function
 }) {
+  const [palette, setPalette] = useState(false)
   return (
     <div
       className={styles.quality}
@@ -241,7 +215,6 @@ function Qualities({
               onClick={(e) => setQuality(q)}
               style={{
                 background: quality === q ? "var(--sorbe)" : "",
-                color: quality === q ? "white" : "",
               }}
             >
               {q.replace(/.mp4/, "").replace(/\D+/, "") + "p"}
