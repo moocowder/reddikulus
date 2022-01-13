@@ -5,14 +5,15 @@
 
 .name {
   /* border: 1px solid green; */
-  color: var(--sorbe);
-  font-size: 64px;
+  /* color: var(--sorbe); */
+  font-size: 44px;
   font-weight: bold;
   transition: 0.3s;
 }
 
 .name:hover {
-  color: #dd13aa;
+  /* color: #dd13aa; */
+  color: var(--sorbe);
   transition: 0.3s;
 }
 

@@ -19,6 +19,7 @@ type About = {
   public_description: string
   color: string
   allow_media: boolean
+  nsfw: boolean
 }
 
 type Props = {
@@ -27,7 +28,7 @@ type Props = {
 }
 
 function Subreddit({ sub, about }: Props) {
-  // const router = useRouter()
+  const router = useRouter()
 
   // useEffect(() => {
   //   async function call() {
@@ -40,6 +41,31 @@ function Subreddit({ sub, about }: Props) {
   // }, [])
 
   if (!about) return <h1>subreddit "{sub}" doesn't exist.</h1>
+  if (about.nsfw)
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          border: "1px solid red",
+          // height: "100vh",
+          gap: "20px",
+        }}
+      >
+        <p>this is a +18 community</p>
+        <img src="/bonk.webp" alt="" />
+        <p>
+          <span
+            style={{ color: "#ff0066", cursor: "pointer" }}
+            onClick={() => router.back()}
+          >
+            get back
+          </span>
+          &nbsp;or go to horny jail!
+        </p>
+      </div>
+    )
 
   return (
     <div>
@@ -95,6 +121,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         data.data.allow_videogifs ||
         data.data.allow_videos ||
         data.data.allow_images,
+      nsfw: data.data.over18,
     }
   return { props: { sub, about } }
 }

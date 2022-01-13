@@ -2,11 +2,10 @@ import { GetServerSideProps } from "next"
 import { useCallback, useEffect, useRef, useState, useContext } from "react"
 import Head from "next/head"
 import Content from "../../components/content"
-import UserContext from "../../contexts/userContext"
 import Sublist from "../../components/sublist"
 
 function Search({ query }: { query: string }) {
-  const [user, setUser] = useContext(UserContext)
+  // const [user, setUser] = useContext(UserContext)
 
   return (
     <div>
@@ -20,7 +19,7 @@ function Search({ query }: { query: string }) {
       <Content
         // api="/api/search"
         api="search"
-        params={{ q: query, nsfw: user.nsfw || "" }}
+        params={{ q: query }}
         sorts={{
           words: ["relevance", "hot", "new", "top", "comments"],
           default: "relevance",

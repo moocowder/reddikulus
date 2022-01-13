@@ -15,6 +15,7 @@ type Props = {
   height: number
   onClick: Function
   lastBrick: Function | null
+  maxHeight: Function
 }
 
 function Brick({
@@ -26,11 +27,13 @@ function Brick({
   height,
   onClick,
   lastBrick,
+  maxHeight,
 }: Props) {
   const [visible, setVisible] = useState(false)
 
   let observer: IntersectionObserver
   function rendered(node: HTMLDivElement) {
+    maxHeight()
     if (observer) observer.disconnect()
     observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {

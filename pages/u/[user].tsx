@@ -15,6 +15,7 @@ type About = {
   avatar: string
   icon: string
   banner: string
+  nsfw: boolean
 }
 
 type Props = {
@@ -23,7 +24,9 @@ type Props = {
 }
 
 function User({ user, about }: Props) {
-  if (!user) return <h1>user doesn't exist</h1>
+  if (!about) return <h1>user doesn't exist</h1>
+  if (about.nsfw) return <h1>horny police on the way, Bonk!</h1>
+
   return (
     <div>
       <Head>
@@ -62,6 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     icon: data.data.icon_img?.replace(/\?.*/, ""),
     avatar: data.data.snoovatar_img,
     banner: data.data.subreddit.banner_img?.replace(/\?.*/, ""),
+    nsfw: data.data.subreddit.over_18,
   }
   return { props: { user, about } }
 }

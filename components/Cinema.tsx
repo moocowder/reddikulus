@@ -27,7 +27,6 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   const [state, setState] = useState<State>("loading")
   const [timer, setTimer] = useState<number>(0)
   const [buffer, setBuffer] = useState(0)
-  const [audioSrc, setAudioSrc] = useState("")
   const { audio: audioKey, video: videoKeys } = useLoadKeys(dash)
   const [quality, setQuality] = useState<string>("")
   const [volume, setVolume] = useState<number>(1)
@@ -65,12 +64,6 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   useEffect(() => {
     if (audio.current) audio.current.muted = muted
   }, [muted])
-  // useEffect(()=>{},[qualiti])
-  useEffect(() => {
-    if (!audioKey) return
-
-    setAudioSrc(src.replace(/DASH_.*/, audioKey))
-  }, [audioKey])
 
   useEffect(() => {
     if (!videoKeys) return
@@ -174,16 +167,16 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
           />
         </video>
 
-        {audioSrc && (
+        {audioKey && (
           <audio
             ref={audio}
-            key={"a" + audioSrc}
+            key={"a" + src + audioKey}
             // onWaiting={() => {
             //   media.current?.pause()
             //   setState("loading")
             // }}
           >
-            <source src={audioSrc} type="audio/mp4" />
+            <source src={src.replace(/DASH_.*/, audioKey)} type="audio/mp4" />
           </audio>
         )}
 

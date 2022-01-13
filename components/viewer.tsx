@@ -46,7 +46,7 @@ const Viewer = ({
   useEventListener("keydown", (e: any) => {
     switch (e.key) {
       case "Escape":
-        alert("yay")
+        // alert("yay")
         e.preventDefault()
         // setFullscreen(false)
         // minimize()
@@ -60,9 +60,18 @@ const Viewer = ({
         break
     }
   })
-  useEventListener("mozfullscreenchange", () => {
-    alert("changed")
+
+  useEffect(() => {
+    if (fullscreen) {
+      setFullscreen(false)
+      maximize()
+    }
+  }, [])
+
+  useEventListener("fullscreenchange", () => {
+    setFullscreen(!fullscreen)
   })
+
   let viewerRef = useRef<HTMLDivElement>(null!)
 
   useEffect(() => {
@@ -77,7 +86,7 @@ const Viewer = ({
   //     document.mozFullScreen ||
   //     document.msFullscreenElement
   //   )
-  //     minimize()
+  //   else minimize()
   // }, [fullscreen])
 
   // useEffect(() => {
@@ -98,7 +107,7 @@ const Viewer = ({
   }
 
   function minimize() {
-    alert("exiting")
+    // alert("exiting")
     if (document.exitFullscreen) {
       document.exitFullscreen()
     } else if (document.webkitExitFullscreen) {
@@ -161,23 +170,25 @@ const Viewer = ({
     >
       {children}
       <Media media={post.media} />
-      {/* {optDisplay && ( */}
-      <Options
-        close={close}
-        // maximize={() => {
-        //   setFullscreen(true)
-        //   maximize()
-        // }}
-        // minimize={() => {
-        //   setFullscreen(false)
-        //   minimize()
-        // }}
-        fullscreen={fullscreen}
-        setFullscreen={setFullscreen}
-        download={download}
-        onMouseEnter={() => cancelOpt()}
-      />
-      {/* )} */}
+      {optDisplay && (
+        <Options
+          close={close}
+          // maximize={() => {
+          //   setFullscreen(true)
+          //   maximize()
+          // }}
+          // minimize={() => {
+          //   setFullscreen(false)
+          //   minimize()
+          // }}
+          maximize={maximize}
+          minimize={minimize}
+          fullscreen={fullscreen}
+          // setFullscreen={setFullscreen}
+          download={download}
+          onMouseEnter={() => cancelOpt()}
+        />
+      )}
     </div>
   )
 }

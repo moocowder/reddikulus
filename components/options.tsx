@@ -11,10 +11,10 @@ import useTimedState from "../hooks/useTimedState"
 
 interface Props {
   close: Function
-  // maximize: Function
-  // minimize: Function
+  maximize: Function
+  minimize: Function
   fullscreen: boolean
-  setFullscreen: Function
+  // setFullscreen: Function
   download: Function
   onMouseEnter: Function
 }
@@ -22,7 +22,9 @@ interface Props {
 function Options({
   close,
   fullscreen,
-  setFullscreen,
+  maximize,
+  minimize,
+  // setFullscreen,
   download,
   onMouseEnter,
 }: Props) {
@@ -49,8 +51,8 @@ function Options({
       {fullscreen ? (
         <li
           onClick={() => {
-            setFullscreen(false)
-            // minimize()
+            // setFullscreen(false)
+            minimize()
           }}
         >
           <FiMinimize />
@@ -58,8 +60,8 @@ function Options({
       ) : (
         <li
           onClick={() => {
-            setFullscreen(true)
-            // maximize()
+            // setFullscreen(true)
+            maximize()
           }}
         >
           <FiMaximize />

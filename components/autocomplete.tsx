@@ -3,7 +3,6 @@ import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
 import Link from "next/link"
 import styles from "../styles/autocomplete.module.css"
-import UserContext from "../contexts/userContext"
 import { FaSearch } from "react-icons/fa"
 import { BiSearch } from "react-icons/bi"
 import { BsArrowReturnLeft } from "react-icons/bs"
@@ -26,7 +25,7 @@ interface Item {
 
 function Autocomplete() {
   const router = useRouter()
-  const [user, setUser] = useContext(UserContext)
+  // const [user, setUser] = useContext(UserContext)
   let [query, setQuery] = useState("")
   const [display, setDisplay] = useState<boolean>(false)
   let [subs, setSubs] = useState<Item[]>([])
@@ -59,7 +58,7 @@ function Autocomplete() {
     axios({
       method: "GET",
       url,
-      params: { query, include_over_18: user?.nsfw, raw_json: 1 },
+      params: { query, raw_json: 1 },
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     })
       .then((r) => {

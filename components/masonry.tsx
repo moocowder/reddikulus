@@ -38,6 +38,7 @@ function Masonry({
 }: Props) {
   // const [selected, setSelected] = useState<Post<any> | null>()
   const { width, height } = useWindowSize()
+  const [contentHeight, setContentHeight] = useState(100)
   // const width = useWindow()
   console.log("renderring masonry")
   let rows: number[] = []
@@ -75,11 +76,11 @@ function Masonry({
 
   rows = Array(n).fill(0)
 
-  function getPos(p: Post<any>) {
+  function getPos(ratio: number) {
     let minI = rows.indexOf(Math.min.apply(null, rows))
 
     let h = rows[minI]
-    rows[minI] += iw / p.media.ratio + gap
+    rows[minI] += iw / ratio + gap
 
     // if (rows[minI] > rows.indexOf(Math.max.apply(null, rows))) setCh(rows[minI])
 
@@ -87,6 +88,10 @@ function Masonry({
       left: minI * iw + gap * minI,
       top: h,
     }
+  }
+
+  function maxHeight() {
+    setContentHeight(Math.max.apply(null, rows))
   }
 
   //get width
@@ -97,11 +102,12 @@ function Masonry({
       <div
         className={styles.masonry}
         style={{
-          border: "1px solid red",
-          // height: ch,
+          // border: "1px solid red",
+          height: contentHeight,
           marginLeft: (width - (iw + gap) * n + gap) / 2,
           // width: "99vw",
-          marginTop: "3rem",
+          marginTop: "50px",
+          marginBottom: "100px",
           // border: "1px solid white",
         }}
       >
@@ -113,19 +119,18 @@ function Masonry({
             setInfos={setInfos}
             width={iw}
             height={iw / p.media.ratio}
-            position={getPos(p)}
+            position={getPos(p.media.ratio)}
             onClick={() => onBrickClick(i)}
             lastBrick={i === posts.length - 1 ? lastBrick : null}
+            maxHeight={maxHeight}
           />
         ))}
       </div>
-      {end && (
-        <h1
-          style={{ zIndex: 1, position: "fixed", bottom: "10px", left: "3px" }}
-        >
-          =========That's All folks=========
-        </h1>
-      )}
+      {/* {end && (
+        <span style={{ textAlign: "center", margin: "30px 40px" }}>
+          the end.
+        </span>
+      )} */}
     </div>
   )
 }

@@ -36,9 +36,13 @@ function Content({ api, params, sorts }: Props) {
       }, 1000)
   }, [data])
 
-  useEventListener("keydown", (e: any) => {
-    if (e.key === "Escape") alert("escaping!!")
-  })
+  // useEffect(() => {
+  //   alert("ffff " + fullscreen)
+  // }, [fullscreen])
+
+  // useEventListener("keydown", (e: any) => {
+  //   if (e.key === "Escape") alert("escaping!!")
+  // })
   // useEffect(() => {
   //   if (fullscreen) maximize()
   //   if (window.innerHeight === screen.height) minimize()
@@ -108,6 +112,7 @@ function Content({ api, params, sorts }: Props) {
           post={post}
           close={() => {
             setPost(null)
+            // setFullscreen(false)
             // setInfos(null)
             document.body.style.overflow = "auto"
           }}
