@@ -7,8 +7,18 @@ import {
   FaPause,
   FaUndo,
 } from "react-icons/fa"
+import {
+  BsPlay,
+  BsPlayFill,
+  BsPause,
+  BsArrowCounterclockwise,
+} from "react-icons/bs"
+// import {BsPauseCircle} from 'react-icons/'
+import { FiPauseCircle } from "react-icons/fi"
+import { RiPauseMiniLine } from "react-icons/ri"
 import useTimedState from "../hooks/useTimedState"
 import { IoPlayOutline, IoPauseOutline } from "react-icons/io5"
+import { TiMediaPauseOutline } from "react-icons/ti"
 import { useEffect, useState } from "react"
 
 interface Props {
@@ -30,9 +40,9 @@ function Icon({ state, play, pause, onMouseEnter }: Props) {
         else pause()
       }}
     >
-      {state === "ended" && <FaUndoAlt />}
-      {(state === "running" || state === "loading") && <FaPause />}
-      {state === "paused" && <FaPlay />}
+      {state === "ended" && <BsArrowCounterclockwise />}
+      {(state === "running" || state === "loading") && <FiPauseCircle />}
+      {state === "paused" && <IoPlayOutline />}
     </div>
   )
 }

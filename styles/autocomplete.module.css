@@ -5,23 +5,25 @@
 }
 
 .autocomplete input {
-  width: 500px;
+  width: 250px;
   border: none;
   height: 40px;
   padding-left: 45px;
   color: white;
   caret-color: var(--sorbe);
   font-size: 18px;
-  background-color: #170029;
+  /* background-color: #170029; */
+
+  background-color: #0f001b;
   border-radius: 30px;
   transition: 0.3s;
   border: 3px solid transparent;
 }
 
 .autocomplete input:focus {
-  border: 2px solid var(--sorbe);
+  /* border: 1px solid var(--sorbe); */
   /* width: 400px; */
-  transition: 0.3s;
+  /* transition: 0.3s; */
 }
 
 .autocomplete input:focus + svg {

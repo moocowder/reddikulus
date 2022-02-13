@@ -4,6 +4,10 @@ import Data from "../schema/data"
 import process from "../helpers/process"
 import request from "../utils/request"
 
+const apis = {
+  sub: "d",
+}
+
 export default function useLoadData(
   api: string,
   params: { [key: string]: string }
@@ -72,7 +76,12 @@ export default function useLoadData(
       if (api === "/api/posts")
         d = await request(`r/${params.sub}/${params.sort}`, params)
       else d = await request(api, params)
-
+      //sub | topic
+      //https://api.reddit.com/r/popular/hot?sub=popular&&sort=hot&&after=&&raw_json=1
+      //search
+      //https://api.reddit.com/subreddits/search?q=bryce+dallas&limit=16&after=
+      //user
+      //https://api.reddit.com/u/ILoveRegenHealth?sort=new&&after=t1_hvm3xcn&&raw_json=1
       let ps = d.data.children
         .map((d: any) => process(d.data))
         .filter((r: any) => r !== null)

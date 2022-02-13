@@ -92,20 +92,6 @@ function Content({ api, params, sorts }: Props) {
 
   return (
     <div ref={ref}>
-      {infos && (
-        <Infos
-          infos={infos}
-          page={
-            params.sub && params.sub !== "popular"
-              ? "r/"
-              : params.user
-              ? "u/"
-              : ""
-          }
-          onMouseEnter={() => cancel()}
-          onWheel={() => setInfos(null)}
-        />
-      )}
       <Sort words={sorts.words} sort={sort} setSort={setSort} />
       {post && (
         <Viewer
@@ -133,6 +119,7 @@ function Content({ api, params, sorts }: Props) {
               }
               onMouseEnter={() => cancel()}
               onWheel={() => setInfos(null)}
+              shade={false}
             />
           )}
         </Viewer>
@@ -144,7 +131,23 @@ function Content({ api, params, sorts }: Props) {
         loading={loading}
         hasMore={data.after}
         setInfos={setInfos}
-      />
+      >
+        {infos && (
+          <Infos
+            infos={infos}
+            page={
+              params.sub && params.sub !== "popular"
+                ? "r/"
+                : params.user
+                ? "u/"
+                : ""
+            }
+            onMouseEnter={() => cancel()}
+            onWheel={() => setInfos(null)}
+            shade={true}
+          />
+        )}
+      </Masonry>
       {loading && <span className={styles.bar}></span>}
       {error && (
         <h1

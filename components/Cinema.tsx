@@ -86,7 +86,7 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   function play() {
     try {
       media.current?.play()
-      if (audio.current) audio.current?.play() //this is the one!!!!!!
+      // if (audio.current) audio.current?.play() //this is the one!!!!!!
     } catch (e) {
       console.log(e)
     }

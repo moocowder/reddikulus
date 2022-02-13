@@ -48,7 +48,7 @@ function Subpanel({ subs, setOpen }: Props) {
                 alt=""
               />
             ) : (
-              <Badge side={50} text={"mmm"} color={"magenta"} />
+              <Badge side={50} text={"mmm"} color={"#ffffff26"} />
             )}
           </div>
           <span className={styles.text}>{s.name}</span>

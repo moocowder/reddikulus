@@ -11,7 +11,7 @@ function Badge({ text, color, side }: Props) {
       style={{
         width: side + "px",
         height: side + "px",
-        backgroundColor: color || "#ff0066",
+        backgroundColor: color || "#ffffff26",
         textAlign: "center",
         borderRadius: "100%",
         color: "white",

@@ -37,8 +37,14 @@ function Header({
           <img src="/reddikulus-logo.png" alt="" />
         </Link>
       </div>
-      <Autocomplete />
-      {/* <div className={styles.right}></div> */}
+
+      <div className={styles.right}>
+        <Autocomplete />
+        <div className={styles.icons}>
+          <SiReddit />
+          <BsFillHeartFill />
+        </div>
+      </div>
     </div>
   )
 }

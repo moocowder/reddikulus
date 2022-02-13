@@ -104,6 +104,7 @@ function gallery(data: Data): Gallery {
     ratio: 0,
     thumbnails: [],
     urls: [],
+    nsfw: data.over_18,
   }
   Object.keys(data.media_metadata).map((k) => {
     pic = data.media_metadata[k]
@@ -136,6 +137,7 @@ function video(data: Data): Video {
     url: data.media.reddit_video.fallback_url,
     timestamp: "",
     dash: data.secure_media?.reddit_video?.dash_url,
+    nsfw: data.over_18,
   }
   img = data.preview?.images[0].source
   if (!img) alert("no img : " + data.permalink)
@@ -153,6 +155,7 @@ function image(data: Data): Image {
       /&amp;/g,
       "&"
     ),
+    nsfw: data.over_18,
   }
   img = data.preview?.images[0].source
   i.ratio = img.width / img.height
@@ -168,6 +171,7 @@ function gif(data: Data): Gif {
     poster: data.preview?.images[0].source?.url,
     peek: data.preview?.images[0].variants?.mp4?.resolutions[0]?.url,
     url: data.preview?.images[0].variants?.mp4?.source?.url,
+    nsfw: data.over_18,
   }
   img = data.preview?.images[0].source
   g.ratio = img.width / img.height

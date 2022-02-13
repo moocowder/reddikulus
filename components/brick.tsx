@@ -58,6 +58,7 @@ function Brick({
           height,
           top: position.top,
           left: position.left,
+          border: post.media.nsfw ? "3px solid red" : "",
           // animation: "loading 3s linear infinite",
         }}
         onMouseEnter={() => setInfos(post.infos)}

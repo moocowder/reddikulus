@@ -5,6 +5,7 @@ type Post<M> = {
 
 type Media = {
   ratio: number
+  nsfw: boolean
 }
 
 interface Image extends Media {

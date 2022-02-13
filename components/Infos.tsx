@@ -29,6 +29,7 @@ type props = {
   onMouseEnter?: Function
   onWheel: Function
   page: "r/" | "u/" | ""
+  shade: boolean
 }
 
 type Units = {
@@ -65,6 +66,7 @@ function Infos({
   onMouseEnter = () => {},
   onWheel,
   page,
+  shade,
 }: props) {
   const router = useRouter()
   // const [page, setPage] = useState<"/r" | "/u" | "">("")
@@ -94,7 +96,7 @@ function Infos({
 
   return (
     <div
-      className={styles.infos}
+      className={`${styles.infos} ${shade && styles.shade}`}
       onMouseEnter={(e) => onMouseEnter(e)}
       onMouseMove={(e) => e.stopPropagation()}
       onWheel={() => onWheel()}

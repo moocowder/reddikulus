@@ -31,7 +31,7 @@ function Panel({ topics, topic, setTopic, setOpen }: Props) {
           <a
             href={"/topics/" + t}
             className={styles.link}
-            onClick={(e) => handleItemClick(e, t)}
+            onClick={(e) => handleItemClick(e, "/topics/" + t)}
           >
             <div className={styles.wrapper}>
               <img src="/boo.jpg" alt="" />

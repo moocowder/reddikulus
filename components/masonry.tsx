@@ -16,6 +16,8 @@ import { Post } from "../schema/post"
 import Brick from "../components/brick"
 import Infos from "./Infos"
 import useWindowSize from "../hooks/useWindowSize"
+import useEventListener from "../hooks/useEventListener"
+import { FaArrowUp, FaPlus, FaMinus } from "react-icons/fa"
 
 let n
 
@@ -26,6 +28,7 @@ type Props = {
   loading: boolean
   hasMore: string
   setInfos: Function
+  children: any
 }
 
 function Masonry({
@@ -35,6 +38,7 @@ function Masonry({
   loading,
   hasMore,
   setInfos,
+  children,
 }: Props) {
   // const [selected, setSelected] = useState<Post<any> | null>()
   const { width, height } = useWindowSize()
@@ -99,6 +103,7 @@ function Masonry({
   //getpost : x=  , y=minH  , update minh setminH()
   return (
     <div>
+      {children}
       <div
         className={styles.masonry}
         style={{
@@ -126,11 +131,21 @@ function Masonry({
           />
         ))}
       </div>
-      {/* {end && (
-        <span style={{ textAlign: "center", margin: "30px 40px" }}>
-          the end.
+      <div className={styles.menu}>
+        <span
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }}
+        >
+          <FaArrowUp />
         </span>
-      )} */}
+        <span onClick={() => setIw(iw + 20)}>
+          <FaPlus />
+        </span>
+        <span onClick={() => setIw(iw - 20)}>
+          <FaMinus />
+        </span>
+      </div>
     </div>
   )
 }

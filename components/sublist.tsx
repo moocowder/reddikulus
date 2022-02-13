@@ -6,6 +6,7 @@ import useLoadSubs from "../hooks/useLoadSubs"
 import format from "../utils/format"
 import Link from "next/link"
 import router from "next/router"
+import { IoIosArrowDown } from "react-icons/io"
 
 interface Props {
   query: string
@@ -54,9 +55,9 @@ function Sublist({ query }: Props) {
           ))}
       </ul>
       {data.after && (
-        <button className={styles.more} onClick={() => setAfter(data.after)}>
-          see more
-        </button>
+        <span className={styles.more} onClick={() => setAfter(data.after)}>
+          <IoIosArrowDown />
+        </span>
       )}
     </div>
   )

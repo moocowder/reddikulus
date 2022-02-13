@@ -31,11 +31,20 @@ function Topic({ topic, sub }: { topic: string; sub: string }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let topic = context.params?.topic
 
-  let topics = JSON.parse(fs.readFileSync("data.json", "utf8"))
-  let sub = topics
-    .find((t: any) => t.topic === topic)
-    .subs.map((s: any) => s.name)
-    .reduce((a: string, v: string) => a + "%2B" + v)
+  let sub = await fetch(
+    "https://raw.githubusercontent.com/maathi/topics/master/data.json"
+  )
+    .then((r) => r.json())
+    .then((d) => d.find((t: any) => t.topic === topic))
+    .then((t) => t.subs.map((s: any) => s.name))
+    .then((s) => s.reduce((a: string, v: string) => a + "%2B" + v))
+    .catch((e) => console.log(e))
+  console.log(sub)
+  // let topics = JSON.parse(fs.readFileSync("data.json", "utf8"))
+  // let sub = topics
+  //   .find((t: any) => t.topic === topic)
+  //   .subs.map((s: any) => s.name)
+  //   .reduce((a: string, v: string) => a + "%2B" + v)
 
   return { props: { topic, sub } }
 }

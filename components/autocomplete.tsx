@@ -110,7 +110,7 @@ function Autocomplete() {
       {display && (
         <ul className={styles.list}>
           {subs?.map((i) => (
-            <Item item={i} setQuery={setQuery} />
+            <Item key={i.name} item={i} setQuery={setQuery} />
           ))}
           {subs?.length !== 0 && users.length !== 0 && (
             <li className={styles.separator}></li>
@@ -145,8 +145,8 @@ function Item({ item, setQuery }: { item: Item; setQuery: Function }) {
         <Badge side={50} text={item.name.substr(2)} color={item.primaryColor} />
       )}
       <div className={styles.infos}>
-        <b>{item.name}</b>
-        {item.numSubscribers && <span>{format(item.numSubscribers)}</span>}
+        <span>{item.name}</span>
+        {item.numSubscribers && <small>{format(item.numSubscribers)}</small>}
       </div>
     </a>
   )

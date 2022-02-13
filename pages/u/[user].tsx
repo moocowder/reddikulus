@@ -24,8 +24,8 @@ type Props = {
 }
 
 function User({ user, about }: Props) {
-  if (!about) return <h1>user doesn't exist</h1>
-  if (about.nsfw) return <h1>horny police on the way, Bonk!</h1>
+  if (!about) return <h1>user not found</h1>
+  // if (about.nsfw) return <h1>horny police on the way, Bonk!</h1>
 
   return (
     <div>
@@ -52,8 +52,12 @@ function User({ user, about }: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let user = context.params?.user
   let res = await fetch(`https://reddit.com/u/${user}/about.json?raw_json=1`)
-  if (res.status === 404) return { props: { user: null, about: null } }
+  // if (res.status === 404 || res.status === 400)
+  if (res.status !== 200) return { props: { user: user, about: null } }
+
   let data = await res.json()
+
+  if (data.data.is_suspended) return { props: { user: user, about: null } }
 
   let about = {
     title: data.data.subreddit.title,
