@@ -1,11 +1,9 @@
 interface Props {
-  text: string
-  color: string
+  color?: string
   side: number
 }
 
-function Badge({ text, color, side }: Props) {
-  console.log(text)
+function Badge({ color, side }: Props) {
   return (
     <div
       style={{
@@ -22,7 +20,6 @@ function Badge({ text, color, side }: Props) {
           lineHeight: side + "px",
         }}
       >
-        {/* {text.charAt(0).toUpperCase() + text.substr(1, 2).toLowerCase()} */}
         r/
       </b>
     </div>

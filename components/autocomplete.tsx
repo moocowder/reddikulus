@@ -16,16 +16,12 @@ import useEventListener from "../hooks/useEventListener"
 interface Item {
   name: string
   icon: string
-  communityIcon?: string
-  numSubscribers?: number
-  media: boolean
-  primaryColor: string
-  allow_media: boolean
+  subscribers?: number
+  color: string
 }
 
 function Autocomplete() {
   const router = useRouter()
-  // const [user, setUser] = useContext(UserContext)
   let [query, setQuery] = useState("")
   const [display, setDisplay] = useState<boolean>(false)
   let [subs, setSubs] = useState<Item[]>([])
@@ -39,8 +35,6 @@ function Autocomplete() {
 
   useEventListener("click", (e: any) => {
     if (ref.current == null || ref.current.contains(e.target)) return
-    // cb(e)
-    // setOpen(false)
     setDisplay(false)
   })
 
@@ -54,6 +48,10 @@ function Autocomplete() {
       setSubs([])
       return
     }
+    call()
+  }, [query])
+
+  function call() {
     let cancel: any
     axios({
       method: "GET",
@@ -64,13 +62,19 @@ function Autocomplete() {
       .then((r) => {
         r.data.subreddits.map((s: any) => {
           if (s.name.substr(0, 2) === "u_") {
-            s.name = s.name.replace(/^u_/, "u/")
-            s.numSubscribers = null
-            us.push(s)
+            us.push({
+              name: s.name.replace(/^u_/, "u/"),
+              icon: s.communityIcon || s.icon,
+              color: s.primaryColor,
+            })
           } else {
             if (!s.allowedPostTypes.images && !s.allowedPostTypes.videos) return
-            s.name = "r/" + s.name
-            ss.push(s)
+            ss.push({
+              name: "r/" + s.name,
+              icon: s.communityIcon || s.icon,
+              subscribers: s.numSubscribers,
+              color: s.primaryColor,
+            })
           }
         })
 
@@ -82,8 +86,7 @@ function Autocomplete() {
         console.log("erreur : ", e)
       })
     return () => cancel()
-  }, [query])
-
+  }
   return (
     <div className={styles.autocomplete} ref={ref}>
       <div style={{ position: "relative" }}>
@@ -93,11 +96,12 @@ function Autocomplete() {
             setQuery(e.target.value)
           }}
           onFocus={() => setDisplay(true)}
-          // onBlur={(e) => e.preventDefault()}
           placeholder="search for anything..."
-          onKeyPress={(e) => {
+          onKeyPress={(e: any) => {
             if (e.key === "Enter") {
-              setQuery("")
+              // setQuery("")
+              setDisplay(false)
+              e.target.blur()
               router.push(`/search?q=${query}`)
             }
           }}
@@ -116,7 +120,7 @@ function Autocomplete() {
             <li className={styles.separator}></li>
           )}
           {users?.map((i) => (
-            <Item item={i} setQuery={setQuery} />
+            <Item key={i.name} item={i} setQuery={setQuery} />
           ))}
         </ul>
       )}
@@ -128,7 +132,6 @@ function Item({ item, setQuery }: { item: Item; setQuery: Function }) {
   let router = useRouter()
   return (
     <a
-      // key={i.name}
       href={`/${item.name}`}
       className={styles.item}
       onClick={(e) => {
@@ -137,16 +140,16 @@ function Item({ item, setQuery }: { item: Item; setQuery: Function }) {
         router.push(`/${item.name}`)
       }}
     >
-      {item.communityIcon || item.icon ? (
+      {item.icon ? (
         <div className={styles.wrapper}>
-          <img src={item.communityIcon || item.icon} alt="" />
+          <img src={item.icon} alt="" />
         </div>
       ) : (
-        <Badge side={50} text={item.name.substr(2)} color={item.primaryColor} />
+        <Badge side={50} color={item.color} />
       )}
       <div className={styles.infos}>
         <span>{item.name}</span>
-        {item.numSubscribers && <small>{format(item.numSubscribers)}</small>}
+        {item.subscribers && <small>{format(item.subscribers)}</small>}
       </div>
     </a>
   )

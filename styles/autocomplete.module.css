@@ -1,7 +1,7 @@
 .autocomplete {
   position: relative;
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
 }
 
 .autocomplete input {
@@ -12,18 +12,14 @@
   color: white;
   caret-color: var(--sorbe);
   font-size: 18px;
-  /* background-color: #170029; */
-
-  background-color: #0f001b;
+  background-color: #110020;
   border-radius: 30px;
   transition: 0.3s;
-  border: 3px solid transparent;
+  /* border: 3px solid transparent; */
 }
 
 .autocomplete input:focus {
-  /* border: 1px solid var(--sorbe); */
-  /* width: 400px; */
-  /* transition: 0.3s; */
+  background-color: #1a0031;
 }
 
 .autocomplete input:focus + svg {
@@ -32,28 +28,27 @@
 
 .autocomplete input::placeholder {
   color: rgba(128, 128, 128, 0.7);
-  /* text-align: center; */
 }
+
 .autocomplete svg {
   position: absolute;
   left: 10px;
   top: 50%;
   line-height: 40px;
   font-size: 22px;
-  /* border: 1px solid red; */
   transform: translate(0, -50%);
   color: rgba(128, 128, 128, 0.4);
   transition: 0.3s;
 }
+
 .autocomplete input:focus::placeholder {
   color: transparent;
-  /* transition: 0.9s; */
 }
 
-.autocomplete img {
+/* .autocomplete img {
   width: 50px;
   border-radius: 5px;
-}
+} */
 
 .list {
   /* inset: 0px auto auto 0px; */
@@ -62,25 +57,22 @@
   top: 50px;
   max-height: 80vh;
   overflow-y: scroll;
-  /* background: #1c002e; */
   background: #170029;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
   /* padding: auto; */
   z-index: 2;
 }
 
 .item {
-  /* border: 1px solid rgba(255, 255, 255, 0.1); */
-  /* width: 300px; */
   cursor: pointer;
   width: 100%;
   padding: 10px;
   /* border: 1px solid grey; */
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 20px;
   transition: 0.2s;
 }
 
@@ -97,10 +89,8 @@
 }
 
 .item:hover {
-  /* color: var(--sorbe); */
-  color: #dd0058;
-  /* color: rgb(132, 0, 194); */
-  /* background: #250040; */
+  color: var(--sorbe);
+  /* color: #dd0058; */
   background: #250040;
   transition: 0.2s;
 }
@@ -117,4 +107,5 @@
   background-color: #0e0016;
   height: 5px;
   width: 100%;
+  margin: 0 3px;
 }

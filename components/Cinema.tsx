@@ -12,6 +12,7 @@ import useTimedState from "../hooks/useTimedState"
 import useEventListener from "../hooks/useEventListener"
 import useLoadKeys from "../hooks/useLoadKeys"
 import Bar from "./bar"
+import Vaudio from "./vaudio"
 
 interface Props {
   src: string
@@ -32,9 +33,7 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   const [volume, setVolume] = useState<number>(1)
   const [muted, setMuted] = useState<boolean>(false)
   const [speed, setSpeed] = useState<number>(1)
-
-  let media = useRef<HTMLVideoElement>(null)
-  let audio = useRef<HTMLAudioElement>(null)
+  const [jump, setJump] = useState<number | null>(null)
 
   const [ctrlDisplay, setCtrlDisplay, cancel] = useTimedState(false)
   const [wheeled, setWheeled, cancelWheeled] = useTimedState(false)
@@ -42,39 +41,21 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
 
   useEventListener("keydown", (e) => {
     if (e.key === " ") {
-      if (state === "running") pause()
-      else play()
+      if (state === "running") setState("paused")
+      else setState("running")
     }
   })
-
-  useEffect(() => {
-    if (media.current) media.current.playbackRate = speed
-    if (audio.current) audio.current.playbackRate = speed
-  }, [speed])
-
-  useEffect(() => {
-    if (!audio.current) return
-    if (volume === 0) setMuted(true)
-    else {
-      setMuted(false)
-      audio.current.volume = volume
-    }
-  }, [volume])
-
-  useEffect(() => {
-    if (audio.current) audio.current.muted = muted
-  }, [muted])
 
   useEffect(() => {
     if (!videoKeys) return
     setQuality(videoKeys[0])
   }, [videoKeys])
 
-  useEffect(() => {
-    seek(timer)
-    setState("loading")
-    audio.current?.pause()
-  }, [quality])
+  // useEffect(() => {
+  //   seek(timer)
+  //   setState("loading")
+  //   audio.current?.pause()
+  // }, [quality])
 
   useEffect(() => {
     setState("loading")
@@ -83,47 +64,22 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
     setCtrlDisplay(true, false, 3000)
   }, [src])
 
-  function play() {
-    try {
-      media.current?.play()
-      // if (audio.current) audio.current?.play() //this is the one!!!!!!
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  function pause() {
-    media.current?.pause()
-    audio.current?.pause()
-  }
-
   function handleMouseMove() {
     setCtrlDisplay(true, false, 3000)
   }
 
-  function seek(t: number) {
-    if (media.current) media.current.currentTime = t
-    if (audio.current) audio.current.currentTime = t
-  }
+  // function seek(t: number) {
+  //   if (media.current) media.current.currentTime = t
+  //   if (audio.current) audio.current.currentTime = t
+  // }
 
   function handleWheel(e: any) {
     if (!zoomed && !wheeled && e.deltaY > 0) {
-      if (state === "running") pause()
-      else play()
+      if (state === "running") setState("paused")
+      else setState("running")
       setWheeled(true, false, 300)
     }
   }
-
-  // function setVolume(v: number) {
-  //   if (!audio.current) return
-  //   if (v === 0) audio.current.muted = !audio.current.muted
-  //   else audio.current.volume = v
-  // }
-
-  // function mute() {
-  //   if (!audio.current) return
-  //   audio.current.muted = true
-  // }
 
   return (
     <div
@@ -132,60 +88,29 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
       onMouseMove={() => handleMouseMove()}
     >
       <img src={thumbnail} className={styles.background} alt="" />
-      {/* <img src={src} alt="" /> */}
 
       <Zoom setZoomed={setZoomed}>
-        <video
-          ref={media}
-          key={"v" + src + quality}
-          onPlaying={() => {
-            if (audio.current) audio.current?.play()
-            setState("running")
-          }}
-          onPause={() => {
-            // alert("iam the problem")
-            setState("paused")
-          }}
-          onEnded={() => setState("ended")}
-          onTimeUpdate={(e: any) => setTimer(e.target.currentTime)}
-          onProgress={(e: any) => {
-            if (e.target.buffered.length)
-              setBuffer(e.target.buffered.end(e.target.buffered.length - 1))
-          }}
-          onWaiting={() => {
-            audio.current?.pause()
-            setState("loading")
-          }}
-          onCanPlay={() => play()}
-          // poster={thumbnail}
-          className={styles.video}
-        >
-          {/* <source src={src.replace(/DASH_\d+/, "DASH_240")} type="video/mp4" /> */}
-          <source
-            src={quality !== "none" ? src.replace(/DASH_.*/, quality) : src}
-            type="video/mp4"
-          />
-        </video>
-
-        {audioKey && (
-          <audio
-            ref={audio}
-            key={"a" + src + audioKey}
-            // onWaiting={() => {
-            //   media.current?.pause()
-            //   setState("loading")
-            // }}
-          >
-            <source src={src.replace(/DASH_.*/, audioKey)} type="audio/mp4" />
-          </audio>
-        )}
-
+        <Vaudio
+          state={state}
+          setState={setState}
+          src={src}
+          quality={quality}
+          audioKey={audioKey}
+          volume={volume}
+          muted={muted}
+          setMuted={setMuted}
+          speed={speed}
+          jump={jump}
+          setTimer={setTimer}
+          setBuffer={setBuffer}
+        />
         {(ctrlDisplay || state !== "running") && !zoomed && (
           <>
             <Icon
               state={state}
-              play={play}
-              pause={pause}
+              setState={setState}
+              // play={play}
+              // pause={pause}
               onMouseEnter={cancel}
             />
             <Controls
@@ -206,18 +131,22 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
           </>
         )}
 
-        <Bar
-          loading={state === "loading"}
-          progress={timer / duration}
-          buffer={buffer / duration}
-          // onClick={(p: number) => {
-          //   seek(p * duration)
-          // }}
-          duration={duration}
-          seek={seek}
-          peek={peek}
-          ratio={ratio}
-        />
+        {!zoomed && (
+          <Bar
+            loading={state === "loading"}
+            progress={timer / duration}
+            buffer={buffer / duration}
+            // onClick={(p: number) => {
+            //   seek(p * duration)
+            // }}
+            duration={duration}
+            seek={(t: number) => {
+              setJump(t)
+            }}
+            peek={peek}
+            ratio={ratio}
+          />
+        )}
       </Zoom>
     </div>
   )

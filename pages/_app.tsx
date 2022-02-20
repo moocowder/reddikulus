@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 import type { AppProps } from "next/app"
 import Header from "../components/header"
-// import UserContext from "../contexts/userContext"
-// import User from "../schema/user"
 import "../styles/globals.css"
 import { useRouter } from "next/router"
 import Menu from "../components/menu"
@@ -22,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     })
 
     router.events.on("routeChangeComplete", (e) => {
-      sendEvent(e)
+      // sendEvent(e)
 
       setLoading(false)
     })
@@ -30,12 +28,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <div>
-      {/* <UserContext.Provider value={[user, setUser]}> */}
       {loading && <span className="bar"></span>}
       <Header open={open} setOpen={setOpen} />
       {open && <Menu setOpen={setOpen} />}
       <Component {...pageProps} />
-      {/* </UserContext.Provider> */}
     </div>
   )
 }

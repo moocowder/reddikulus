@@ -4,6 +4,8 @@ import Head from "next/head"
 import Content from "../../components/content"
 import Cover from "../../components/cover"
 import About from "../../components/about"
+import Bonk from "../../components/bonk"
+import Xolo from "../../components/xolo"
 
 type About = {
   title: string
@@ -24,8 +26,11 @@ type Props = {
 }
 
 function User({ user, about }: Props) {
-  if (!about) return <h1>user not found</h1>
-  // if (about.nsfw) return <h1>horny police on the way, Bonk!</h1>
+  if (!about)
+    return (
+      <Xolo text={"user not found"} face={"x_x"} style={{ fontSize: "30px" }} />
+    )
+  if (about.nsfw) return <Bonk />
 
   return (
     <div>
@@ -41,8 +46,8 @@ function User({ user, about }: Props) {
         text={about.description}
       />
       <Content
-        api={`user/${user}`}
-        params={{}}
+        api={`user/${user}/submitted?sort=SORT&&after=AFTER`}
+        tag={"user"}
         sorts={{ words: ["new", "hot", "top"], default: "new" }}
       />
     </div>

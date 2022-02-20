@@ -17,9 +17,7 @@ function Search({ query }: { query: string }) {
       <Sublist query={query} />
       <h2>posts</h2>
       <Content
-        // api="/api/search"
-        api="search"
-        params={{ q: query }}
+        api={`search?q=${query}&&sort=SORT&&after=AFTER&limit=16`}
         sorts={{
           words: ["relevance", "hot", "new", "top", "comments"],
           default: "relevance",

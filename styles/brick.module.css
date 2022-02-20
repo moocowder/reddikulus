@@ -1,47 +1,21 @@
 .brick {
   position: absolute;
   border-radius: 3px;
-  box-shadow: 0 0 3px 0px #b30083;
-  /* box-shadow: 0 0 8px 0px #ff0066; */
+  /* box-shadow: 0 0 3px 0px #b30083; */
+  box-shadow: 0 0 1px 0px #ff0066;
   transition: 0.2s;
   overflow: hidden;
-  /* animation: loading 1s linear infinite alternate; */
   background: #ffffff0e;
+  cursor: pointer;
 }
 
 .brick:hover {
-  cursor: pointer;
-  /* box-shadow: 0 0 12px 1px #b30083; */
-  /* box-shadow: 0 0 12px 1px #ff0066; */
   transition: 0.2s;
   transform: scale(1.03);
-  z-index: 1;
+  /* z-index: 1; */
 }
 
-.brick:hover .sub {
-  opacity: 1;
-}
-
-.brick > * {
-  /* object-fit: contain; */
+/* .brick > * {
   width: inherit;
   height: inherit;
-}
-
-@keyframes loading {
-  from {
-    background: #ffffff0e;
-  }
-  to {
-    background: #ffffff26;
-  }
-}
-
-/* @keyframes loading {
-  from {
-    background: #1d1d1da6;
-  }
-  to {
-    background: #161616a6;
-  }
 } */

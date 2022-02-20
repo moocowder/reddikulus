@@ -3,10 +3,7 @@ import Content from "../../components/content"
 function Popular() {
   return (
     <Content
-      // api="/api/posts"
-      api="r/popular"
-      // params={{ sub: "popular" }}
-      params={{}}
+      api={`r/popular/SORT?after=AFTER`}
       sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
     />
   )

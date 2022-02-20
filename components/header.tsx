@@ -6,7 +6,7 @@ import { HiTrendingUp } from "react-icons/hi"
 import { IoMenu } from "react-icons/io5"
 import { GrReddit } from "react-icons/gr"
 import { BsFillHeartFill } from "react-icons/bs"
-import { FaReddit } from "react-icons/fa"
+import { FaReddit, FaChartLine } from "react-icons/fa"
 import { SiReddit } from "react-icons/si"
 import { IoMdLogOut } from "react-icons/io"
 import { useRouter } from "next/router"
@@ -23,16 +23,16 @@ function Header({
   return (
     <div className={styles.header}>
       <div className={styles.left}>
-        <div
+        <span
           onClick={() => setOpen(!open)}
-          className={styles.open}
+          className={styles.icon}
           style={{
             background: open ? "var(--sorbe)" : "",
             color: open ? "white" : "",
           }}
         >
-          <HiTrendingUp />
-        </div>
+          <FaChartLine />
+        </span>
         <Link href="/">
           <img src="/reddikulus-logo.png" alt="" />
         </Link>
@@ -41,8 +41,12 @@ function Header({
       <div className={styles.right}>
         <Autocomplete />
         <div className={styles.icons}>
-          <SiReddit />
-          <BsFillHeartFill />
+          <span className={styles.icon}>
+            <FaReddit />
+          </span>
+          <span className={styles.icon}>
+            <BsFillHeartFill />
+          </span>
         </div>
       </div>
     </div>

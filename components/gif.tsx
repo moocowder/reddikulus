@@ -9,78 +9,53 @@ interface Props {
   thumbnail: string
 }
 
-type State = "running" | "loading" | "paused" | "ended"
+type State = "running" | "paused"
 
 function Gif({ url, thumbnail }: Props) {
-  const [state, setState] = useState<State>("loading")
-  // const [timer, setTimer] = useState<number>(0)
-
-  let media = useRef<HTMLVideoElement>(null)
-
-  //   const [ctrlDisplay, setCtrlDisplay, cancel] = useTimedState(false)
+  const [state, setState] = useState<State>("running")
   const [wheeled, setWheeled, cancelWheeled] = useTimedState(false)
   let [zoomed, setZoomed] = useState(false)
 
+  let media = useRef<HTMLVideoElement>(null)
+
   useEventListener("keydown", (e) => {
     if (e.key === " ") {
-      if (state === "running") pause()
-      else play()
+      if (state === "running") setState("paused")
+      else setState("running")
     }
   })
 
   useEffect(() => {
-    setState("loading")
-    // setTimer(0)
-    // setCtrlDisplay(true, 3000)
+    setState("running")
+    media.current?.play()
   }, [url])
 
-  function play() {
+  useEffect(() => {
     try {
-      media.current?.play()
+      if (state === "running") media.current?.play()
+      else media.current?.pause()
     } catch (e) {
       console.log(e)
     }
-  }
-
-  function pause() {
-    media.current?.pause()
-  }
-
-  //   function handleMouseMove() {
-  //     setCtrlDisplay(true, 3000)
-  //   }
-
-  // function seek(t: number) {
-  //   if (media.current) media.current.currentTime = t
-  // }
+  }, [state])
 
   function handleWheel(e: any) {
     if (!zoomed && !wheeled && e.deltaY > 0) {
-      if (state === "running") pause()
-      else play()
+      if (state === "running") setState("paused")
+      else setState("running")
       setWheeled(true, false, 300)
     }
   }
 
   return (
-    <div
-      onWheel={(e) => handleWheel(e)}
-      className={styles.player}
-      //   onMouseMove={() => handleMouseMove()}
-    >
+    <div onWheel={(e) => handleWheel(e)} className={styles.player}>
       <img src={thumbnail} className={styles.background} alt="" />
       <Zoom setZoomed={setZoomed}>
         <video
+          key={url}
           ref={media}
-          key={"v" + url}
-          onPlaying={() => setState("running")}
-          onPause={() => setState("paused")}
-          onEnded={() => setState("ended")}
-          // onTimeUpdate={(e: any) => setTimer(e.target.currentTime)}
-          onWaiting={() => setState("loading")}
-          onCanPlay={() => play()}
-          poster={thumbnail}
           className={styles.video}
+          poster={thumbnail}
           loop={true}
         >
           <source src={url} type="video/mp4" />

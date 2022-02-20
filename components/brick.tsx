@@ -8,32 +8,27 @@ import Album from "./album"
 
 type Props = {
   post: Post<Image | Video | Gallery | Gif>
-  // setSelected: Function
   setInfos: Function
   position: { top: number; left: number }
   width: number
   height: number
   onClick: Function
   lastBrick: Function | null
-  maxHeight: Function
 }
 
 function Brick({
   post,
-  // setSelected,
   setInfos,
   position,
   width,
   height,
   onClick,
   lastBrick,
-  maxHeight,
 }: Props) {
   const [visible, setVisible] = useState(false)
 
   let observer: IntersectionObserver
   function rendered(node: HTMLDivElement) {
-    maxHeight()
     if (observer) observer.disconnect()
     observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
@@ -53,17 +48,16 @@ function Brick({
     <div>
       <div
         className={`${styles.brick} `}
+        ref={rendered}
         style={{
           width,
           height,
           top: position.top,
           left: position.left,
           border: post.media.nsfw ? "3px solid red" : "",
-          // animation: "loading 3s linear infinite",
         }}
         onMouseEnter={() => setInfos(post.infos)}
         onMouseLeave={(e) => setInfos(null)}
-        ref={rendered}
         onClick={() => onClick()}
       >
         {post.media.type === "image" && visible && (

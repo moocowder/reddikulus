@@ -6,6 +6,7 @@ interface Props {
   thumbnail: string
   original?: string
   appeared?: () => void
+  // style?: { [key: string]: string }
 }
 function Imagine({ thumbnail, original = "", appeared = () => {} }: Props) {
   const [loaded, setLoaded] = useState(false)
@@ -26,12 +27,14 @@ function Imagine({ thumbnail, original = "", appeared = () => {} }: Props) {
         <img
           onLoad={() => appeared()}
           className={`${styles.pic}`}
+          // style={style}
           src={original}
         />
       ) : (
         <img
           onLoad={() => appeared()}
           className={`${styles.pic}`}
+          // style={style}
           src={thumbnail}
         />
       )}

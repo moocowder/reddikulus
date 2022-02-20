@@ -5,13 +5,18 @@ import { FaTimes, FaPlay } from "react-icons/fa"
 import { useRouter } from "next/router"
 
 interface Props {
-  topics: string[]
-  topic: string | null
-  setTopic: Function
+  list: { name: string; icon: string }[]
+  // topic: Topic | null
+  // setTopic: Function
+  selected: string | null
+  setSelected: Function
   setOpen: Function
 }
 
-function Panel({ topics, topic, setTopic, setOpen }: Props) {
+// type Topic = { name: string; icon: string }
+// type Sub = { name: string; icon: string }
+
+function Panel({ list, selected, setSelected, setOpen }: Props) {
   const router = useRouter()
 
   function handleItemClick(e: any, url: string) {
@@ -22,26 +27,26 @@ function Panel({ topics, topic, setTopic, setOpen }: Props) {
 
   return (
     <ul className={styles.panel}>
-      {topics?.map((t) => (
+      {list?.map((l) => (
         <li
           className={styles.item}
-          key={t}
-          style={{ backgroundColor: t === topic ? "#1c002f" : "" }}
+          key={l.name}
+          style={{ backgroundColor: l.name === selected ? "#1c002f" : "" }}
         >
           <a
-            href={"/topics/" + t}
             className={styles.link}
-            onClick={(e) => handleItemClick(e, "/topics/" + t)}
+            href={"/topics/" + l.name}
+            onClick={(e) => handleItemClick(e, "/topics/" + l.name)}
           >
             <div className={styles.wrapper}>
-              <img src="/boo.jpg" alt="" />
+              <img src={l.icon || ""} alt="" />
             </div>
-            <div className={styles.text}>{t}</div>
+            <div className={styles.text}>{l.name}</div>
           </a>
           <div
             className={styles.arrow}
-            onMouseEnter={() => setTopic(t)}
-            style={{ color: t === topic ? "var(--sorbe)" : "" }}
+            onMouseEnter={() => setSelected(l.name)}
+            style={{ color: l.name === selected ? "var(--sorbe)" : "" }}
           >
             <FaPlay />
           </div>

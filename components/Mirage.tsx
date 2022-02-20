@@ -9,12 +9,12 @@ import { FaPlay } from "react-icons/fa"
 import { RiFileGifFill } from "react-icons/ri"
 import { AiOutlineGif, AiOutlineFileGif } from "react-icons/ai"
 import { BsLightningFill } from "react-icons/bs"
+
 type Props = {
   thumbnail: string
   poster: string
   peek: string
   duration?: number
-  // isGif?: boolean
 }
 
 function Mirage({ thumbnail, poster, peek, duration }: Props) {
@@ -43,11 +43,12 @@ function Mirage({ thumbnail, poster, peek, duration }: Props) {
       {duration && <span className={styles.duration}>{format(duration)}</span>}
 
       <div className={styles.poster}>
-        {duration ? (
-          <FaPlay className={`${styles.icon} `} />
-        ) : (
-          <BsLightningFill className={`${styles.icon} `} />
-        )}
+        {!hover &&
+          (duration ? (
+            <FaPlay className={`${styles.icon}`} />
+          ) : (
+            <BsLightningFill className={`${styles.icon}`} />
+          ))}
 
         <Imagine thumbnail={thumbnail} original={poster} />
       </div>

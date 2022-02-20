@@ -44,11 +44,11 @@ function Subpanel({ subs, setOpen }: Props) {
             {s.icon ? (
               <img
                 src={s.icon.replace(/&amp;/g, "&")}
-                style={{ background: "anime" }}
+                // style={{ background: "anime" }}
                 alt=""
               />
             ) : (
-              <Badge side={50} text={"mmm"} color={"#ffffff26"} />
+              <Badge side={50} color={"#ffffff26"} />
             )}
           </div>
           <span className={styles.text}>{s.name}</span>

@@ -9,6 +9,8 @@ import Cover from "../../components/cover"
 import About from "../../components/about"
 import api from "../../utils/request"
 import { useRouter } from "next/router"
+import Bonk from "../../components/bonk"
+import Xolo from "../../components/xolo"
 
 type About = {
   banner: string
@@ -28,66 +30,30 @@ type Props = {
 }
 
 function Subreddit({ sub, about }: Props) {
-  const router = useRouter()
-  // const api =
-  //   "https://api.reddit.com/r/popular/hot?sub=popular&&sort=hot&&after=&&raw_json=1"
-  // useEffect(() => {
-  //   async function call() {
-  //     let data = await api(`r/${router.query.subreddit}/about`, {
-  //       raw_json: "1",
-  //     })
-  //   }
-
-  //   call()
-  // }, [])
-
-  function api(type = "sub", page: string, sort: string, after: string) {
-    return `r/${page}/${sort}?after=${after}&&raw_json=1`
-  }
-
   if (!about)
     return (
-      <h1>
-        subreddit not found{" "}
-        <span style={{ color: "#ff0066" }}>
-          ≽(
-          <span style={{ color: "rgb(255, 181, 249)" }}>ᴗ_ᴗˇ </span>
-          )≼
-        </span>
-      </h1>
+      // <h1>
+      //   subreddit not found&nbsp;
+      //   <span style={{ color: "#ff0066" }}>
+      //     ≽(
+      //     <span style={{ color: "rgb(255, 181, 249)" }}>x_x</span>
+      //     )≼
+      //   </span>
+      // </h1>
+      <Xolo
+        text={"subreddit not found"}
+        face={"x_x"}
+        style={{ fontSize: "30px" }}
+      />
     )
-  // if (about.nsfw)
-  //   return (
-  //     <div
-  //       style={{
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         alignItems: "center",
-  //         border: "1px solid red",
-  //         // height: "100vh",
-  //         gap: "20px",
-  //       }}
-  //     >
-  //       <p>this is a +18 community</p>
-  //       <img src="/bonk.webp" alt="" />
-  //       <p>
-  //         <span
-  //           style={{ color: "#ff0066", cursor: "pointer" }}
-  //           onClick={() => router.back()}
-  //         >
-  //           get back
-  //         </span>
-  //         &nbsp;or go to horny jail!
-  //       </p>
-  //     </div>
-  //   )
+  if (about.nsfw) return <Bonk />
 
   return (
     <div>
       <Head>
         <title>r/{sub}</title>
       </Head>
-      <Cover banner={about.banner} icon={about.icon} color={about.color} />
+      <Cover banner={about.banner} icon={about.icon} />
       <About
         name={"r/" + sub}
         title={about.title}
@@ -97,12 +63,19 @@ function Subreddit({ sub, about }: Props) {
       />
       {about.allow_media ? (
         <Content
-          api="/api/posts"
-          params={{ sub }}
+          api={`r/${sub}/SORT?after=AFTER`}
+          tag={"subreddit"}
           sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
         />
       ) : (
-        <h3>This sub doesn't contain any images or videos</h3>
+        <h3>
+          This sub doesn't contain any images or videos &nbsp;
+          <span style={{ color: "#ff0066" }}>
+            ≽(
+            <span style={{ color: "rgb(255, 181, 249)" }}>⚆ _ ⚆</span>
+            )≼
+          </span>
+        </h3>
       )}
     </div>
   )

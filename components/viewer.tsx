@@ -39,17 +39,12 @@ const Viewer = ({
   setFullscreen,
   children,
 }: Props) => {
-  // const [display, setDisplay, cancel] = useTimedState<boolean>(true)
   const [optDisplay, setOptDisplay, cancelOpt] = useTimedState<boolean>(false)
-  // const [direction, setDirection] = useState<1 | -1 | null>(null)
 
   useEventListener("keydown", (e: any) => {
     switch (e.key) {
       case "Escape":
-        // alert("yay")
         e.preventDefault()
-        // setFullscreen(false)
-        // minimize()
         close()
         break
       case "ArrowRight":
@@ -75,24 +70,8 @@ const Viewer = ({
   let viewerRef = useRef<HTMLDivElement>(null!)
 
   useEffect(() => {
-    // setDisplay(true, false, 3000)
     setInfos(post.infos, false, 5000)
   }, [post])
-
-  // useEffect(() => {
-  //   if (fullscreen) maximize()
-  //   else if (
-  //     document.webkitIsFullScreen ||
-  //     document.mozFullScreen ||
-  //     document.msFullscreenElement
-  //   )
-  //   else minimize()
-  // }, [fullscreen])
-
-  // useEffect(() => {
-  //   if (display) setInfos(post.infos)
-  //   else setInfos(null)
-  // }, [display])
 
   function maximize() {
     if (viewerRef.current.requestFullscreen) {
@@ -107,7 +86,6 @@ const Viewer = ({
   }
 
   function minimize() {
-    // alert("exiting")
     if (document.exitFullscreen) {
       document.exitFullscreen()
     } else if (document.webkitExitFullscreen) {
@@ -124,26 +102,22 @@ const Viewer = ({
   }
 
   function handleMouseMove() {
-    // setDisplay(true, false, 3000)
     setInfos(post.infos, null, 5000)
     setOptDisplay(true, false, 500)
   }
 
   function handleWheel(e: any) {
     e.preventDefault()
-    // setDisplay(false)
     setInfos(null)
     setOptDisplay(false)
   }
 
   function next(e: any) {
     e.preventDefault()
-    // setDirection(1)
     move.next()
   }
 
   function prev() {
-    // setDirection(-1)
     move.prev()
   }
 
@@ -152,10 +126,6 @@ const Viewer = ({
       close()
     }
   }
-
-  // function handleMouseEnter() {
-  //   cancel()
-  // }
 
   return (
     <div
@@ -166,25 +136,15 @@ const Viewer = ({
       onMouseDown={(e) => handleMouseDown(e)}
       onWheel={(e) => handleWheel(e)}
       ref={viewerRef}
-      // style={{ cursor: display ? "" : "none" }}
     >
       {children}
       <Media media={post.media} />
       {optDisplay && (
         <Options
           close={close}
-          // maximize={() => {
-          //   setFullscreen(true)
-          //   maximize()
-          // }}
-          // minimize={() => {
-          //   setFullscreen(false)
-          //   minimize()
-          // }}
           maximize={maximize}
           minimize={minimize}
           fullscreen={fullscreen}
-          // setFullscreen={setFullscreen}
           download={download}
           onMouseEnter={() => cancelOpt()}
         />

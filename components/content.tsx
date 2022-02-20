@@ -14,18 +14,19 @@ import useEventListener from "../hooks/useEventListener"
 
 interface Props {
   api: string
-  params: { [key: string]: string }
+  // params: { [key: string]: string }
   sorts: { words: Word[]; default: Word }
+  tag?: string
 }
 
-function Content({ api, params, sorts }: Props) {
+function Content({ api, sorts, tag }: Props) {
   let [after, setAfter] = useState("")
   const [sort, setSort] = useState<Word>(sorts.default)
   const [post, setPost] = useState<Post<any> | null>()
   const [infos, setInfos, cancel] = useTimedState<InfosType | null>(null)
   const [fullscreen, setFullscreen] = useState(false)
 
-  let { data, loading, error } = useLoadData(api, { ...params, sort, after })
+  let { data, loading, error } = useLoadData(api, sort, after)
 
   let ref = useRef<HTMLDivElement>(null!)
 
@@ -36,28 +37,6 @@ function Content({ api, params, sorts }: Props) {
       }, 1000)
   }, [data])
 
-  // useEffect(() => {
-  //   alert("ffff " + fullscreen)
-  // }, [fullscreen])
-
-  // useEventListener("keydown", (e: any) => {
-  //   if (e.key === "Escape") alert("escaping!!")
-  // })
-  // useEffect(() => {
-  //   if (fullscreen) maximize()
-  //   if (window.innerHeight === screen.height) minimize()
-  // }, [fullscreen])
-
-  // useEffect(() => {
-  //   if (post) {
-  //     setInfos(post?.infos)
-  //     console.log("**********************************************", post?.infos)
-  //   }
-  // }, [post])
-
-  // useEffect(() => {
-  //   alert(infos)
-  // }, [infos])
   let move = {
     next: () => {
       if (!post) return
@@ -81,13 +60,8 @@ function Content({ api, params, sorts }: Props) {
 
   function handleBrickClick(i: number) {
     document.body.style.overflow = "hidden"
-    setInfos(data.posts[i].infos)
+    // setInfos(data.posts[i].infos)
     setPost(data.posts[i])
-  }
-
-  function showInfos(i: InfosType | null) {
-    if (post) return
-    setInfos(i)
   }
 
   return (
@@ -110,13 +84,7 @@ function Content({ api, params, sorts }: Props) {
           {infos && (
             <Infos
               infos={infos}
-              page={
-                params.sub && params.sub !== "popular"
-                  ? "r/"
-                  : params.user
-                  ? "u/"
-                  : ""
-              }
+              tag={tag}
               onMouseEnter={() => cancel()}
               onWheel={() => setInfos(null)}
               shade={false}
@@ -132,29 +100,14 @@ function Content({ api, params, sorts }: Props) {
         hasMore={data.after}
         setInfos={setInfos}
       >
-        {infos && (
-          <Infos
-            infos={infos}
-            page={
-              params.sub && params.sub !== "popular"
-                ? "r/"
-                : params.user
-                ? "u/"
-                : ""
-            }
-            onMouseEnter={() => cancel()}
-            onWheel={() => setInfos(null)}
-            shade={true}
-          />
-        )}
+        {infos && <Infos infos={infos} tag={tag} shade={true} />}
       </Masonry>
       {loading && <span className={styles.bar}></span>}
       {error && (
-        <h1
-          style={{ zIndex: 4, position: "fixed", bottom: "30px", left: "3px" }}
-        >
-          error!
-        </h1>
+        <span>
+          something went wrong =(x_x)=
+          <span style={{ color: "var(--sorbe)" }}> refresh?</span>
+        </span>
       )}
     </div>
   )

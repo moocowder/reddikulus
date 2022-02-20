@@ -14,8 +14,7 @@ export default function Home() {
       <>
         <h1 className="title">Popular posts</h1>
         <Content
-          api="/api/posts"
-          params={{ sub: "popular" }}
+          api={`r/popular/SORT?after=AFTER`}
           sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
         />
       </>

@@ -23,12 +23,13 @@ import { useEffect, useState } from "react"
 
 interface Props {
   state: "running" | "loading" | "paused" | "ended"
-  play: Function
-  pause: Function
+  setState: Function
+  // play: Function
+  // pause: Function
   onMouseEnter: Function
 }
 
-function Icon({ state, play, pause, onMouseEnter }: Props) {
+function Icon({ state, setState, onMouseEnter }: Props) {
   return (
     <div
       onMouseEnter={() => onMouseEnter()}
@@ -36,8 +37,8 @@ function Icon({ state, play, pause, onMouseEnter }: Props) {
       className={styles.icon}
       onClick={(e) => {
         e.stopPropagation()
-        if (state === "ended" || state === "paused") play()
-        else pause()
+        if (state === "ended" || state === "paused") setState("running")
+        else setState("paused")
       }}
     >
       {state === "ended" && <BsArrowCounterclockwise />}

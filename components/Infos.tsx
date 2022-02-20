@@ -18,17 +18,10 @@ import { FaRegUser } from "react-icons/fa"
 import format from "../utils/format"
 
 type props = {
-  // ups: number
-  // title: string
-  // permalink: string
-  // sub?: string
-  // author?: string
-  // comments: number
-  // date: number
   infos: InfosType
   onMouseEnter?: Function
-  onWheel: Function
-  page: "r/" | "u/" | ""
+  onWheel?: Function
+  tag?: string
   shade: boolean
 }
 
@@ -64,17 +57,11 @@ function relativeTime(d1: number, d2 = +new Date()) {
 function Infos({
   infos: { ups, title, permalink, sub, author, date, comments },
   onMouseEnter = () => {},
-  onWheel,
-  page,
+  onWheel = () => {},
+  tag,
   shade,
 }: props) {
   const router = useRouter()
-  // const [page, setPage] = useState<"/r" | "/u" | "">("")
-
-  // useEffect(() => {
-  //   let p = router.pathname.substr(0, 2)
-  //   if (p === "/r" || p === "/u") setPage(p)
-  // }, [])
 
   function link(l: string) {
     return (
@@ -115,7 +102,7 @@ function Infos({
         </a>
       </div>
       <div className={styles.bottom}>
-        {page !== "r/" && <a href={`/r/${sub}`}>{link(`/r/${sub}`)}</a>}
+        {tag !== "subreddit" && <a href={`/r/${sub}`}>{link(`/r/${sub}`)}</a>}
         <span className={styles.stat}>
           <FaRegComment />
           {format(comments)}
@@ -124,7 +111,7 @@ function Infos({
           <FaRegClock />
           {relativeTime(date)}
         </span>
-        {page !== "u/" && <a href={`/u/${author}`}>{link(`/u/${author}`)}</a>}
+        {tag !== "user" && <a href={`/u/${author}`}>{link(`/u/${author}`)}</a>}
       </div>
     </div>
   )

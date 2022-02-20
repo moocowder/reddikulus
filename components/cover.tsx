@@ -4,21 +4,13 @@ interface Props {
   banner?: string
   icon?: string
   avatar?: string
-  color?: string
 }
 
-function Cover({ banner, icon, avatar, color }: Props) {
+function Cover({ banner, icon, avatar }: Props) {
   return (
     <>
       {(icon || avatar || banner) && (
-        <div
-          className={styles.wrapper}
-          // style={{
-          //   background: !banner
-          //     ? `linear-gradient(180deg,${color},#00000000)`
-          //     : "",
-          // }}
-        >
+        <div className={styles.cover}>
           {banner && <img className={styles.banner} src={banner} alt="" />}
           {avatar && <img className={styles.avatar} src={avatar} alt="" />}
           {!avatar && icon && (

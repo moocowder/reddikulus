@@ -23,13 +23,7 @@ function Media({ media }: Props) {
   const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <div
-      ref={ref}
-      // onMouseDown={() => setD(d * -1)}
-      // key={Math.random()}
-      // key={media.url}
-      className={styles.media}
-    >
+    <div ref={ref} className={styles.media}>
       {media.type === "video" && (
         <Cinema
           src={media.url}

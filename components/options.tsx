@@ -14,7 +14,6 @@ interface Props {
   maximize: Function
   minimize: Function
   fullscreen: boolean
-  // setFullscreen: Function
   download: Function
   onMouseEnter: Function
 }
@@ -24,46 +23,26 @@ function Options({
   fullscreen,
   maximize,
   minimize,
-  // setFullscreen,
   download,
   onMouseEnter,
 }: Props) {
-  // const [fullscreen, setFullscreen] = useState(false)
-  // const [display, setDisplay, cancel] = useTimedState(true)
-
-  // useEffect(() => {
-  //   setDisplay(true, 2000)
-  // }, [])
-
   return (
     <ul
-      // style={{ opacity: display ? 1 : 0 }}
       className={styles.options}
       onClick={(e) => e.stopPropagation()}
       onMouseEnter={() => onMouseEnter()}
       onMouseMove={(e) => e.stopPropagation()}
-      // onMouseLeave={() => setDisplay(false)}
     >
       <li onClick={() => close()}>
         <CgCloseO />
       </li>
 
       {fullscreen ? (
-        <li
-          onClick={() => {
-            // setFullscreen(false)
-            minimize()
-          }}
-        >
+        <li onClick={() => minimize()}>
           <FiMinimize />
         </li>
       ) : (
-        <li
-          onClick={() => {
-            // setFullscreen(true)
-            maximize()
-          }}
-        >
+        <li onClick={() => maximize()}>
           <FiMaximize />
         </li>
       )}

@@ -20,10 +20,15 @@ function Gallery({ urls, thumbnails }: Props) {
   let [run, setRun] = useState(true)
   let [center, setCenter] = useState(0)
   const [zoomed, setZoomed] = useState(false)
-  const { height } = useWindowSize()
   const [wheeled, setWheeled, cancelWheeled] = useTimedState(false)
+  const [filmDisplay, setFilmDisplay, cancelFilm] = useTimedState(true)
+  const [iconDisplay, setIconDisplay, cancelIcon] = useTimedState(true)
 
+  const { height } = useWindowSize()
   let timeout: any = useRef()
+  const gap = 20
+  const frameH = 120
+  const [h, setH] = useState<number>(0)
 
   useEventListener("keydown", (e) => {
     if (e.key === " ") {
@@ -37,17 +42,6 @@ function Gallery({ urls, thumbnails }: Props) {
       setIndex(index + 1)
     }
   })
-
-  const gap = 20
-  const frameH = 120
-
-  // const initH = (height - frameH) / 2
-  const [h, setH] = useState<number>(300)
-
-  const [filmDisplay, setFilmDisplay, cancelFilm] = useTimedState(true)
-  const [iconDisplay, setIconDisplay, cancelIcon] = useTimedState(true)
-
-  // const [run, setRun, cancelRun] = useTimedState()
 
   useEffect(() => {
     setIndex(0)
@@ -74,7 +68,6 @@ function Gallery({ urls, thumbnails }: Props) {
     setH(center - index * (frameH + gap))
 
     if (!run) return
-    // alert("prepringnext")
     timeout.current = setTimeout(() => {
       setIndex(index + 1)
     }, 4000)
@@ -82,13 +75,13 @@ function Gallery({ urls, thumbnails }: Props) {
   }, [index])
 
   useEffect(() => {
-    setFilmDisplay(true, false, 3000)
+    setFilmDisplay(true, false, 5000)
     setIconDisplay(true, false, 1000)
   }, [urls])
 
   function handleMouseMove(e: any) {
     e.preventDefault()
-    setFilmDisplay(true, false, 3000)
+    setFilmDisplay(true, false, 5000)
     setIconDisplay(true, false, 1000)
   }
 
@@ -131,7 +124,6 @@ function Gallery({ urls, thumbnails }: Props) {
         <>
           {filmDisplay && (
             <Film
-              // opacity={filmDisplay}
               onMouseEnter={() => cancelFilm()}
               thumbnails={thumbnails}
               index={index}
@@ -145,8 +137,9 @@ function Gallery({ urls, thumbnails }: Props) {
           {iconDisplay && (
             <Icon
               state={run ? "running" : "paused"}
-              play={play}
-              pause={pause}
+              setState={(s: string) => {
+                s === "running" ? play() : pause()
+              }}
               onMouseEnter={() => setIconDisplay(true)}
             />
           )}

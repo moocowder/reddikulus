@@ -44,7 +44,7 @@ function Masonry({
   const { width, height } = useWindowSize()
   const [contentHeight, setContentHeight] = useState(100)
   // const width = useWindow()
-  console.log("renderring masonry")
+  // console.log("renderring masonry")
   let rows: number[] = []
   const gap = 30
   let [iw, setIw] = useState(300)
@@ -64,6 +64,7 @@ function Masonry({
   }, [posts])
 
   function lastBrick() {
+    setContentHeight(Math.max.apply(null, rows))
     if (loading) return
     if (hasMore) loadMore()
     else setEnd(true)
@@ -94,10 +95,6 @@ function Masonry({
     }
   }
 
-  function maxHeight() {
-    setContentHeight(Math.max.apply(null, rows))
-  }
-
   //get width
   //calculate n , setN(5)
   //getpost : x=  , y=minH  , update minh setminH()
@@ -107,27 +104,22 @@ function Masonry({
       <div
         className={styles.masonry}
         style={{
-          // border: "1px solid red",
           height: contentHeight,
           marginLeft: (width - (iw + gap) * n + gap) / 2,
-          // width: "99vw",
           marginTop: "50px",
           marginBottom: "100px",
-          // border: "1px solid white",
         }}
       >
         {posts?.map((p, i) => (
           <Brick
             key={i}
             post={p}
-            // setSelected={setSelected}
             setInfos={setInfos}
             width={iw}
             height={iw / p.media.ratio}
             position={getPos(p.media.ratio)}
             onClick={() => onBrickClick(i)}
             lastBrick={i === posts.length - 1 ? lastBrick : null}
-            maxHeight={maxHeight}
           />
         ))}
       </div>
