@@ -12,7 +12,10 @@
   align-items: center;
   gap: 5px;
   font-weight: 500;
-  background: #ffffff26;
+  /* background: #ffffff26; */
+  background: #000ba838;
+  /* box-shadow: 0 0 16px 0px #ffffff13; */
+
   border-radius: 30px;
   padding: 5px 15px;
 }

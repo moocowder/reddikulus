@@ -9,6 +9,7 @@ import useTimedState from "../hooks/useTimedState"
 import useWindowSize from "../hooks/useWindowSize"
 import useEventListener from "../hooks/useEventListener"
 import Icon from "./icon"
+import { CgSpinnerTwo } from "react-icons/cg"
 
 interface Props {
   urls: string[]
@@ -23,6 +24,7 @@ function Gallery({ urls, thumbnails }: Props) {
   const [wheeled, setWheeled, cancelWheeled] = useTimedState(false)
   const [filmDisplay, setFilmDisplay, cancelFilm] = useTimedState(true)
   const [iconDisplay, setIconDisplay, cancelIcon] = useTimedState(true)
+  // const [loading, setLoading] = useState(true)
 
   const { height } = useWindowSize()
   let timeout: any = useRef()
@@ -147,6 +149,7 @@ function Gallery({ urls, thumbnails }: Props) {
             {index + 1}/{urls.length}
           </span>
           {run && <div key={urls[index]} className={styles.progress}></div>}
+          {/* {loading && <CgSpinnerTwo className={styles.spinner} />} */}
         </>
       )}
     </div>

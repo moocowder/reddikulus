@@ -1,6 +1,6 @@
 .sublist {
   /* border: 1px solid white; */
-  margin: auto 20px;
+  margin: 50px 10px;
   /* width: 100vw; */
 }
 
@@ -9,7 +9,7 @@
   /* width: 80%; */
 
   /* margin: auto 20px; */
-  display: inline-flex;
+  display: flex;
   /* min-width: 100%; */
   /* width: fit-content; */
   flex-wrap: wrap;
@@ -29,7 +29,8 @@
 }
 
 .sub {
-  background: #170029;
+  /* background: #170029; */
+  background: #090c33;
   border-radius: 5px;
   /* flex-grow: 1; */
   cursor: pointer;
@@ -80,6 +81,7 @@
   width: 100%;
   height: 100%;
   display: cover;
+  background: #ffffff26;
 }
 
 /* .sub:hover {
@@ -111,6 +113,7 @@
   border-radius: 2px;
   background-color: grey;
   margin: 5px;
+  border-radius: 20px;
   animation: loading 1s linear infinite alternate;
 }
 .rectangles > :last-child {
@@ -118,6 +121,7 @@
   height: 20px;
   background-color: grey;
   margin: 5px;
+  border-radius: 20px;
   animation: loading 1s linear infinite alternate;
 }
 

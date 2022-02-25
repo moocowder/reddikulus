@@ -7,6 +7,8 @@ import { IoSpeedometerSharp } from "react-icons/io5"
 import { BiVolumeFull, BiVolumeMute } from "react-icons/bi"
 import { VscDashboard } from "react-icons/vsc"
 import { RiDashboard2Line } from "react-icons/ri"
+// import {GrDashboard} from 'react-icons/gr'
+import { BsGearFill } from "react-icons/bs"
 import Bar from "./bar"
 
 interface Props {
@@ -88,7 +90,7 @@ function Controls({
         // setDashboard={setDashboard}
       />
       <span className={styles.time}>
-        {format(timer)}/{format(duration)}
+        <span>{format(timer)}</span> /{format(duration)}
       </span>
     </div>
   )

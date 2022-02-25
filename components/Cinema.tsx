@@ -41,6 +41,7 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
 
   useEventListener("keydown", (e) => {
     if (e.key === " ") {
+      if (state === "loading") return
       if (state === "running") setState("paused")
       else setState("running")
     }
@@ -101,8 +102,10 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
           setMuted={setMuted}
           speed={speed}
           jump={jump}
+          timer={timer}
           setTimer={setTimer}
           setBuffer={setBuffer}
+          poster={thumbnail}
         />
         {(ctrlDisplay || state !== "running") && !zoomed && (
           <>

@@ -6,13 +6,14 @@
   transition: 0.2s;
   overflow: hidden;
   background: #ffffff0e;
+  /* background: #ffffff26; */
   cursor: pointer;
 }
 
 .brick:hover {
   transition: 0.2s;
   transform: scale(1.03);
-  /* z-index: 1; */
+  z-index: 1;
 }
 
 /* .brick > * {

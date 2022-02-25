@@ -20,17 +20,12 @@ function Header({
   open: boolean
   setOpen: (o: boolean) => void
 }) {
+  const router = useRouter()
+
   return (
     <div className={styles.header}>
       <div className={styles.left}>
-        <span
-          onClick={() => setOpen(!open)}
-          className={styles.icon}
-          style={{
-            background: open ? "var(--sorbe)" : "",
-            color: open ? "white" : "",
-          }}
-        >
+        <span onClick={() => setOpen(!open)} className={styles.icon}>
           <FaChartLine />
         </span>
         <Link href="/">
@@ -44,7 +39,7 @@ function Header({
           <span className={styles.icon}>
             <FaReddit />
           </span>
-          <span className={styles.icon}>
+          <span className={styles.icon} onClick={() => router.push("/donate")}>
             <BsFillHeartFill />
           </span>
         </div>

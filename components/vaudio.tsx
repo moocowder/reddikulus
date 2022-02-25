@@ -11,8 +11,10 @@ interface Props {
   setMuted: Function
   speed: number
   jump: number | null
+  timer: number
   setTimer: Function
   setBuffer: Function
+  poster: string
 }
 
 function Vaudio({
@@ -26,8 +28,10 @@ function Vaudio({
   setMuted,
   speed,
   jump,
+  timer,
   setTimer,
   setBuffer,
+  poster,
 }: Props) {
   const [vplay, setVplay] = useState(false)
   const [aplay, setAplay] = useState(false)
@@ -40,12 +44,17 @@ function Vaudio({
     if (state === "paused") pause()
   }, [state])
 
+  // useEffect(() => {
+  //   if (vplay && aplay) {
+  //     // alert("run")
+  //     setState("running")
+  //   }
+  // }, [vplay, aplay])
   useEffect(() => {
-    if (vplay && aplay) {
-      alert("run")
-      setState("running")
-    }
-  }, [vplay, aplay])
+    seek(timer)
+    setState("loading")
+    audio.current?.pause()
+  }, [quality])
 
   useEffect(() => {
     if (media.current) media.current.playbackRate = speed
@@ -72,7 +81,10 @@ function Vaudio({
   useEffect(() => {}, [jump])
   function play() {
     try {
-      if (audio.current) audio.current?.play() //this is the one!!!!!!
+      // if (audio.current) {
+      //   audio.current?.play()
+      //   if (media.current) audio.current.currentTime = media.current.currentTime
+      // }
       media.current?.play()
     } catch (e) {
       console.log(e)
@@ -92,20 +104,30 @@ function Vaudio({
     <>
       <video
         ref={media}
+        poster={timer === 0 ? poster : ""}
         key={"v" + src + quality}
-        // onPlaying={() => {
-        //   if (audio.current) audio.current?.play()
-        //   setState("running")
-        // }}
+        onPlaying={() => {
+          setState("running") //for when seek
+
+          if (audio.current) {
+            if (media.current)
+              audio.current.currentTime = media.current.currentTime
+            audio.current?.play()
+          }
+        }}
+        // onPlaying={() => setState("running")}
         // onPause={() => {
         //   // alert("iam the problem")
         //   setState("paused")
         // }}
+        // onPlay={() => {
+        //   setState("running")
+        // }}
         onCanPlay={() => {
           // alert("oo")
-          setVplay(true)
+          // setVplay(true)
           console.log("video can play")
-          // setState("running")
+          setState("running")
         }}
         onEnded={() => setState("ended")}
         onTimeUpdate={(e: any) => setTimer(e.target.currentTime)}
@@ -132,9 +154,10 @@ function Vaudio({
           ref={audio}
           key={"a" + src + audioKey}
           onCanPlay={() => {
-            setAplay(true)
+            // setAplay(true)
             console.log("audio can play")
           }}
+          autoPlay={false}
           // onWaiting={() => {
           //   media.current?.pause()
           //   setState("loading")

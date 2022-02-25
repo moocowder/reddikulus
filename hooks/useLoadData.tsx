@@ -19,7 +19,7 @@ export default function useLoadData(
 
     let posts
     async function getPage() {
-      let d = await loadPage()
+      let d = await loadPage(api, sort, after)
       posts = [...data.posts, ...d?.posts]
       setData({ after: d.after, posts })
     }
@@ -27,16 +27,19 @@ export default function useLoadData(
   }, [after])
 
   useEffect(() => {
-    setData({ after: "", posts: [] })
+    // alert(api)
+    // setData({ after: "", posts: [] })
 
     async function getPage() {
-      let d = await loadPage()
+      let d = await loadPage(api, sort, "")
+      // alert(after)
+      console.log("data>>>: ", d?.posts)
       setData({ after: d.after, posts: d?.posts })
     }
     getPage()
   }, [api, sort])
 
-  async function loadPage() {
+  async function loadPage(api: string, sort: string, after: string) {
     setLoading(true)
     setError(false)
 

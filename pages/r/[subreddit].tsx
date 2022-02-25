@@ -11,6 +11,7 @@ import api from "../../utils/request"
 import { useRouter } from "next/router"
 import Bonk from "../../components/bonk"
 import Xolo from "../../components/xolo"
+import Alex from "../../components/alex"
 
 type About = {
   banner: string
@@ -32,19 +33,9 @@ type Props = {
 function Subreddit({ sub, about }: Props) {
   if (!about)
     return (
-      // <h1>
-      //   subreddit not found&nbsp;
-      //   <span style={{ color: "#ff0066" }}>
-      //     ≽(
-      //     <span style={{ color: "rgb(255, 181, 249)" }}>x_x</span>
-      //     )≼
-      //   </span>
-      // </h1>
-      <Xolo
-        text={"subreddit not found"}
-        face={"x_x"}
-        style={{ fontSize: "30px" }}
-      />
+      <Alex face="x_x">
+        <h3>subreddit not found</h3>
+      </Alex>
     )
   if (about.nsfw) return <Bonk />
 
@@ -63,19 +54,14 @@ function Subreddit({ sub, about }: Props) {
       />
       {about.allow_media ? (
         <Content
+          // key={sub}
           api={`r/${sub}/SORT?after=AFTER`}
           tag={"subreddit"}
           sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
         />
       ) : (
-        <h3>
-          This sub doesn't contain any images or videos &nbsp;
-          <span style={{ color: "#ff0066" }}>
-            ≽(
-            <span style={{ color: "rgb(255, 181, 249)" }}>⚆ _ ⚆</span>
-            )≼
-          </span>
-        </h3>
+        // <Alex face="⚆ _ ⚆"></Alex>
+        <Alex face="⚆ _ ⚆">Subreddit doesn't contain images or videos</Alex>
       )}
     </div>
   )

@@ -30,7 +30,7 @@ function User({ user, about }: Props) {
     return (
       <Xolo text={"user not found"} face={"x_x"} style={{ fontSize: "30px" }} />
     )
-  if (about.nsfw) return <Bonk />
+  // if (about.nsfw) return <Bonk />
 
   return (
     <div>

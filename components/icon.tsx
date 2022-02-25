@@ -41,9 +41,9 @@ function Icon({ state, setState, onMouseEnter }: Props) {
         else setState("paused")
       }}
     >
-      {state === "ended" && <BsArrowCounterclockwise />}
-      {(state === "running" || state === "loading") && <FiPauseCircle />}
-      {state === "paused" && <IoPlayOutline />}
+      {state === "ended" && <FaUndo />}
+      {state === "running" && <FaPause />}
+      {state === "paused" && <FaPlay />}
     </div>
   )
 }

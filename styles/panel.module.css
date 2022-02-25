@@ -5,7 +5,8 @@
   flex-direction: column;
   /* height: 100%; */
   overflow-y: scroll;
-  background: #250040;
+  /* background: #250040; */
+  background: #090c33;
   animation: appear 0.1s linear;
 }
 
@@ -17,7 +18,8 @@
 }
 
 .item:hover {
-  background: #1c002f;
+  /* background: #1c002f; */
+  background: #05061b;
 }
 
 .link {
@@ -71,7 +73,7 @@
 
 @keyframes appear {
   from {
-    margin-left: -350px;
+    margin-left: -200px;
   }
   to {
     margin-left: 0;

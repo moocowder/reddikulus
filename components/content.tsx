@@ -65,7 +65,7 @@ function Content({ api, sorts, tag }: Props) {
   }
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className={styles.content}>
       <Sort words={sorts.words} sort={sort} setSort={setSort} />
       {post && (
         <Viewer
@@ -109,6 +109,7 @@ function Content({ api, sorts, tag }: Props) {
           <span style={{ color: "var(--sorbe)" }}> refresh?</span>
         </span>
       )}
+      {/* {data.after && data.posts?.length === 0 && <h3>no content :/</h3>} */}
     </div>
   )
 }

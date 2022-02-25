@@ -28,6 +28,7 @@ function Imagine({ thumbnail, original = "", appeared = () => {} }: Props) {
           onLoad={() => appeared()}
           className={`${styles.pic}`}
           // style={style}
+          key={original}
           src={original}
         />
       ) : (
@@ -35,6 +36,7 @@ function Imagine({ thumbnail, original = "", appeared = () => {} }: Props) {
           onLoad={() => appeared()}
           className={`${styles.pic}`}
           // style={style}
+          key={original}
           src={thumbnail}
         />
       )}

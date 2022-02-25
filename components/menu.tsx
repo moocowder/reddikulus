@@ -13,18 +13,18 @@ import Panel from "./panel"
 //   subs: Sub[]
 // }
 
-type Topic = {
-  name: string
-  icon: string
-  subs: Sub[]
-}
+// type Topic = {
+//   name: string
+//   icon: string
+//   subs: Sub[]
+// }
 
 // type Topic = { name: string; icon: string }
-type Sub = { name: string; icon: string }
+// type Sub = { name: string; icon: string }
 
 function Menu({ setOpen }: { setOpen: Function }) {
   // const [entries, setEntries] = useState<Entry[]>([])
-  const [topics, setTopics] = useState<Topic[]>([])
+  // const [topics, setTopics] = useState<Topic[]>([])
   // const [list, setList] = useState
   // const [topics, setTopics] = useState<Topic[]>([])
   // const [topic, setTopic] = useState<Topic | null>(null)
@@ -40,13 +40,13 @@ function Menu({ setOpen }: { setOpen: Function }) {
     setOpen(false)
   })
 
-  useEffect(() => {
-    fetch("https://raw.githubusercontent.com/maathi/topics/master/data.json")
-      .then((r) => r.json())
-      // .then((d) => setEntries(d))
-      .then((d) => setTopics(d))
-      .catch((e) => console.log(e))
-  }, [])
+  // useEffect(() => {
+  //   fetch("https://raw.githubusercontent.com/maathi/topics/master/data.json")
+  //     .then((r) => r.json())
+  //     // .then((d) => setEntries(d))
+  //     .then((d) => setTopics(d))
+  //     .catch((e) => console.log(e))
+  // }, [])
 
   // useEffect(() => {
   //   if (!entries) return
@@ -57,9 +57,9 @@ function Menu({ setOpen }: { setOpen: Function }) {
     <div ref={ref} className={styles.menu}>
       <Panel
         // topics={topics}
-        list={topics.map((t) => {
-          return { name: t.name, icon: t.icon }
-        })}
+        // list={topics.map((t) => {
+        //   return { name: t.name, icon: t.icon }
+        // })}
         // topic={topic}
         // setTopic={setTopic}
         selected={selected}
@@ -68,9 +68,10 @@ function Menu({ setOpen }: { setOpen: Function }) {
       />
       {selected && (
         <Subpanel
-          key={selected}
+          // key={selected}
+          selected={selected}
           // subs={entries.find((e) => e.topic.name === selected)?.subs || []}
-          subs={topics.find((e) => e.name === selected)?.subs || []}
+          // subs={topics.find((e) => e.name === selected)?.subs || []}
           setOpen={setOpen}
         />
       )}

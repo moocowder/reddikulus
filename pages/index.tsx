@@ -12,7 +12,8 @@ export default function Home() {
       </Head>
 
       <>
-        <h1 className="title">Popular posts</h1>
+        {/* <h2 className="title">Popular posts</h2> */}
+        {/* <div style={{ marginTop: "80px" }}></div> */}
         <Content
           api={`r/popular/SORT?after=AFTER`}
           sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}

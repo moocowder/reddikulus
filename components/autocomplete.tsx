@@ -140,13 +140,13 @@ function Item({ item, setQuery }: { item: Item; setQuery: Function }) {
         router.push(`/${item.name}`)
       }}
     >
-      {item.icon ? (
-        <div className={styles.wrapper}>
+      <div className={styles.wrapper}>
+        {item.icon ? (
           <img src={item.icon} alt="" />
-        </div>
-      ) : (
-        <Badge side={50} color={item.color} />
-      )}
+        ) : (
+          <Badge color={item.color} />
+        )}
+      </div>
       <div className={styles.infos}>
         <span>{item.name}</span>
         {item.subscribers && <small>{format(item.subscribers)}</small>}

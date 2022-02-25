@@ -30,13 +30,9 @@ function Sublist({ query }: Props) {
               router.push(`/r/${s.name}`)
             }}
           >
-            {s.icon ? (
-              <div className={styles.wrapper}>
-                <img src={s.icon} alt="" />
-              </div>
-            ) : (
-              <Badge side={50} color={s.color} text={s.name} />
-            )}
+            <div className={styles.wrapper}>
+              {s.icon ? <img src={s.icon} alt="" /> : <Badge color={s.color} />}
+            </div>
             <div className={styles.infos}>
               <p>{s.name}</p>
               <small>{format(s.subscribers)}</small>

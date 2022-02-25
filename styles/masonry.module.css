@@ -18,7 +18,8 @@
 
 .menu > * {
   cursor: pointer;
-  background: #ffffff49;
+  /* background: #ffffff49; */
+  background: #0011ff23;
   height: 40px;
   width: 40px;
   border-radius: 100%;

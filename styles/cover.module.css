@@ -16,7 +16,8 @@
   height: 200px;
   border-radius: 100%;
   border: 5px solid #090014;
-  background: white;
+  /* background: white; */
+  background: #ffffff26;
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 20%);

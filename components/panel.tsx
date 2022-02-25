@@ -5,7 +5,7 @@ import { FaTimes, FaPlay } from "react-icons/fa"
 import { useRouter } from "next/router"
 
 interface Props {
-  list: { name: string; icon: string }[]
+  // list: { name: string; icon: string }[]
   // topic: Topic | null
   // setTopic: Function
   selected: string | null
@@ -16,7 +16,7 @@ interface Props {
 // type Topic = { name: string; icon: string }
 // type Sub = { name: string; icon: string }
 
-function Panel({ list, selected, setSelected, setOpen }: Props) {
+function Panel({ selected, setSelected, setOpen }: Props) {
   const router = useRouter()
 
   function handleItemClick(e: any, url: string) {
@@ -27,11 +27,11 @@ function Panel({ list, selected, setSelected, setOpen }: Props) {
 
   return (
     <ul className={styles.panel}>
-      {list?.map((l) => (
+      {topics?.map((l) => (
         <li
           className={styles.item}
           key={l.name}
-          style={{ backgroundColor: l.name === selected ? "#1c002f" : "" }}
+          style={{ backgroundColor: l.name === selected ? "#05061b" : "" }}
         >
           <a
             className={styles.link}
@@ -39,13 +39,14 @@ function Panel({ list, selected, setSelected, setOpen }: Props) {
             onClick={(e) => handleItemClick(e, "/topics/" + l.name)}
           >
             <div className={styles.wrapper}>
-              <img src={l.icon || ""} alt="" />
+              <img src={"/category/" + l.icon} alt="" />
             </div>
             <div className={styles.text}>{l.name}</div>
           </a>
           <div
             className={styles.arrow}
-            onMouseEnter={() => setSelected(l.name)}
+            // onMouseEnter={() => setSelected(l.name)}
+            onClick={() => setSelected(l.name)}
             style={{ color: l.name === selected ? "var(--sorbe)" : "" }}
           >
             <FaPlay />
@@ -55,4 +56,103 @@ function Panel({ list, selected, setSelected, setOpen }: Props) {
     </ul>
   )
 }
+const topics = [
+  {
+    name: "aww",
+    icon: "aww.png",
+  },
+  {
+    name: "food",
+    icon: "food.png",
+  },
+  {
+    name: "memes",
+    icon: "memes.jpg",
+  },
+  {
+    name: "tech",
+    icon: "tech.png",
+  },
+  {
+    name: "crypto",
+    icon: "crypto.png",
+  },
+  {
+    name: "gaming",
+    icon: "gaming.png",
+  },
+  {
+    name: "e3",
+    icon: "e3.png",
+  },
+  {
+    name: "sports",
+    icon: "sports.jpg",
+  },
+  {
+    name: "health and fitness",
+    icon: "health.jpg",
+  },
+  {
+    name: "outdoors",
+    icon: "outdoors.png",
+  },
+  {
+    name: "travel",
+    icon: "travel.png",
+  },
+  {
+    name: "vroom",
+    icon: "vroom.jpg",
+  },
+  {
+    name: "pics & gifs",
+    icon: "pics.jpg",
+  },
+  {
+    name: "art and deseign",
+    icon: "art.png",
+  },
+  {
+    name: "photography",
+    icon: "photography.jpg",
+  },
+  {
+    name: "music",
+    icon: "music.png",
+  },
+  {
+    name: "wholesome",
+    icon: "wholesome.png",
+  },
+  {
+    name: "mindblowing",
+    icon: "mindblowing.jpg",
+  },
+  {
+    name: "science",
+    icon: "",
+  },
+  {
+    name: "finance and buisiness",
+    icon: "finance.jpg",
+  },
+  {
+    name: "tv",
+    icon: "tv.jpg",
+  },
+  {
+    name: "videos",
+    icon: "videos.jpg",
+  },
+  {
+    name: "beauty",
+    icon: "beauty.jpg",
+  },
+  {
+    name: "fashion",
+    icon: "",
+  },
+]
+
 export default Panel

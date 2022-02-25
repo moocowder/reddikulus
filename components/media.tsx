@@ -53,7 +53,7 @@ function Media({ media }: Props) {
         <Gif thumbnail={media.thumbnail} url={media.url} />
       )}
 
-      {loading && <CgSpinnerTwo className={styles.spinner} />}
+      {/* {loading && <CgSpinnerTwo className={styles.spinner} />} */}
     </div>
   )
 }

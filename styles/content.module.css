@@ -1,3 +1,8 @@
+.content {
+  margin-top: 50px;
+  /* border: 1px solid red; */
+}
+
 .bar {
   position: fixed;
   /* left: 0; */
