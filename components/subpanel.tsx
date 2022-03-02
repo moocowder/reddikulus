@@ -1,5 +1,3 @@
-import Link from "next/link"
-import { useRef } from "react"
 import { useEffect, useState } from "react"
 import styles from "../styles/subpanel.module.css"
 import { useRouter } from "next/router"
@@ -8,7 +6,6 @@ import Badge from "./badge"
 type Sub = {
   name: string
   icon: string
-  // color: string
 }
 
 interface Props {
@@ -17,7 +14,6 @@ interface Props {
 }
 
 function Subpanel({ selected, setOpen }: Props) {
-  // const [selected, setSelected] = useState<Sub[]>([])
   const [subs, setSubs] = useState<Sub[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -30,7 +26,6 @@ function Subpanel({ selected, setOpen }: Props) {
   }
 
   useEffect(() => {
-    // setSubs([])
     setLoading(true)
     fetch("/api/topic?name=" + selected)
       .then((r) => r.json())
@@ -39,7 +34,7 @@ function Subpanel({ selected, setOpen }: Props) {
   }, [selected])
 
   useEffect(() => {
-    if (subs) setLoading(false)
+    if (subs.length !== 0) setLoading(false)
   }, [subs])
 
   return (
@@ -68,15 +63,7 @@ function Subpanel({ selected, setOpen }: Props) {
               onClick={(e) => handleClick(e, "/r/" + s.name)}
             >
               <div className={styles.wrapper}>
-                {s.icon ? (
-                  <img
-                    src={s.icon.replace(/&amp;/g, "&")}
-                    // style={{ background: "anime" }}
-                    alt=""
-                  />
-                ) : (
-                  <Badge color={"#ffffff26"} />
-                )}
+                {s.icon ? <img src={s.icon} alt="" /> : <Badge />}
               </div>
               <span className={styles.text}>{s.name}</span>
             </a>

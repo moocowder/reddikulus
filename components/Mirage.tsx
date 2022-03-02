@@ -1,13 +1,9 @@
 import { useEffect } from "react"
 import { useRef } from "react"
 import { useState } from "react"
-import Cinema from "./Cinema"
 import Imagine from "./imagine"
 import styles from "../styles/mirage.module.css"
-import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
 import { FaPlay } from "react-icons/fa"
-import { RiFileGifFill } from "react-icons/ri"
-import { AiOutlineGif, AiOutlineFileGif } from "react-icons/ai"
 import { BsLightningFill } from "react-icons/bs"
 
 type Props = {

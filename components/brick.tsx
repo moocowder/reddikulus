@@ -1,6 +1,5 @@
 import styles from "../styles/brick.module.css"
-import { useEffect, useState } from "react"
-import Infos from "./Infos"
+import { useState } from "react"
 import { Post, Image, Video, Gallery, Gif } from "../schema/post"
 import Imagine from "./imagine"
 import Mirage from "./Mirage"
@@ -35,8 +34,6 @@ function Brick({
         if (entries[0].isIntersecting) {
           setVisible(true)
           if (lastBrick) lastBrick()
-        } else {
-          // setVisible(false)
         }
       },
       { threshold: 0 }

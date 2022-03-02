@@ -1,13 +1,8 @@
 import styles from "../styles/options.module.css"
 import { CgCloseO } from "react-icons/cg"
-import { BiFullscreen } from "react-icons/bi"
-import { GrCircleQuestion } from "react-icons/gr"
 import { FiDownload } from "react-icons/fi"
 import { FaKeyboard } from "react-icons/fa"
-import { AiOutlineQuestionCircle } from "react-icons/ai"
 import { FiMaximize, FiMinimize } from "react-icons/fi"
-import { useEffect, useState } from "react"
-import useTimedState from "../hooks/useTimedState"
 
 interface Props {
   close: Function
@@ -16,6 +11,8 @@ interface Props {
   fullscreen: boolean
   download: Function
   onMouseEnter: Function
+  help: boolean
+  setHelp: Function
 }
 
 function Options({
@@ -25,6 +22,8 @@ function Options({
   minimize,
   download,
   onMouseEnter,
+  help,
+  setHelp,
 }: Props) {
   return (
     <ul
@@ -47,7 +46,11 @@ function Options({
         </li>
       )}
 
-      <li>
+      <li
+        onClick={() => {
+          setHelp(!help)
+        }}
+      >
         <FaKeyboard />
       </li>
       <li onClick={() => download()}>

@@ -10,15 +10,16 @@ function Bonk() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        // border: "1px solid red",
-        // height: "100vh",
+        marginTop: "100px",
         fontSize: "32px",
         gap: "20px",
       }}
     >
-      <p>this is a +18 community</p>
+      <h3>this is a +18 community</h3>
+
       <img src="/bonk.webp" alt="" />
-      <Alex face="ò_ó" size={28}>
+
+      <Alex face="ò_ó">
         <span
           style={{ color: "#ff0066", cursor: "pointer" }}
           onClick={() => router.back()}

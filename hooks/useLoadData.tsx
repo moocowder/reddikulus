@@ -27,13 +27,8 @@ export default function useLoadData(
   }, [after])
 
   useEffect(() => {
-    // alert(api)
-    // setData({ after: "", posts: [] })
-
     async function getPage() {
       let d = await loadPage(api, sort, "")
-      // alert(after)
-      console.log("data>>>: ", d?.posts)
       setData({ after: d.after, posts: d?.posts })
     }
     getPage()

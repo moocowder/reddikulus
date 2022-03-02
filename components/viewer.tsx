@@ -1,7 +1,6 @@
-import { useEffect, useState, useRef, RefObject } from "react"
+import { useEffect, useState, useRef } from "react"
 import styles from "../styles/viewer.module.css"
 import Media from "./media"
-import Infos from "./Infos"
 import Options from "./options"
 import useTimedState from "../hooks/useTimedState"
 import { Post } from "../schema/post"
@@ -40,6 +39,7 @@ const Viewer = ({
   children,
 }: Props) => {
   const [optDisplay, setOptDisplay, cancelOpt] = useTimedState<boolean>(false)
+  const [help, setHelp] = useState(false)
 
   useEventListener("keydown", (e: any) => {
     switch (e.key) {
@@ -147,7 +147,19 @@ const Viewer = ({
           fullscreen={fullscreen}
           download={download}
           onMouseEnter={() => cancelOpt()}
+          help={help}
+          setHelp={setHelp}
         />
+      )}
+      {help && (
+        <div className={styles.help} onMouseDown={() => setHelp(false)}>
+          <ul>
+            <li>Next : right click, →</li>
+            <li>Previous : left click, ←</li>
+            <li>Exit : middle click, ESC</li>
+            <li>Zoom in/out : mouse wheel</li>
+          </ul>
+        </div>
       )}
     </div>
   )

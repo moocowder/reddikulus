@@ -15,14 +15,6 @@
   z-index: 1;
 }
 
-/* .img {
-  position: absolute;
-  width: inherit;
-  height: inherit;
-  object-fit: contain;
-  z-index: 3;
-} */
-
 .icon {
   position: absolute;
   top: 2px;
@@ -34,18 +26,12 @@
 }
 
 .background {
-  /* border: 3px solid green; */
   position: absolute;
   object-fit: cover;
   height: 100%;
   width: 100%;
-  /* top: 0; */
-  /* z-index: 1; */
-  /* z-index: -1; */
   filter: blur(15px) brightness(60%);
-  /* filter: blur(10px) brightness(40%); */
   margin: -30px;
   width: calc(100% + 60px);
   height: calc(100% + 60px);
-  /* z-index: -1; */
 }

@@ -1,15 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from "react"
 import { GetServerSideProps } from "next"
 import Head from "next/head"
 import Content from "../../components/content"
 import Cover from "../../components/cover"
 import About from "../../components/about"
 import Bonk from "../../components/bonk"
-import Xolo from "../../components/xolo"
+import Alex from "../../components/alex"
 
 type About = {
   title: string
-  // name: string
   description: string
   karma: number
   created: number
@@ -26,11 +24,8 @@ type Props = {
 }
 
 function User({ user, about }: Props) {
-  if (!about)
-    return (
-      <Xolo text={"user not found"} face={"x_x"} style={{ fontSize: "30px" }} />
-    )
-  // if (about.nsfw) return <Bonk />
+  if (!about) return <Alex face="x_x">user not found</Alex>
+  if (about.nsfw) return <Bonk />
 
   return (
     <div>
@@ -66,8 +61,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let about = {
     title: data.data.subreddit.title,
-    // name: data.data.name,
-    // description: data.data.subreddit.description,
     karma: data.data.total_karma,
     created: data.data.created,
     description: data.data.subreddit.public_description,

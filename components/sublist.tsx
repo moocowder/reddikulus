@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useRef, useState, useContext } from "react"
-import axios from "axios"
+import { useState } from "react"
 import Badge from "../components/badge"
 import styles from "../styles/sublist.module.css"
 import useLoadSubs from "../hooks/useLoadSubs"
 import format from "../utils/format"
-import Link from "next/link"
 import router from "next/router"
 import { IoIosArrowDown } from "react-icons/io"
 
@@ -13,7 +11,6 @@ interface Props {
 }
 
 function Sublist({ query }: Props) {
-  // const [subs, setSubs] = useState<Sub[]>([])
   const [after, setAfter] = useState("")
   const { data, loading, error } = useLoadSubs(query, after)
 

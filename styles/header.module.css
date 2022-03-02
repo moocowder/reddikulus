@@ -1,6 +1,8 @@
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   padding: 10px;
 }
 
@@ -8,13 +10,13 @@
 .right {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
 }
 
 .left img {
   cursor: pointer;
   height: 100%;
-  /* display: inline; */
   width: 210px;
 }
 
@@ -38,4 +40,12 @@
   padding: 10px;
   border-radius: 100%;
   transition: 0.3s;
+}
+
+.left > .icon {
+  font-size: 32px;
+}
+
+.icons > :last-child {
+  color: #ff0066;
 }

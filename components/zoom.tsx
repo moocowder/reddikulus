@@ -13,8 +13,6 @@ function Zoom({ setZoomed = () => {}, children }: Props) {
 
   function handleWheel(e: any) {
     e.preventDefault()
-    // e.stopPropagation()
-    // setShow(0)
     setStart({ x: e.clientX, y: e.clientY })
 
     let delta
@@ -25,14 +23,11 @@ function Zoom({ setZoomed = () => {}, children }: Props) {
     delta > 0 ? (scale *= a) : (scale /= a)
 
     if (scale < a) {
-      // props.setZoomed(false)
       setZoomed(false)
       setScale(1)
       setTranslate({ x: 0, y: 0 })
     } else {
       setZoomed(true)
-      // props.setZoomed(true)
-      // e.stopPropagation()
       setZoomTranslate({ x: e.clientX - xs * scale, y: e.clientY - ys * scale })
       setTranslate({ x: e.clientX - xs * scale, y: e.clientY - ys * scale })
       setScale(scale)
@@ -43,14 +38,7 @@ function Zoom({ setZoomed = () => {}, children }: Props) {
     if (scale > 1) e.stopPropagation()
     e.preventDefault()
 
-    if (scale === 1) {
-      //   setShow(1)
-      //   clearTimeout(timeout.current)
-      //   timeout.current = setTimeout(() => {
-      //     setShow(0)
-      //   }, 3000)
-      return
-    }
+    if (scale === 1) return
 
     setTranslate({
       x: (-e.clientX + start.x) * scale + zoomTranslate.x,
@@ -70,7 +58,6 @@ function Zoom({ setZoomed = () => {}, children }: Props) {
           justifyContent: "center",
           alignItems: "center",
           transformOrigin: "0px 0px",
-          //   border: "3px solid yellow",
           width: "100vw",
           height: "100vh",
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,

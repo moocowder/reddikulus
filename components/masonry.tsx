@@ -1,22 +1,8 @@
-import {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  HTMLAttributeReferrerPolicy,
-  useLayoutEffect,
-} from "react"
+import { useEffect, useState } from "react"
 import styles from "../styles/masonry.module.css"
-// import { LazyLoadImage } from "react-lazy-load-image-component"
-import "react-lazy-load-image-component/src/effects/blur.css"
-import useWindow from "../hooks/useWindow"
-import Image from "next/image"
-import Cinema from "./Cinema"
 import { Post } from "../schema/post"
 import Brick from "../components/brick"
-import Infos from "./Infos"
 import useWindowSize from "../hooks/useWindowSize"
-import useEventListener from "../hooks/useEventListener"
 import { FaArrowUp, FaPlus, FaMinus } from "react-icons/fa"
 
 let n
@@ -40,17 +26,12 @@ function Masonry({
   setInfos,
   children,
 }: Props) {
-  // const [selected, setSelected] = useState<Post<any> | null>()
   const { width, height } = useWindowSize()
-  const [contentHeight, setContentHeight] = useState(100)
-  // const width = useWindow()
-  // console.log("renderring masonry")
+  const [contentHeight, setContentHeight] = useState(0)
+
   let rows: number[] = []
   const gap = 30
   let [iw, setIw] = useState(300)
-  const [end, setEnd] = useState(false)
-  const [ch, setCh] = useState(0)
-  // const iw = 350
 
   useEffect(() => {
     window.addEventListener("resize", (e) => {
@@ -59,22 +40,12 @@ function Masonry({
     })
   }, [])
 
-  useEffect(() => {
-    setEnd(false)
-  }, [posts])
-
   function lastBrick() {
     setContentHeight(Math.max.apply(null, rows))
     if (loading) return
     if (hasMore) loadMore()
-    else setEnd(true)
   }
-  //uselayouteffect
-  // let width
-  // useLayoutEffect(() => {
-  //   width = window.innerWidth
-  // }, [])
-  // let { width } = useWindow()
+
   if (!width) return null
 
   n = Math.floor(width / (iw + gap))
@@ -87,17 +58,12 @@ function Masonry({
     let h = rows[minI]
     rows[minI] += iw / ratio + gap
 
-    // if (rows[minI] > rows.indexOf(Math.max.apply(null, rows))) setCh(rows[minI])
-
     return {
       left: minI * iw + gap * minI,
       top: h,
     }
   }
 
-  //get width
-  //calculate n , setN(5)
-  //getpost : x=  , y=minH  , update minh setminH()
   return (
     <div>
       {children}

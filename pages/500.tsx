@@ -1,5 +1,4 @@
 import Alex from "../components/alex"
-import Xolo from "../components/xolo"
 import { useRouter } from "next/router"
 import Head from "next/head"
 
@@ -15,7 +14,7 @@ function ServerError() {
       <div style={{ textAlign: "center", marginTop: "50px" }}>
         <h1 style={{ fontSize: "62px" }}>500</h1>
         <Alex face={"x_x"}>
-          <h3> somthing went wrong. please try again later.</h3>
+          somthing went wrong. please try again later.
           <small
             style={{
               color: "#ff0066",

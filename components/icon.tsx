@@ -1,31 +1,9 @@
 import styles from "../styles/icon.module.css"
-import {
-  FaUndoAlt,
-  FaVolumeUp,
-  FaVolumeMute,
-  FaPlay,
-  FaPause,
-  FaUndo,
-} from "react-icons/fa"
-import {
-  BsPlay,
-  BsPlayFill,
-  BsPause,
-  BsArrowCounterclockwise,
-} from "react-icons/bs"
-// import {BsPauseCircle} from 'react-icons/'
-import { FiPauseCircle } from "react-icons/fi"
-import { RiPauseMiniLine } from "react-icons/ri"
-import useTimedState from "../hooks/useTimedState"
-import { IoPlayOutline, IoPauseOutline } from "react-icons/io5"
-import { TiMediaPauseOutline } from "react-icons/ti"
-import { useEffect, useState } from "react"
+import { FaPlay, FaPause, FaUndo } from "react-icons/fa"
 
 interface Props {
   state: "running" | "loading" | "paused" | "ended"
   setState: Function
-  // play: Function
-  // pause: Function
   onMouseEnter: Function
 }
 

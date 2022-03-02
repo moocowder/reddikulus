@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react"
 import styles from "../styles/album.module.css"
-import { IoMdAlbums } from "react-icons/io"
-import { FiLayers } from "react-icons/fi"
 import { IoLayers } from "react-icons/io5"
-import { IoIosAlbums } from "react-icons/io"
 import Imagine from "./imagine"
 
 interface Props {

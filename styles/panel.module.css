@@ -3,9 +3,7 @@
   padding-top: 10px;
   display: flex;
   flex-direction: column;
-  /* height: 100%; */
   overflow-y: scroll;
-  /* background: #250040; */
   background: #090c33;
   animation: appear 0.1s linear;
 }
@@ -18,7 +16,6 @@
 }
 
 .item:hover {
-  /* background: #1c002f; */
   background: #05061b;
 }
 
@@ -26,7 +23,6 @@
   flex: 1;
   display: flex;
   gap: 10px;
-  /* transition: 0.3s; */
 }
 
 .link:hover {

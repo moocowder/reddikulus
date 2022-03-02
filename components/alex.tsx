@@ -5,10 +5,15 @@ interface Props {
   children?: any
 }
 
-function Alex({ face, size = 32, style, children }: Props) {
+function Alex({ face, size = 28, style, children }: Props) {
   return (
     <div
-      style={{ fontSize: size, textAlign: "center", margin: "50px", ...style }}
+      style={{
+        fontSize: size,
+        textAlign: "center",
+        margin: "50px",
+        ...style,
+      }}
     >
       <div
         style={{
@@ -22,7 +27,9 @@ function Alex({ face, size = 32, style, children }: Props) {
         <span style={{ color: "rgb(255, 181, 249)" }}>{face}</span>
         )≼
       </div>
-      <span style={{ fontSize: size }}> {children}</span>
+      <span style={{ fontSize: size }}>
+        <b>{children}</b>
+      </span>
     </div>
   )
 }

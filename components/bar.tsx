@@ -5,9 +5,8 @@ interface Props {
   progress: number
   buffer: number
   loading: boolean
-  //   onClick: Function
   duration: number
-  seek: Function
+  setSeek: Function
   peek: string
   ratio: number
 }
@@ -17,7 +16,7 @@ function Bar({
   buffer,
   loading,
   duration,
-  seek,
+  setSeek,
   peek,
   ratio,
 }: Props) {
@@ -43,18 +42,14 @@ function Bar({
     return ("0" + minutes).slice(-2) + ":" + ("0" + seconds).slice(-2)
   }
 
-  // function handleMouseMove(e: any) {}
   return (
     <div
       className={styles.timer}
       onClick={(e) => {
         e.stopPropagation()
-        seek((e.clientX / window.innerWidth) * duration)
+        setSeek((e.clientX / window.innerWidth) * duration)
       }}
-      onMouseMove={
-        (e) => handleMouseMove(e)
-        // peekSeek((e.clientX / window.innerWidth) * duration)
-      }
+      onMouseMove={(e) => handleMouseMove(e)}
       onMouseEnter={() => setPreview(true)}
       onMouseLeave={() => setPreview(false)}
     >
@@ -68,10 +63,7 @@ function Bar({
             >
               <source src={peek} type="video/mp4" />
             </video>
-            {/* {preview && } */}
-            <b ref={timestampRef} className={styles.timestamp}>
-              12:23
-            </b>
+            <b ref={timestampRef} className={styles.timestamp}></b>
           </>
         )}
 

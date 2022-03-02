@@ -1,13 +1,10 @@
 import { GetServerSideProps } from "next"
-import { useCallback, useEffect, useRef, useState, useContext } from "react"
 import Head from "next/head"
 import Content from "../../components/content"
 import Sublist from "../../components/sublist"
 import { BiSearch } from "react-icons/bi"
 
 function Search({ query }: { query: string }) {
-  // const [user, setUser] = useContext(UserContext)
-
   return (
     <div>
       <Head>
@@ -24,14 +21,11 @@ function Search({ query }: { query: string }) {
         }}
       >
         <BiSearch />
-        <b>{query}</b>
+        <b>{query.length < 40 ? query : query.substr(0, 39) + "..."}</b>
       </div>
-      {/* <h1 className="title">Results for "{query}"</h1> */}
-      {/* <h2>subreddits</h2> */}
       <Sublist query={query} />
-      {/* <h2>posts</h2> */}
       <Content
-        api={`search?q=${query}&&sort=SORT&&after=AFTER&limit=16`}
+        api={`search?q=${query}&&sort=SORT&&after=AFTER`}
         sorts={{
           words: ["relevance", "hot", "new", "top", "comments"],
           default: "relevance",
@@ -45,5 +39,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let query = context.query?.q
   return { props: { query } }
 }
-// https://www.reddit.com/search.json?q=
 export default Search

@@ -1,39 +1,27 @@
 .player {
-  /* position: absolute; */
-  /* border-radius: 3px; */
   width: 100%;
   height: 100%;
 }
 
 .video {
-  /* position: absolute; */
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
   width: inherit;
   height: inherit;
-  /* border-radius: 3px; */
-  /* z-index: 5; */
 }
 
 .background {
   position: fixed;
   object-fit: cover;
-
   filter: blur(15px) brightness(40%);
   margin: -30px;
   width: calc(100% + 60px);
   height: calc(100% + 60px);
-  /* z-index: 1; */
 }
 
 .timer {
-  /* background-color: yellow; */
   cursor: pointer;
   left: 0;
   bottom: 0;
   height: 10px;
-  /* width: 100vw; */
   z-index: 2;
   transition: 0.3s;
 }

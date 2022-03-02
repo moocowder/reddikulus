@@ -1,16 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react"
 import { GetServerSideProps } from "next"
 import Head from "next/head"
-import styles from "../../styles/subreddit.module.css"
 import Content from "../../components/content"
-import format from "../../utils/format"
-import date from "../../utils/date"
 import Cover from "../../components/cover"
 import About from "../../components/about"
-import api from "../../utils/request"
-import { useRouter } from "next/router"
 import Bonk from "../../components/bonk"
-import Xolo from "../../components/xolo"
 import Alex from "../../components/alex"
 
 type About = {
@@ -23,6 +16,7 @@ type About = {
   color: string
   allow_media: boolean
   nsfw: boolean
+  show_media: boolean
 }
 
 type Props = {
@@ -31,12 +25,7 @@ type Props = {
 }
 
 function Subreddit({ sub, about }: Props) {
-  if (!about)
-    return (
-      <Alex face="x_x">
-        <h3>subreddit not found</h3>
-      </Alex>
-    )
+  if (!about) return <Alex face=">_<">subreddit not found</Alex>
   if (about.nsfw) return <Bonk />
 
   return (
@@ -54,13 +43,15 @@ function Subreddit({ sub, about }: Props) {
       />
       {about.allow_media ? (
         <Content
-          // key={sub}
-          api={`r/${sub}/SORT?after=AFTER`}
+          api={
+            about.show_media
+              ? `r/${sub}/SORT?after=AFTER`
+              : `r/${sub}+ritditdo/SORT?after=AFTER`
+          }
           tag={"subreddit"}
           sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
         />
       ) : (
-        // <Alex face="⚆ _ ⚆"></Alex>
         <Alex face="⚆ _ ⚆">Subreddit doesn't contain images or videos</Alex>
       )}
     </div>
@@ -93,11 +84,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       data.data.primary_color ||
       data.data.key_color,
     allow_media:
-      data.data.allow_galleries ||
-      data.data.allow_videogifs ||
-      data.data.allow_videos ||
-      data.data.allow_images,
+      (data.data.allow_galleries ||
+        data.data.allow_videogifs ||
+        data.data.allow_videos ||
+        data.data.allow_images) &&
+      data.data.submission_type !== "self",
     nsfw: data.data.over18,
+    show_media: data.data.show_media,
   }
   return { props: { sub, about } }
 }

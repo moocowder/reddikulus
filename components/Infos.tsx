@@ -1,20 +1,7 @@
-import { ImArrowUp } from "react-icons/im"
-import Link from "next/link"
 import styles from "../styles/infos.module.css"
-import { BsFillChatDotsFill } from "react-icons/bs"
 import { useRouter } from "next/router"
-import { useState } from "react"
-import { useEffect } from "react"
-import { FiMessageSquare } from "react-icons/fi"
 import { Infos as InfosType } from "../schema/post"
-import {
-  FaRegClock,
-  FaRegCommentAlt,
-  FaRegComment,
-  FaComment,
-} from "react-icons/fa"
-import { IoLogoReddit } from "react-icons/io"
-import { FaRegUser } from "react-icons/fa"
+import { FaRegClock, FaRegComment } from "react-icons/fa"
 import format from "../utils/format"
 
 type props = {
@@ -72,6 +59,7 @@ function Infos({
           e.stopPropagation()
           e.preventDefault()
           router.push(l)
+          document.body.style.overflow = "auto"
         }}
         onContextMenu={(e) => e.stopPropagation()}
       >

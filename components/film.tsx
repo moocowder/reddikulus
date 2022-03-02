@@ -1,4 +1,3 @@
-import { useState } from "react"
 import styles from "../styles/film.module.css"
 
 interface Props {
@@ -25,7 +24,6 @@ function Film({
       className={styles.film}
       onWheel={(e) => {
         e.stopPropagation()
-        // e.preventDefault()
         if (e.deltaY < 0) {
           if (index === 0) return
           setIndex(index - 1)
@@ -45,7 +43,6 @@ function Film({
       >
         {thumbnails.map((t, i) => (
           <div className={styles.frame} style={{ height: `${frameH}px` }}>
-            {/* {index === i && <span className={styles.number}>{index + 1}</span>} */}
             <img
               className={`${styles.img} ${index === i && styles.selected}`}
               onClick={() => setIndex(i)}

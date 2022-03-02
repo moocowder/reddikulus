@@ -3,16 +3,14 @@ import Gallery from "./gallery"
 import styles from "../styles/media.module.css"
 import Imagine from "./imagine"
 import Zoom from "./zoom"
-import { CgSpinnerTwo } from "react-icons/cg"
 import {
   Gif as GifType,
   Image,
   Video,
   Gallery as GalleryType,
 } from "../schema/post"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import Gif from "../components/gif"
-import useTimedState from "../hooks/useTimedState"
 
 interface Props {
   media: GifType | Video | Image | GalleryType
@@ -52,8 +50,6 @@ function Media({ media }: Props) {
       {media.type === "gif" && (
         <Gif thumbnail={media.thumbnail} url={media.url} />
       )}
-
-      {/* {loading && <CgSpinnerTwo className={styles.spinner} />} */}
     </div>
   )
 }

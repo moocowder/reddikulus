@@ -4,7 +4,6 @@ import Header from "../components/header"
 import "../styles/globals.css"
 import { useRouter } from "next/router"
 import Menu from "../components/menu"
-import { sendEvent, sendVisit } from "../utils/event"
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [open, setOpen] = useState(false)
@@ -12,18 +11,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   useEffect(() => {
-    router.events.on("routeChangeStart", (e) => {
-      setLoading(true)
-      // console.log("ddddd", e)
-      // alert("=====>")
-      // sendEvent(e)
-    })
+    // sendVisit()
+  }, [])
 
-    router.events.on("routeChangeComplete", (e) => {
-      // sendEvent(e)
-
-      setLoading(false)
-    })
+  useEffect(() => {
+    router.events.on("routeChangeStart", (e) => setLoading(true))
+    router.events.on("routeChangeComplete", (e) => setLoading(false))
   }, [router])
 
   return (

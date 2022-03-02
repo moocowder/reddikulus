@@ -77,7 +77,8 @@ function process(data: Data) {
     if (
       !data.is_gallery &&
       data.post_hint !== "image" &&
-      data.post_hint !== "hosted:video"
+      data.post_hint !== "hosted:video" &&
+      data.domain !== "i.redd.it"
     )
       return null
     //   if (data.is_video) data.url = data.media.reddit_video.fallback_url

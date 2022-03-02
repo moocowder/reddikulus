@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Post } from "../schema/post"
 import { Infos as InfosType } from "../schema/post"
-
 import Masonry from "./masonry"
 import Viewer from "./viewer"
 import useLoadData from "../hooks/useLoadData"
@@ -10,7 +9,7 @@ import Word from "../schema/sorts"
 import styles from "../styles/content.module.css"
 import Infos from "../components/Infos"
 import useTimedState from "../hooks/useTimedState"
-import useEventListener from "../hooks/useEventListener"
+import Alex from "./alex"
 
 interface Props {
   api: string
@@ -37,6 +36,10 @@ function Content({ api, sorts, tag }: Props) {
       }, 1000)
   }, [data])
 
+  useEffect(() => {
+    setSort(sorts.default)
+  }, [api])
+
   let move = {
     next: () => {
       if (!post) return
@@ -60,7 +63,6 @@ function Content({ api, sorts, tag }: Props) {
 
   function handleBrickClick(i: number) {
     document.body.style.overflow = "hidden"
-    // setInfos(data.posts[i].infos)
     setPost(data.posts[i])
   }
 
@@ -72,8 +74,7 @@ function Content({ api, sorts, tag }: Props) {
           post={post}
           close={() => {
             setPost(null)
-            // setFullscreen(false)
-            // setInfos(null)
+            setInfos(null)
             document.body.style.overflow = "auto"
           }}
           move={move}
@@ -104,12 +105,19 @@ function Content({ api, sorts, tag }: Props) {
       </Masonry>
       {loading && <span className={styles.bar}></span>}
       {error && (
-        <span>
-          something went wrong =(x_x)=
-          <span style={{ color: "var(--sorbe)" }}> refresh?</span>
-        </span>
+        <Alex face="x_x">
+          something went wrong. &nbsp;
+          <span
+            style={{ color: "var(--sorbe)", cursor: "pointer" }}
+            onClick={() => window.location.reload()}
+          >
+            refresh?
+          </span>
+        </Alex>
       )}
-      {/* {data.after && data.posts?.length === 0 && <h3>no content :/</h3>} */}
+      {!error && !loading && data.posts?.length === 0 && !data.after && (
+        <Alex face="0_0">There's nothing here</Alex>
+      )}
     </div>
   )
 }

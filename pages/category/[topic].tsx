@@ -1,44 +1,34 @@
-import { useCallback, useEffect, useRef, useState } from "react"
 import { GetServerSideProps } from "next"
 import Head from "next/head"
 import Content from "../../components/content"
-import fs from "fs"
+import Alex from "../../components/alex"
 
 function Topic({ topic, sub }: { topic: string; sub: string }) {
-  // const [subs, setSubs] = useState<string[]>([])
-
-  // useEffect(() => {
-  //   fetch("/api/topics?topic=art and deseign")
-  //     .then((r) => r.json())
-  //     .then((d) => setSubs(d))
-  //     .catch((e) => console.log(e))
-  // }, [])
+  if (!sub) return <Alex face="o_o">This is not a valid category</Alex>
   return (
     <div>
       <Head>
-        <title>Reddikulus | {topic}</title>
+        <title>Category : {topic}</title>
       </Head>
       <div
         style={{
           display: "flex",
           alignItems: "center",
           flexDirection: "row",
-          gap: "10px",
+          gap: "20px",
           margin: "80px auto",
           fontSize: "32px",
           textAlign: "center",
-          // border: "1px solid white",
           justifyContent: "center",
         }}
       >
         <img
-          src="/category/crypto.png"
+          src={`/category/${topic}.jpg`}
           width={60}
           height={60}
           style={{ borderRadius: "100%" }}
           alt=""
         />
-        <br />
         <b> {topic} </b>
       </div>
       <Content
@@ -61,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .then((s) => s.reduce((a: string, v: string) => a + "%2B" + v))
     .catch((e) => console.log(e))
 
-  return { props: { topic, sub } }
+  return { props: { topic, sub: sub || null } }
 }
 
 export default Topic

@@ -1,15 +1,11 @@
 .masonry {
   position: relative;
-  /* height: fit-content; */
 }
 
 .menu {
-  /* border: 1px solid yellowgreen; */
   position: fixed;
   bottom: 0;
   right: 0;
-  /* width: 40px; */
-  /* height: 30px; */
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -18,7 +14,6 @@
 
 .menu > * {
   cursor: pointer;
-  /* background: #ffffff49; */
   background: #0011ff23;
   height: 40px;
   width: 40px;

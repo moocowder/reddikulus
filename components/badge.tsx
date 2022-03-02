@@ -1,14 +1,11 @@
 interface Props {
   color?: string
-  // side: number
 }
 
 function Badge({ color }: Props) {
   return (
     <div
       style={{
-        // width: side,
-        // height: side,
         width: "100%",
         height: "100%",
         backgroundColor: color || "#ffffff26",
@@ -20,15 +17,7 @@ function Badge({ color }: Props) {
         alignItems: "center",
       }}
     >
-      <b
-        style={
-          {
-            // lineHeight: side + "px",
-          }
-        }
-      >
-        r/
-      </b>
+      <b>r/</b>
     </div>
   )
 }

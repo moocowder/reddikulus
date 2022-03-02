@@ -1,12 +1,10 @@
 .brick {
   position: absolute;
   border-radius: 3px;
-  /* box-shadow: 0 0 3px 0px #b30083; */
   box-shadow: 0 0 1px 0px #ff0066;
   transition: 0.2s;
   overflow: hidden;
   background: #ffffff0e;
-  /* background: #ffffff26; */
   cursor: pointer;
 }
 
@@ -15,8 +13,3 @@
   transform: scale(1.03);
   z-index: 1;
 }
-
-/* .brick > * {
-  width: inherit;
-  height: inherit;
-} */

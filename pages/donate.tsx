@@ -1,9 +1,8 @@
 import { useState } from "react"
-import Xolo from "../components/xolo"
 import useEventListener from "../hooks/useEventListener"
 import styles from "../styles/donate.module.css"
-import { FaCopy } from "react-icons/fa"
 import Alex from "../components/alex"
+import Head from "next/head"
 
 const cryptos = [
   {
@@ -78,10 +77,13 @@ function Donate() {
 
   return (
     <>
-      <Alex face="^ ᗜ ^">
-        <h3>Support Reddikulus by donating crypto! </h3>
+      <Head>
+        <title>Support me</title>
+      </Head>
+      <Alex face="｡^‿‿^｡">
+        If you like Reddikulus, please consider supporting my work by donating
+        crypto.
       </Alex>
-
       <div className={styles.cryptos}>
         {cryptos.map((c) => (
           <div key={c.code} className={styles.crypto}>
@@ -98,14 +100,6 @@ function Donate() {
               </div>
 
               <div className={styles.right}>
-                {/* <span
-                  className={styles.copy}
-                  onClick={() => {
-                    navigator.clipboard.writeText(c.key)
-                  }}
-                >
-                  COPY
-                </span> */}
                 <img
                   src="qrcode.svg"
                   alt=""
@@ -128,11 +122,4 @@ function Donate() {
   )
 }
 
-// function Qrcode() {
-//   return (
-//     <div className={styles.popup} onClick={}>
-//       <img src="qrcode.svg" alt="" />
-//     </div>
-//   )
-// }
 export default Donate

@@ -1,13 +1,8 @@
 import styles from "../styles/cinema.module.css"
-import { useState, useRef, useEffect } from "react"
-import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg"
-import { MdReplay } from "react-icons/md"
-import { VscDebugRestart } from "react-icons/vsc"
-import { ImSpinner9 } from "react-icons/im"
+import { useState, useEffect } from "react"
 import Zoom from "./zoom"
 import Controls from "./Controls"
 import Icon from "./icon"
-import useLoadSound from "../hooks/useLoadSound"
 import useTimedState from "../hooks/useTimedState"
 import useEventListener from "../hooks/useEventListener"
 import useLoadKeys from "../hooks/useLoadKeys"
@@ -33,7 +28,7 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   const [volume, setVolume] = useState<number>(1)
   const [muted, setMuted] = useState<boolean>(false)
   const [speed, setSpeed] = useState<number>(1)
-  const [jump, setJump] = useState<number | null>(null)
+  const [seek, setSeek] = useState<number | null>(null)
 
   const [ctrlDisplay, setCtrlDisplay, cancel] = useTimedState(false)
   const [wheeled, setWheeled, cancelWheeled] = useTimedState(false)
@@ -52,12 +47,6 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
     setQuality(videoKeys[0])
   }, [videoKeys])
 
-  // useEffect(() => {
-  //   seek(timer)
-  //   setState("loading")
-  //   audio.current?.pause()
-  // }, [quality])
-
   useEffect(() => {
     setState("loading")
     setTimer(0)
@@ -68,11 +57,6 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   function handleMouseMove() {
     setCtrlDisplay(true, false, 3000)
   }
-
-  // function seek(t: number) {
-  //   if (media.current) media.current.currentTime = t
-  //   if (audio.current) audio.current.currentTime = t
-  // }
 
   function handleWheel(e: any) {
     if (!zoomed && !wheeled && e.deltaY > 0) {
@@ -101,7 +85,8 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
           muted={muted}
           setMuted={setMuted}
           speed={speed}
-          jump={jump}
+          seek={seek}
+          setSeek={setSeek}
           timer={timer}
           setTimer={setTimer}
           setBuffer={setBuffer}
@@ -109,13 +94,7 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
         />
         {(ctrlDisplay || state !== "running") && !zoomed && (
           <>
-            <Icon
-              state={state}
-              setState={setState}
-              // play={play}
-              // pause={pause}
-              onMouseEnter={cancel}
-            />
+            <Icon state={state} setState={setState} onMouseEnter={cancel} />
             <Controls
               onMouseEnter={cancel}
               duration={duration}
@@ -139,13 +118,8 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
             loading={state === "loading"}
             progress={timer / duration}
             buffer={buffer / duration}
-            // onClick={(p: number) => {
-            //   seek(p * duration)
-            // }}
             duration={duration}
-            seek={(t: number) => {
-              setJump(t)
-            }}
+            setSeek={setSeek}
             peek={peek}
             ratio={ratio}
           />

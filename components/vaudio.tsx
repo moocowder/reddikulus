@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import styles from "../styles/vaudio.module.css"
 interface Props {
   state: string
@@ -10,7 +10,8 @@ interface Props {
   muted: boolean
   setMuted: Function
   speed: number
-  jump: number | null
+  seek: number | null
+  setSeek: Function
   timer: number
   setTimer: Function
   setBuffer: Function
@@ -27,33 +28,25 @@ function Vaudio({
   muted,
   setMuted,
   speed,
-  jump,
+  seek,
+  setSeek,
   timer,
   setTimer,
   setBuffer,
   poster,
 }: Props) {
-  const [vplay, setVplay] = useState(false)
-  const [aplay, setAplay] = useState(false)
-
   let media = useRef<HTMLVideoElement>(null)
   let audio = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     if (state === "running") play()
     if (state === "paused") pause()
+    if (state === "loading") audio.current?.pause()
   }, [state])
 
-  // useEffect(() => {
-  //   if (vplay && aplay) {
-  //     // alert("run")
-  //     setState("running")
-  //   }
-  // }, [vplay, aplay])
   useEffect(() => {
-    seek(timer)
+    jump(timer)
     setState("loading")
-    audio.current?.pause()
   }, [quality])
 
   useEffect(() => {
@@ -62,8 +55,10 @@ function Vaudio({
   }, [speed])
 
   useEffect(() => {
-    if (jump !== null) seek(jump)
-  }, [jump])
+    if (seek === null) return
+    jump(seek)
+    setSeek(null)
+  }, [seek])
 
   useEffect(() => {
     if (!audio.current) return
@@ -78,13 +73,8 @@ function Vaudio({
     if (audio.current) audio.current.muted = muted
   }, [muted])
 
-  useEffect(() => {}, [jump])
   function play() {
     try {
-      // if (audio.current) {
-      //   audio.current?.play()
-      //   if (media.current) audio.current.currentTime = media.current.currentTime
-      // }
       media.current?.play()
     } catch (e) {
       console.log(e)
@@ -92,20 +82,27 @@ function Vaudio({
   }
 
   function pause() {
-    media.current?.pause()
-    audio.current?.pause()
+    try {
+      media.current?.pause()
+      audio.current?.pause()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
-  function seek(t: number) {
+  function jump(t: number) {
     if (media.current) media.current.currentTime = t
     if (audio.current) audio.current.currentTime = t
   }
+
   return (
     <>
       <video
         ref={media}
+        className={styles.video}
         poster={timer === 0 ? poster : ""}
         key={"v" + src + quality}
+        onCanPlay={() => setState("running")}
         onPlaying={() => {
           setState("running") //for when seek
 
@@ -115,54 +112,21 @@ function Vaudio({
             audio.current?.play()
           }
         }}
-        // onPlaying={() => setState("running")}
-        // onPause={() => {
-        //   // alert("iam the problem")
-        //   setState("paused")
-        // }}
-        // onPlay={() => {
-        //   setState("running")
-        // }}
-        onCanPlay={() => {
-          // alert("oo")
-          // setVplay(true)
-          console.log("video can play")
-          setState("running")
-        }}
-        onEnded={() => setState("ended")}
         onTimeUpdate={(e: any) => setTimer(e.target.currentTime)}
         onProgress={(e: any) => {
           if (e.target.buffered.length)
             setBuffer(e.target.buffered.end(e.target.buffered.length - 1))
         }}
-        onWaiting={() => {
-          // audio.current?.pause()
-          setState("loading")
-        }}
-        // onCanPlay={() => play()}
-        // poster={thumbnail}
-        className={styles.video}
+        onWaiting={() => setState("loading")}
+        onEnded={() => setState("ended")}
       >
-        {/* <source src={src.replace(/DASH_\d+/, "DASH_240")} type="video/mp4" /> */}
         <source
           src={quality !== "none" ? src.replace(/DASH_.*/, quality) : src}
           type="video/mp4"
         />
       </video>
       {audioKey && (
-        <audio
-          ref={audio}
-          key={"a" + src + audioKey}
-          onCanPlay={() => {
-            // setAplay(true)
-            console.log("audio can play")
-          }}
-          autoPlay={false}
-          // onWaiting={() => {
-          //   media.current?.pause()
-          //   setState("loading")
-          // }}
-        >
+        <audio ref={audio} key={"a" + src + audioKey}>
           <source src={src.replace(/DASH_.*/, audioKey)} type="audio/mp4" />
         </audio>
       )}

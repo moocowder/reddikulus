@@ -1,8 +1,6 @@
 .cryptos {
   display: flex;
   flex-wrap: wrap;
-  /* align-items: flex-start;
-  justify-content: space-around; */
 }
 .logo {
   width: 80px;
@@ -15,79 +13,47 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 30px;
-  /* background: #070924; */
   background: #090c33;
-  /* background: #19002a; */
-  /* background: rgb(255, 105, 235); */
-  /* border: 2px solid var(--sorbe); */
-  /* box-shadow: 0 0 16px 0px #ffffff2a; */
-  /* border: 2px solid rgba(255, 255, 255, 0.39); */
   box-shadow: 0 0 16px 0px #ffffff13;
-
   border-radius: 5px;
   width: 600px;
-  /* height: 200px; */
 }
 
 .up {
-  /* border: 1px solid white; */
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .left {
-  /* border: 1px solid yellowgreen; */
   display: flex;
   align-items: center;
   gap: 15px;
   font-size: 32px;
 }
+
 .right {
-  /* border: 1px solid red; */
   height: 30px;
   align-items: center;
   display: flex;
   gap: 10px;
 }
 
-.copy {
-  /* border: 1px solid grey; */
-  background: #ffffff26;
-  height: 100%;
-  /* padding: 10px 0; */
-  padding-left: 8px;
-  padding-right: 8px;
-  /* line-height: 100%; */
-  cursor: pointer;
-  border-radius: 2px;
-  /* padding: 5px 10px; */
-  transition: 0.3s;
-}
-
-.copy:hover {
-  background: #ff006f28;
-  color: #ff006f;
-}
-
 .right > img {
   cursor: pointer;
   transition: 0.1s;
 }
+
 .right > img:hover {
   transform: scale(1.1);
-  /* border: 2px solid var(--sorbe); */
 }
 
 .crypto > p {
-  /* width: 100%; */
-  /* border: 1px solid hotpink; */
   background: rgb(4, 5, 27);
   padding: 15px;
   border-radius: 5px;
-  /* height: 330px; */
   word-break: break-all;
   color: rgb(177, 177, 177);
-  /* overflow: scroll; */
 }
 
 .popup {
@@ -106,6 +72,5 @@
   height: 300px;
   left: calc(100vw / 2 - 150px);
   top: calc(100vh / 2 - 150px);
-  /* border: 10px solid white; */
   border-radius: 5px;
 }
