@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,7 +16,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
@@ -21,7 +26,12 @@
     "pages/api/posts.js",
     "pages/masonic.jsx",
     "pages/r/[subreddit].tsx",
-    "pages/index.tsx"
-, "components/Mirage.tsx", "hooks/useLoadData2.jsx", "components/Cinema.jsx"  ],
-  "exclude": ["node_modules"]
+    "pages/index.tsx",
+    "components/Mirage.tsx",
+    "hooks/useLoadData2.jsx",
+    "components/Cinema.jsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

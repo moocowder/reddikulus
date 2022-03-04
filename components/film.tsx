@@ -42,7 +42,11 @@ function Film({
         style={{ transform: `translate(0,${h}px)`, gap: `${gap}px` }}
       >
         {thumbnails.map((t, i) => (
-          <div className={styles.frame} style={{ height: `${frameH}px` }}>
+          <div
+            key={i}
+            className={styles.frame}
+            style={{ height: `${frameH}px` }}
+          >
             <img
               className={`${styles.img} ${index === i && styles.selected}`}
               onClick={() => setIndex(i)}

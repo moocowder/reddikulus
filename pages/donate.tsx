@@ -81,7 +81,7 @@ function Donate() {
         <title>Support me</title>
       </Head>
       <Alex face="｡^‿‿^｡">
-        If you like Reddikulus, please consider supporting my work by donating
+        If you like Axorsium, please consider supporting my work by donating
         crypto.
       </Alex>
       <div className={styles.cryptos}>

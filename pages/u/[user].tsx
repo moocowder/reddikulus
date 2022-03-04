@@ -24,8 +24,8 @@ type Props = {
 }
 
 function User({ user, about }: Props) {
-  if (!about) return <Alex face="x_x">user not found</Alex>
-  if (about.nsfw) return <Bonk />
+  if (!about) return <Alex face=">_<">user not found</Alex>
+  // if (about.nsfw) return <Bonk />
 
   return (
     <div>

@@ -12,7 +12,7 @@ function Zoom({ setZoomed = () => {}, children }: Props) {
   const a = 1.3
 
   function handleWheel(e: any) {
-    e.preventDefault()
+    // e.preventDefault()
     setStart({ x: e.clientX, y: e.clientY })
 
     let delta

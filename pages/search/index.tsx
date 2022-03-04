@@ -21,7 +21,7 @@ function Search({ query }: { query: string }) {
         }}
       >
         <BiSearch />
-        <b>{query.length < 40 ? query : query.substr(0, 39) + "..."}</b>
+        <b>{query.length < 40 ? query : query.substring(0, 39) + "..."}</b>
       </div>
       <Sublist query={query} />
       <Content

@@ -120,10 +120,12 @@ function Vaudio({
         onWaiting={() => setState("loading")}
         onEnded={() => setState("ended")}
       >
-        <source
-          src={quality !== "none" ? src.replace(/DASH_.*/, quality) : src}
-          type="video/mp4"
-        />
+        {quality && (
+          <source
+            src={quality !== "none" ? src.replace(/DASH_.*/, quality) : src}
+            type="video/mp4"
+          />
+        )}
       </video>
       {audioKey && (
         <audio ref={audio} key={"a" + src + audioKey}>

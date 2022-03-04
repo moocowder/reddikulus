@@ -107,7 +107,7 @@ const Viewer = ({
   }
 
   function handleWheel(e: any) {
-    e.preventDefault()
+    // e.preventDefault()
     setInfos(null)
     setOptDisplay(false)
   }

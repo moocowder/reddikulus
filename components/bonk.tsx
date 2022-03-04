@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import Alex from "./alex"
 
-function Bonk() {
+function Bonk({ horny = false }: { horny?: boolean }) {
   const router = useRouter()
 
   return (
@@ -19,15 +19,24 @@ function Bonk() {
 
       <img src="/bonk.webp" alt="" />
 
-      <Alex face="ò_ó">
+      {horny ? (
+        <Alex face="ò_ó">
+          <span
+            style={{ color: "#ff0066", cursor: "pointer" }}
+            onClick={() => router.back()}
+          >
+            get back
+          </span>
+          &nbsp;or go to horny jail!&nbsp;
+        </Alex>
+      ) : (
         <span
           style={{ color: "#ff0066", cursor: "pointer" }}
           onClick={() => router.back()}
         >
-          get back
+          go back
         </span>
-        &nbsp;or go to horny jail!&nbsp;
-      </Alex>
+      )}
     </div>
   )
 }

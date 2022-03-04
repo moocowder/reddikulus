@@ -33,13 +33,6 @@ function Masonry({
   const gap = 30
   let [iw, setIw] = useState(300)
 
-  useEffect(() => {
-    window.addEventListener("resize", (e) => {
-      e.preventDefault()
-      console.log("resize...", e)
-    })
-  }, [])
-
   function lastBrick() {
     setContentHeight(Math.max.apply(null, rows))
     if (loading) return

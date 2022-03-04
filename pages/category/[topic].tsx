@@ -41,17 +41,21 @@ function Topic({ topic, sub }: { topic: string; sub: string }) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let topic = context.params?.topic
+  let sub
 
-  let sub = await fetch(
+  let t = await fetch(
     "https://raw.githubusercontent.com/maathi/topics/master/data.json"
   )
     .then((r) => r.json())
     .then((d) => d.find((t: any) => t.name === topic))
-    .then((t) => t.subs.map((s: any) => s.name))
-    .then((s) => s.reduce((a: string, v: string) => a + "%2B" + v))
-    .catch((e) => console.log(e))
 
-  return { props: { topic, sub: sub || null } }
+  if (!t) return { props: { topic, sub: null } }
+  else
+    sub = t.subs
+      .map((s: any) => s.name)
+      .reduce((a: string, v: string) => a + "%2B" + v)
+
+  return { props: { topic, sub: sub } }
 }
 
 export default Topic

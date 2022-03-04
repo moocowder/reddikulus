@@ -1,5 +1,5 @@
 function sendVisit() {
-  fetch(`${process.env.NEXT_PUBLIC_HORU}/add`, {
+  fetch(`${process.env.NEXT_PUBLIC_HORU}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -8,4 +8,4 @@ function sendVisit() {
   })
 }
 
-export { sendVisit }
+export default sendVisit

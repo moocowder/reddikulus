@@ -1,4 +1,3 @@
-// import Media from "../components/media"
 import { Post, Image, Video, Gallery, Gif, Media } from "../schema/post"
 
 type Data = {
@@ -24,19 +23,7 @@ type Data = {
   created: number
 }
 
-// class MC implements Media {
-//   ratio: number
-//   constructor() {
-//     this.ratio = 0
-//   }
-// }
 function process(data: Data) {
-  //   console.log(data, "************************")
-  //   let media: Image | Video | Gallery | Gif
-  //   media = {
-  //     type: "gif",
-  //   }
-  //   let media: Media = new MC()
   let post: Post<null | Gallery | Image | Video | Gif>
   try {
     post = {
@@ -51,6 +38,8 @@ function process(data: Data) {
       },
       media: null,
     }
+
+    if (data.over_18) return null
 
     if (data.crosspost_parent_list) {
       let cross = data.crosspost_parent_list[0]
@@ -88,12 +77,12 @@ function process(data: Data) {
     } else if (data.is_video) post.media = video(data)
     else if (data.is_gallery && data.media_metadata) post.media = gallery(data)
     else {
-      alert("media is null " + post.infos.permalink)
+      // alert("media is null " + post.infos.permalink)
       return null
     }
     return post
   } catch (e) {
-    alert(e)
+    // alert(e)
     return null
   }
 }
@@ -141,7 +130,7 @@ function video(data: Data): Video {
     nsfw: data.over_18,
   }
   img = data.preview?.images[0].source
-  if (!img) alert("no img : " + data.permalink)
+  // if (!img) alert("no img : " + data.permalink)
   v.ratio = img.width / img.height
   return v
 }

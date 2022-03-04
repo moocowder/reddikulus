@@ -78,7 +78,7 @@ function Autocomplete() {
       })
       .catch((e) => {
         if (axios.isCancel(e)) return
-        console.log("erreur : ", e)
+        // console.log("erreur : ", e)
       })
     return () => cancel()
   }

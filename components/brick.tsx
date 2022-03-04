@@ -51,7 +51,7 @@ function Brick({
           height,
           top: position.top,
           left: position.left,
-          border: post.media.nsfw ? "3px solid red" : "",
+          // border: post.media.nsfw ? "3px solid red" : "",
         }}
         onMouseEnter={() => setInfos(post.infos)}
         onMouseLeave={(e) => setInfos(null)}

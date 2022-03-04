@@ -4,14 +4,14 @@ import Header from "../components/header"
 import "../styles/globals.css"
 import { useRouter } from "next/router"
 import Menu from "../components/menu"
-
+import sendVisit from "../utils/event"
 function MyApp({ Component, pageProps }: AppProps) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
-    // sendVisit()
+    sendVisit()
   }, [])
 
   useEffect(() => {

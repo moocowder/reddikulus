@@ -20,9 +20,15 @@ function Header({
         <span onClick={() => setOpen(!open)} className={styles.icon}>
           <HiTrendingUp />
         </span>
-        <Link href="/">
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault()
+            router.push(`/`)
+          }}
+        >
           <img src="/logo.png" alt="" />
-        </Link>
+        </a>
       </div>
 
       <div className={styles.right}>
@@ -30,7 +36,7 @@ function Header({
         <div className={styles.icons}>
           <a
             className={styles.icon}
-            href="https://www.reddit.com/r/reddikulus"
+            href="https://www.reddit.com/r/axorsium"
             target="_blank"
           >
             <FaReddit />
