@@ -62,7 +62,7 @@ const topics = [
   "travel",
   "vroom",
   "pics and gifs",
-  "art and deseign",
+  "art and design",
   "photography",
   "music",
   "wholesome",
