@@ -48,5 +48,6 @@ interface Infos {
   ups: number
   comments: number
   date: number
+  awards: { icon: string; count: number }[]
 }
 export type { Post, Image, Video, Gallery, Gif, Media, Infos }

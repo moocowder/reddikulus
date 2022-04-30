@@ -21,6 +21,7 @@ type Data = {
   url: string
   preview: any
   created: number
+  all_awardings: any[]
 }
 
 function process(data: Data) {
@@ -35,11 +36,14 @@ function process(data: Data) {
         comments: data.num_comments,
         permalink: data.permalink,
         date: data.created,
+        awards: data.all_awardings.map((a) => {
+          return { icon: a.resized_icons[1]?.url, count: a.count }
+        }),
       },
       media: null,
     }
 
-    if (data.over_18) return null
+    // if (data.over_18) return null
 
     if (data.crosspost_parent_list) {
       let cross = data.crosspost_parent_list[0]

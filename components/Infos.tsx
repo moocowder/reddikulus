@@ -42,7 +42,7 @@ function relativeTime(d1: number, d2 = +new Date()) {
 }
 
 function Infos({
-  infos: { ups, title, permalink, sub, author, date, comments },
+  infos: { ups, title, permalink, sub, author, date, comments, awards },
   onMouseEnter = () => {},
   onWheel = () => {},
   tag,
@@ -100,6 +100,14 @@ function Infos({
           {relativeTime(date)}
         </span>
         {tag !== "user" && <a href={`/u/${author}`}>{link(`/u/${author}`)}</a>}
+      </div>
+      <div className={styles.awards}>
+        {awards.map((a) => (
+          <span className={styles.award}>
+            <img src={a.icon} width={20} height={20} alt="" />
+            <b> {a.count}</b>
+          </span>
+        ))}
       </div>
     </div>
   )

@@ -56,3 +56,16 @@
   color: var(--sorbe);
   transition: 0.3s;
 }
+
+.awards {
+  display: flex;
+  gap: 15px;
+  font-size: 15px;
+  flex-wrap: wrap;
+}
+
+.award {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
