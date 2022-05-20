@@ -5,6 +5,7 @@ import Options from "./options"
 import useTimedState from "../hooks/useTimedState"
 import { Post } from "../schema/post"
 import useEventListener from "../hooks/useEventListener"
+import Help from "./help"
 
 declare global {
   interface Document {
@@ -23,6 +24,7 @@ interface Props {
   post: Post<any>
   move: { next: Function; prev: Function }
   close: Function
+  infos: any
   setInfos: Function
   fullscreen: boolean
   setFullscreen: Function
@@ -33,6 +35,7 @@ const Viewer = ({
   post,
   move,
   close,
+  infos,
   setInfos,
   fullscreen,
   setFullscreen,
@@ -52,6 +55,18 @@ const Viewer = ({
         break
       case "ArrowLeft":
         prev()
+        break
+      case "o":
+        next(e)
+        break
+      case "u":
+        prev()
+        break
+      case "f":
+        fullscreen ? minimize() : maximize()
+        break
+      case "i":
+        infos ? setInfos(null) : setInfos(post.infos, null, 5000)
         break
     }
   })
@@ -151,16 +166,7 @@ const Viewer = ({
           setHelp={setHelp}
         />
       )}
-      {help && (
-        <div className={styles.help} onMouseDown={() => setHelp(false)}>
-          <ul>
-            <li>Next : right click, →</li>
-            <li>Previous : left click, ←</li>
-            <li>Exit : middle click, ESC</li>
-            <li>Zoom in/out : mouse wheel</li>
-          </ul>
-        </div>
-      )}
+      {help && <Help onMouseDown={() => setHelp(false)} />}
     </div>
   )
 }

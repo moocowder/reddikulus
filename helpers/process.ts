@@ -43,7 +43,7 @@ function process(data: Data) {
       media: null,
     }
 
-    // if (data.over_18) return null
+    if (data.over_18) return null
 
     if (data.crosspost_parent_list) {
       let cross = data.crosspost_parent_list[0]

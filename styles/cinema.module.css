@@ -29,3 +29,25 @@
 .timer:hover .bar {
   height: 10px;
 }
+
+.sign {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* background: #ff00662c; */
+  background: #0000002c;
+
+  width: 100px;
+  height: 100px;
+  /* text-align: center;
+  line-height: 100px; */
+  border-radius: 100%;
+  font-weight: bold;
+
+  font-size: 28px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

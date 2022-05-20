@@ -2,6 +2,7 @@ import { useState } from "react"
 import styles from "../styles/controls.module.css"
 import { BiVolumeFull, BiVolumeMute } from "react-icons/bi"
 import { RiSettings2Line, RiDashboard3Line } from "react-icons/ri"
+import useEventListener from "../hooks/useEventListener"
 
 interface Props {
   onMouseEnter: Function
@@ -15,6 +16,7 @@ interface Props {
   setVolume: Function
   muted: boolean
   setMuted: Function
+  speeds: number[]
   speed: number
   setSpeed: Function
 }
@@ -37,6 +39,7 @@ function Controls({
   setVolume,
   muted,
   setMuted,
+  speeds,
   speed,
   setSpeed,
 }: Props) {
@@ -63,7 +66,7 @@ function Controls({
           setQuality={setQuality}
         />
       )}
-      <Dashboard speed={speed} setSpeed={setSpeed} />
+      <Dashboard speeds={speeds} speed={speed} setSpeed={setSpeed} />
       <span className={styles.time}>
         <span>{format(timer)}</span> /{format(duration)}
       </span>
@@ -117,9 +120,16 @@ function Sound({
   )
 }
 
-function Dashboard({ speed, setSpeed }: { speed: number; setSpeed: Function }) {
+function Dashboard({
+  speeds,
+  speed,
+  setSpeed,
+}: {
+  speeds: number[]
+  speed: number
+  setSpeed: Function
+}) {
   const [dashboard, setDashboard] = useState(false)
-  const speeds: number[] = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
 
   return (
     <div

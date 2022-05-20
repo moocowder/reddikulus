@@ -78,6 +78,7 @@ function Content({ api, sorts, tag }: Props) {
             document.body.style.overflow = "auto"
           }}
           move={move}
+          infos={infos}
           setInfos={setInfos}
           fullscreen={fullscreen}
           setFullscreen={setFullscreen}

@@ -8,6 +8,7 @@ import useEventListener from "../hooks/useEventListener"
 import useLoadKeys from "../hooks/useLoadKeys"
 import Bar from "./bar"
 import Vaudio from "./vaudio"
+import { BiVolumeFull, BiVolumeMute } from "react-icons/bi"
 
 interface Props {
   src: string
@@ -29,16 +30,45 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   const [muted, setMuted] = useState<boolean>(false)
   const [speed, setSpeed] = useState<number>(1)
   const [seek, setSeek] = useState<number | null>(null)
+  const speeds: number[] = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 3]
+  const [sign, setSign, cancelSign] = useTimedState<any>("")
 
   const [ctrlDisplay, setCtrlDisplay, cancel] = useTimedState(false)
   const [wheeled, setWheeled, cancelWheeled] = useTimedState(false)
   let [zoomed, setZoomed] = useState(false)
 
   useEventListener("keydown", (e) => {
-    if (e.key === " ") {
+    if (e.key === " " || e.key === "k") {
       if (state === "loading") return
       if (state === "running") setState("paused")
       else setState("running")
+    } else if (e.key === "l") {
+      setSeek(timer + 5)
+      setSign(">> 5", "", 800)
+    } else if (e.key === "j") {
+      setSeek(timer - 5)
+      setSign("<< 5", "", 800)
+    } else if (e.key === "m") {
+      setMuted(!muted)
+      if (audioKey)
+        setSign(muted ? <BiVolumeFull /> : <BiVolumeMute />, "", 800)
+    } else if (e.key === "h") {
+      if (videoKeys.length > 1) setQuality(videoKeys[videoKeys.length - 1])
+    } else if (e.key === ">") {
+      let i = speeds.indexOf(speed)
+      if (i !== speeds.length - 1) {
+        setSpeed(speeds[i + 1])
+        setSign(`${speeds[i + 1]}x`, "", 800)
+      }
+    } else if (e.key === "<") {
+      let i = speeds.indexOf(speed)
+      if (i !== 0) {
+        setSpeed(speeds[i - 1])
+        setSign(`${speeds[i - 1]}x`, "", 800)
+      }
+    } else if (e.key === ".") {
+      setSpeed(1)
+      setSign("1x", "", 800)
     }
   })
 
@@ -50,7 +80,8 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
   useEffect(() => {
     setState("loading")
     setTimer(0)
-
+    setSpeed(1)
+    setMuted(false)
     setCtrlDisplay(true, false, 3000)
   }, [src])
 
@@ -73,6 +104,8 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
       onMouseMove={() => handleMouseMove()}
     >
       <img src={thumbnail} className={styles.background} alt="" />
+
+      {sign && <div className={styles.sign}>{sign}</div>}
 
       <Zoom setZoomed={setZoomed}>
         <Vaudio
@@ -107,6 +140,7 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
               setVolume={setVolume}
               muted={muted}
               setMuted={setMuted}
+              speeds={speeds}
               speed={speed}
               setSpeed={setSpeed}
             />
