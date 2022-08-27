@@ -166,7 +166,13 @@ const Viewer = ({
           setHelp={setHelp}
         />
       )}
-      {help && <Help onMouseDown={() => setHelp(false)} />}
+      {help && (
+        <Help
+          onMouseDown={() => {
+            setHelp(false)
+          }}
+        />
+      )}
     </div>
   )
 }

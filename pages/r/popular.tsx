@@ -9,7 +9,7 @@ function Popular() {
       </Head>
       <Content
         api={`r/popular/SORT?after=AFTER`}
-        sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
+        sorts={{ words: ["hot", "new", "rising", "top"], default: "hot" }}
       />
     </>
   )

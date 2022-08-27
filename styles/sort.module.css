@@ -1,8 +1,8 @@
 .sort {
   display: flex;
   gap: 20px;
-  justify-content: flex-end;
-  margin-right: 50px;
+  justify-content: flex-start;
+  margin-left: 50px;
 }
 
 .word {

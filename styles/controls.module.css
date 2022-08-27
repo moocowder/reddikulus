@@ -5,23 +5,46 @@
 */
 .controls {
   position: absolute;
-  bottom: 30px;
-  right: 40px;
-  height: 30px;
+  /* bottom: 30px; */
+  bottom: 20px;
+  /* right: 40px; */
+  right: 0;
+  /* height: 30px; */
+  /* height: 100vh; */
   display: flex;
+  flex-direction: column;
+  /* width: 400px; */
+  width: 130px;
   align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  /* border: 1px solid red; */
 }
 
 .controls > * {
-  height: 100%;
-  line-height: 30px;
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* height: 100%; */
+  /* padding: 20px; */
+  /* line-height: 30px; */
+  /* border: 1px solid yellow; */
+
+  /* width: 80px; */
 }
 
 .sound,
 .quality,
 .speed {
+  /* border: 1px solid white; */
+  width: 80px;
+  height: 80px;
   position: relative;
   cursor: pointer;
+  border-radius: 5px;
+  background: #110a1a4f;
 }
 
 .sound:hover > svg,
@@ -31,16 +54,23 @@
 }
 
 .controls svg {
-  height: 100%;
-  width: 60px;
+  /* height: 100%;
+  width: 100%; */
+  /* width: 60px; */
+  height: 60%;
+  width: 60%;
+  /* font-size: 36px; */
   filter: drop-shadow(0px 0px 9px black);
 }
 
 .palette {
-  width: 100px;
-  transform: translate(-20px, 0);
+  width: 150px;
+  transform: translate(0, calc(-50% + 40px));
   position: absolute;
-  bottom: 30px;
+  /* bottom: 0px;
+  right: 0px; */
+  top: 0;
+  right: 80px;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -50,10 +80,12 @@
 }
 
 .dashboard {
-  width: 100px;
-  transform: translate(-20px, 0);
+  width: 150px;
+  /* transform: translate(-20px, 0); */
   position: absolute;
-  bottom: 30px;
+  bottom: 0;
+  right: 80px;
+  /* bottom: 30px; */
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -65,36 +97,65 @@
 .dashboard > li {
   border-radius: 3px;
   text-align: left;
-  padding: 0 10px;
+  padding: 8px 10px;
 }
 
 .slider {
-  transform: translate(15px, 0);
+  /* transform: translate(15px, 0); */
   background: #090c33;
   position: absolute;
-  bottom: 30px;
+  /* bottom: 30px; */
+  right: 80px;
   display: flex;
   padding: 10px;
   justify-content: center;
-  border-radius: 5px;
+  /* border-radius: 25px; */
 }
 
-.slider > span {
-  height: 100px;
-  width: 10px;
+/* .slider > span {
+  height: 30px;
+  width: 200px;
   border-radius: 2px;
   background: #80808030;
   display: flex;
   align-items: flex-end;
 }
 .slider > span > span {
-  width: 100%;
   background: var(--sorbe);
+  border-radius: 15px;
+} */
+
+.slider > input::-webkit-slider-thumb {
+  /* -webkit-appearance: none; Override default CSS styles */
+  /* appearance: none; */
+  /* width: 100%; Full-width */
+  /* height: 25px; Specified height */
+  /* background: #d3d3d3; Grey background */
+  outline: none; /* Remove outline */
+  /* opacity: 0.7; Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
+  /* color: red; */
+  color: #ff0066;
+  width: 30px;
+  /* background-color: yellow; */
 }
+
+.slider > input::-moz-range-thumb {
+  width: 10px;
+  height: 25px;
+  border: 3px solid black;
+  /* border-radius: 100%; */
+  /* background: #04aa6d; */
+  background: #ff0066;
+  cursor: pointer;
+}
+
 .palette > span {
   cursor: pointer;
   border-radius: 3px;
-  padding: 0 10px;
+  padding: 8px 10px;
+  /* background: black; */
 }
 .palette > *:hover,
 .dashboard > *:hover {
@@ -104,13 +165,31 @@
   font-weight: bold;
   font-size: 18px;
   text-shadow: 0 0 5px black;
-  width: 140px;
+  /* width: 100%; */
+  /* width: 140px; */
+  width: 100%;
+  /* padding: auto; */
   display: flex;
-  align-items: center;
+  justify-content: space-around;
+  margin: auto;
+  text-align: center;
+  /* border: 1px solid yellow; */
 }
 
-.time > span {
+/* .time > :first-child {
   width: 80px;
   justify-content: flex-end;
   text-align: right;
+}
+.time > :nth-child(2) {
+  padding: 0 5px;
+} */
+
+.value {
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  color: #ff0066;
+  font-size: 18px;
+  font-weight: bold;
 }

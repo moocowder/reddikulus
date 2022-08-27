@@ -34,7 +34,7 @@ function Home({ mobile }: { mobile: boolean }) {
       ) : (
         <Content
           api={`r/popular/SORT?after=AFTER`}
-          sorts={{ words: ["hot", "top", "rising"], default: "hot" }}
+          sorts={{ words: ["hot", "rising", "top"], default: "hot" }}
         />
       )}
     </>

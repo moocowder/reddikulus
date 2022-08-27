@@ -7,8 +7,8 @@ import request from "../utils/request"
 export default function useLoadData(
   api: string,
   sort: string,
-  after: string,
-  params?: { [key: string]: string }
+  after: string
+  // params: { [key: string]: string } = {}
 ) {
   const [data, setData] = useState<Data>({ posts: [], after: "" })
   const [loading, setLoading] = useState(false)
@@ -40,7 +40,9 @@ export default function useLoadData(
 
     try {
       let d
-      d = await request(api.replace("SORT", sort).replace("AFTER", after))
+      d = await request(
+        api.replace("SORT", sort).replace("AFTER", after) // + stringify(params)
+      )
 
       let ps = d.data.children
         .map((d: any) => process(d.data))
@@ -48,7 +50,7 @@ export default function useLoadData(
 
       return { posts: ps, after: d.data.after }
     } catch (e) {
-      console.log(">>>>>>>>>>>>>>", e)
+      // console.log(">>>>>>>>>>>>>>", e)
       setError(true)
       return { posts: [], after: "" }
     } finally {
@@ -57,4 +59,11 @@ export default function useLoadData(
   }
 
   return { data, loading, error }
+}
+
+function stringify(params: { [key: string]: string }) {
+  return Object.keys(params).reduce(
+    (a, v) => "&&" + a + v + "=" + params[v],
+    ""
+  )
 }

@@ -3,7 +3,7 @@
   cursor: pointer;
   left: 0;
   bottom: 0;
-  height: 20px;
+  height: 40px;
   width: 100vw;
   z-index: 2;
   transition: 0.3s;
@@ -40,8 +40,8 @@
     45deg,
     transparent,
     transparent 10px,
-    rgba(243, 243, 243, 0.5) 10px,
-    rgba(243, 243, 243, 0.5) 20px
+    rgba(40, 40, 40, 0.5) 10px,
+    rgba(40, 40, 40, 0.5) 20px
   );
   animation: slide 3s linear infinite;
   z-index: 3;

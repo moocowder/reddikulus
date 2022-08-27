@@ -68,7 +68,8 @@ function Controls({
       )}
       <Dashboard speeds={speeds} speed={speed} setSpeed={setSpeed} />
       <span className={styles.time}>
-        <span>{format(timer)}</span> /{format(duration)}
+        <span>{format(timer)}</span>
+        <span>/ {format(duration)}</span>
       </span>
     </div>
   )
@@ -107,13 +108,22 @@ function Sound({
       {palette && (
         <span
           className={styles.slider}
-          onClick={(e) =>
-            setVolume(clamp(window.innerHeight - e.clientY - 70) / 100)
-          }
+          // onClick={(e) =>
+          //   setVolume(clamp(window.innerHeight - e.clientY - 70) / 100)
+          // }
         >
-          <span>
-            <span style={{ height: `${volume * 100}%` }}></span>
-          </span>
+          {/* <span> */}
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step={0.1}
+            value={volume}
+            id="myRange"
+            onChange={(e) => setVolume(e.target.value)}
+          />
+          {/* <span style={{ height: `${volume * 100}%` }}></span> */}
+          {/* </span> */}
         </span>
       )}
     </span>
@@ -134,10 +144,12 @@ function Dashboard({
   return (
     <div
       className={styles.speed}
+      onMouseEnter={() => setDashboard(true)}
       onMouseLeave={() => setDashboard(false)}
       onClick={(e) => e.stopPropagation()}
     >
-      <RiDashboard3Line onMouseEnter={() => setDashboard(true)} />
+      <RiDashboard3Line />
+      {speed !== 1 && <span className={styles.value}>{speed}x</span>}
       {dashboard && (
         <ul className={styles.dashboard}>
           {speeds?.map((s) => (
@@ -171,10 +183,14 @@ function Qualities({
   return (
     <div
       className={styles.quality}
+      onMouseEnter={() => setPalette(true)}
       onMouseLeave={() => setPalette(false)}
       onClick={(e) => e.stopPropagation()}
     >
-      <RiSettings2Line onMouseEnter={() => setPalette(true)} />
+      <RiSettings2Line />
+      <span className={styles.value}>
+        {quality?.replace(/.mp4/, "").replace(/\D+/, "") + "p"}
+      </span>
       {palette && (
         <div className={styles.palette}>
           {[...qualities].reverse().map((q) => (

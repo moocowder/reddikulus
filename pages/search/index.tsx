@@ -27,7 +27,7 @@ function Search({ query }: { query: string }) {
       <Content
         api={`search?q=${query}&&sort=SORT&&after=AFTER`}
         sorts={{
-          words: ["relevance", "hot", "new", "top", "comments"],
+          words: ["relevance", "hot", "new", "comments", "top"],
           default: "relevance",
         }}
       />

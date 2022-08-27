@@ -105,7 +105,7 @@ function Infos({
         {awards.map((a) => (
           <span className={styles.award}>
             <img src={a.icon} width={20} height={20} alt="" />
-            <b> {a.count}</b>
+            <b> {a.count === 1 ? "" : a.count}</b>
           </span>
         ))}
       </div>

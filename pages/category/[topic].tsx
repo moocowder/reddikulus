@@ -33,7 +33,7 @@ function Topic({ topic, sub }: { topic: string; sub: string }) {
       </div>
       <Content
         api={`r/${sub}/SORT?after=AFTER`}
-        sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
+        sorts={{ words: ["hot", "new", "rising", "top"], default: "hot" }}
       />
     </div>
   )

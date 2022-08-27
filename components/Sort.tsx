@@ -6,6 +6,7 @@ import { BiTargetLock, BiCommentDetail } from "react-icons/bi"
 import { FiSunrise } from "react-icons/fi"
 
 import Word from "../schema/sorts"
+import { useState } from "react"
 
 const dic: { [key in Word]: any } = {
   best: <IoRocket />,
@@ -17,6 +18,8 @@ const dic: { [key in Word]: any } = {
   comments: <BiCommentDetail />,
 }
 
+// type Time = "hour" | "day" | "week" | "month" | "year" | "all"
+
 function Sort({
   words,
   sort,
@@ -26,6 +29,8 @@ function Sort({
   sort: Word
   setSort: Function
 }) {
+  // const [time, setTime] = useState<Time>("day")
+  // const [list, setList] = useState(true)
   return (
     <div className={styles.sort}>
       {words.map((w) => (
@@ -36,6 +41,17 @@ function Sort({
         >
           {dic[w]}
           {w}
+          {/* {w === "top" && sort === "top" && (
+            <span style={{ marginLeft: "20px", fontWeight: "bold" }}>
+              <small>Today</small>{" "}
+            </span>
+          )} */}
+          {/* {list && (
+            <ul>
+              <li>today</li>
+              <li>tonight</li>
+            </ul>
+          )} */}
         </span>
       ))}
     </div>

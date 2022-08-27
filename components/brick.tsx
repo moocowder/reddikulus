@@ -57,6 +57,9 @@ function Brick({
         onMouseLeave={(e) => setInfos(null)}
         onClick={() => onClick()}
       >
+        <span style={{ position: "absolute", margin: "5px", color: "grey" }}>
+          {post.infos.title}
+        </span>
         {post.media.type === "image" && visible && (
           <Imagine thumbnail={post.media.thumbnail} original={post.media.url} />
         )}

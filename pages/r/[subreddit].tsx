@@ -49,7 +49,7 @@ function Subreddit({ sub, about }: Props) {
               : `r/${sub}+ritditdo/SORT?after=AFTER`
           }
           tag={"subreddit"}
-          sorts={{ words: ["hot", "new", "top", "rising"], default: "hot" }}
+          sorts={{ words: ["hot", "new", "rising", "top"], default: "hot" }}
         />
       ) : (
         <Alex face="⚆ _ ⚆">Subreddit doesn't contain images or videos</Alex>
