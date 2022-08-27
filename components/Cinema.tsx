@@ -74,7 +74,7 @@ function Cinema({ src, thumbnail, duration, dash, peek, ratio }: Props) {
 
   useEffect(() => {
     if (!videoKeys) return
-    setQuality(videoKeys[videoKeys.length - 1])
+    setQuality(videoKeys[0])
   }, [videoKeys])
 
   useEffect(() => {
